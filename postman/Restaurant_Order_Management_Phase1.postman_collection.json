@@ -1,0 +1,231 @@
+{
+  "info": {
+    "name": "Restaurant Order Management - Phase 1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Phase 1 REST endpoints for data model, ORM, and repositories."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Restaurants",
+      "item": [
+        {
+          "name": "Get All Restaurants",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/restaurants"
+          }
+        },
+        {
+          "name": "Get Restaurant By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/restaurants/1"
+          }
+        },
+        {
+          "name": "Create Restaurant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"City Bistro\",\n  \"address\": \"123 Main St\",\n  \"phone\": \"555-1000\"\n}"
+            },
+            "url": "{{baseUrl}}/api/restaurants"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dining Tables",
+      "item": [
+        {
+          "name": "Get All Tables",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tables"
+          }
+        },
+        {
+          "name": "Get Table By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tables/1"
+          }
+        },
+        {
+          "name": "Create Table",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tableNumber\": \"T10\",\n  \"capacity\": 4,\n  \"status\": \"AVAILABLE\",\n  \"restaurantId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/tables"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Menu Items",
+      "item": [
+        {
+          "name": "Get All Menu Items",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/menu-items"
+          }
+        },
+        {
+          "name": "Get Menu Item By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/menu-items/1"
+          }
+        },
+        {
+          "name": "Create Menu Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pasta Alfredo\",\n  \"description\": \"Creamy sauce\",\n  \"price\": 13.75,\n  \"available\": true,\n  \"restaurantId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/menu-items"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Get All Customers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/customers"
+          }
+        },
+        {
+          "name": "Get Customer By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/customers/1"
+          }
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jordan Lee\",\n  \"phone\": \"555-3333\",\n  \"email\": \"jordan@example.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/customers"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orders"
+          }
+        },
+        {
+          "name": "Get Order By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orders/1"
+          }
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"diningTableId\": 1,\n  \"customerId\": 1,\n  \"status\": \"PLACED\",\n  \"items\": [\n    {\n      \"menuItemId\": 1,\n      \"quantity\": 2,\n      \"priceAtOrder\": 12.50,\n      \"note\": \"No onions\"\n    }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/orders"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {
+          "name": "Get All Reservations",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/reservations"
+          }
+        },
+        {
+          "name": "Get Reservation By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/reservations/1"
+          }
+        },
+        {
+          "name": "Create Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reservationTime\": \"2026-02-16T20:00:00\",\n  \"partySize\": 4,\n  \"status\": \"CONFIRMED\",\n  \"diningTableId\": 1,\n  \"customerId\": 2\n}"
+            },
+            "url": "{{baseUrl}}/api/reservations"
+          }
+        }
+      ]
+    }
+  ]
+}
