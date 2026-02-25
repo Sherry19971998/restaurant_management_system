@@ -73,7 +73,7 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:** Order status is updated.
 
-## Use Case 4: Validate Customer Input
+## Use Case 4: Validate Customer Input (Annie Asher)
 - **ID:** UC-4
 - **Primary Actor:** Customer
 - **Goal:** Register as a new customer.
