@@ -17,7 +17,7 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:** Order and items are saved; status is PLACED.
 
-## Use Case 2: Make Reservation
+## Use Case 2: Make Reservation (Rodolfo R Bours)
 - **ID:** UC-2
 - **Primary Actor:** Staff
 - **Goal:** Reserve a table for a customer.
