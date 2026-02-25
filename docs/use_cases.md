@@ -57,7 +57,7 @@
   1. Success: Reservation is saved, table is reserved for that time slot, and confirmation is displayed
   2. Failure: No reservation created nor table status changes saved. 
 
-## Use Case 3: Update Order Status (Kitchen)
+## Use Case 3: Update Order Status (Kitchen) (Justin Ulloa)
 - **ID:** UC-3
 - **Primary Actor:** Kitchen Staff
 - **Goal:** Mark an order as READY.
