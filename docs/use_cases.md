@@ -1,6 +1,6 @@
 # Use Case Documentation (Fully Dressed)
 
-## Use Case 1: Place Order with Items
+## Use Case 1: Place Order with Items (Xinyi Xie)
 - **Primary Actor:** Customer
 - **Goal:** Place a new order for a table, including multiple menu items.
 - **Preconditions:** Customer and table exist; menu items are available.
