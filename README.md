@@ -319,6 +319,151 @@ Requests are organized in order: Restaurants → Tables → MenuItems → Custom
 
 ---
 
+## 📊 Architecture Diagrams & Project Timeline
+
+### 1. Domain Model Diagram
+
+```mermaid
+classDiagram
+    class Restaurant {
+        Long id
+        String name
+        String address
+        String phone
+        List~DiningTable~ tables
+        List~MenuItem~ menuItems
+    }
+    class DiningTable {
+        Long id
+        String tableNumber
+        int capacity
+        TableStatus status
+        Restaurant restaurant
+        List~Reservation~ reservations
+        List~RestaurantOrder~ orders
+    }
+    class Customer {
+        Long id
+        String name
+        String phone
+        String email
+        List~Reservation~ reservations
+        List~RestaurantOrder~ orders
+    }
+    class MenuItem {
+        Long id
+        String name
+        String description
+        BigDecimal price
+        boolean available
+        Restaurant restaurant
+    }
+    class Reservation {
+        Long id
+        LocalDateTime reservationTime
+        int partySize
+        ReservationStatus status
+        DiningTable diningTable
+        Customer customer
+    }
+    class RestaurantOrder {
+        Long id
+        OrderStatus status
+        LocalDateTime createdAt
+        LocalDateTime updatedAt
+        DiningTable diningTable
+        Customer customer
+        List~OrderItem~ items
+    }
+    class OrderItem {
+        Long id
+        int quantity
+        BigDecimal priceAtOrder
+        String note
+        RestaurantOrder order
+        MenuItem menuItem
+    }
+    Restaurant "1" -- "*" DiningTable : has
+    Restaurant "1" -- "*" MenuItem : offers
+    DiningTable "1" -- "*" Reservation : reserves
+    DiningTable "1" -- "*" RestaurantOrder : serves
+    Customer "1" -- "*" Reservation : books
+    Customer "1" -- "*" RestaurantOrder : places
+    RestaurantOrder "1" -- "*" OrderItem : contains
+    OrderItem "*" -- "1" MenuItem : references
+    Reservation "*" -- "1" DiningTable : for
+    Reservation "*" -- "1" Customer : by
+    RestaurantOrder "*" -- "1" DiningTable : for
+    RestaurantOrder "*" -- "1" Customer : by
+```
+
+### 2. Deployment Model Diagram
+
+```mermaid
+graph TD
+    User[User Roles]
+    App[Spring Boot Application]
+    DB[(H2 Database)]
+    Browser[Web Browser / REST Client]
+    WebUI["Web UI (WebSocket)"]
+    
+    User -->|HTTP/REST| Browser
+    User -->|WebSocket| WebUI
+    WebUI -->|WebSocket| App
+    Browser -->|HTTP/REST| App
+    App -->|JDBC| DB
+    
+    subgraph Server
+        App
+        DB
+    end
+    
+    note1["Spring Boot runs on server (localhost or cloud VM)"]
+    note2["H2 Database runs in-memory (dev) or file (prod)"]
+    note3["Clients interact via REST (CRUD, data fetch) and WebSocket (real-time updates, notifications) endpoints"]
+    note4["Production databases (e.g., PostgreSQL) might be supported in Phase 2/3"]
+    
+    App -.-> note1
+    DB -.-> note2
+    Browser -.-> note3
+    WebUI -.-> note3
+    DB -.-> note4
+```
+
+### 3. Gantt Chart (Project Timeline)
+
+```mermaid
+gantt
+    title Restaurant Management System Project Timeline
+    dateFormat  2026-02-22
+    section Phase 1: Data Model & Persistence
+    Domain Model Design (Entities & Relationships) :done, des1, 2026-02-01, 2026-02-05
+    Database Schema & Seed Data                    :done, db1, 2026-02-06, 2026-02-08
+    JPA Entity Implementation                      :done, ent1, 2026-02-09, 2026-02-12
+    Repository Layer (CRUD)                        :done, rep1, 2026-02-13, 2026-02-15
+    Initial REST API (GET/POST)                    :done, api1, 2026-02-16, 2026-02-18
+    Unit & Integration Testing                     :done, test1, 2026-02-19, 2026-02-22
+    section Phase 2: Business Logic & Use Cases & REST
+    Service Layer Implementation                   :active, ser1, 2026-02-26, 2026-03-05
+    UC-1: Place Order with Items                   :         uc1, 2026-03-06, 2026-03-08
+    UC-2: Make Reservation                         :         uc2, 2026-03-09, 2026-03-11
+    UC-3: Update Order Status (Kitchen)            :         uc3, 2026-03-12, 2026-03-14
+    UC-4: Validate Customer Input                  :         uc4, 2026-03-15, 2026-03-16
+    UC-5: Manager Updates Menu Item                :         uc5, 2026-03-17, 2026-03-18
+    UC-6: Process Payment for Order                :         uc6, 2026-03-19, 2026-03-21
+    UC-7: Manage Table Status                      :         uc7, 2026-03-22, 2026-03-24
+    REST API Enhancement & Validation              :         api2, 2026-03-25, 2026-03-27
+    Payment Handling & Testing                     :         pay1, 2026-03-28, 2026-04-02
+    section Phase 3: UI, Real-time & Deployment
+    Web UI Design (React/Vue)                      :         ui1,  2026-04-10, 2026-04-13
+    WebSocket Backend Integration                  :         ws1,  2026-04-14, 2026-04-16
+    Real-time Notification Implementation          :         rt1,  2026-04-17, 2026-04-18
+    Frontend-Backend Integration                   :         int1, 2026-04-19, 2026-04-22
+    Production Database Support (PostgreSQL)       :         db2, 2026-04-23, 2026-04-25
+    Authentication & Security                      :         sec1, 2026-04-26, 2026-04-27
+    Deployment & Documentation                     :         dep1, 2026-04-28, 2026-05-01
+```
+
 **Status:** Phase 1 Complete (Data Model + Repositories + Basic REST)  
 **Last Updated:** February 2026  
 **Maintainer:** Development Team
