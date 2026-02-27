@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.PatchMapping;
 @RestController
 @RequestMapping("/api/menu-items")
 public class MenuItemController {
@@ -34,5 +34,10 @@ public class MenuItemController {
     @PostMapping
     public MenuItem create(@Valid @RequestBody MenuItemRequest request) {
         return menuItemService.create(request);
+    }
+    
+    @PatchMapping("/update/{id}")
+    public MenuItem update(@PathVariable Long id, @RequestBody MenuItemRequest request) {
+    	return menuItemService.update(id, request);
     }
 }

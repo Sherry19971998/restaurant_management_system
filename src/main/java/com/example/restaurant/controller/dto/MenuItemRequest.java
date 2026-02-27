@@ -16,7 +16,7 @@ public class MenuItemRequest {
     @NotNull
     @DecimalMin("0.01")
     private BigDecimal price;
-    private boolean available = true;
+    private Boolean available = true;
 
     @NotNull
     private Long restaurantId;
@@ -45,7 +45,7 @@ public class MenuItemRequest {
         this.price = price;
     }
 
-    public boolean isAvailable() {
+    public boolean getAvailable() {
         return available;
     }
 

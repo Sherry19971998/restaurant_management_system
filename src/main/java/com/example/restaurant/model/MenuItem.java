@@ -27,7 +27,7 @@ public class MenuItem {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private boolean available = true;
+    private Boolean available = true;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -65,7 +65,7 @@ public class MenuItem {
         this.price = price;
     }
 
-    public boolean isAvailable() {
+    public boolean getAvailable() {
         return available;
     }
 

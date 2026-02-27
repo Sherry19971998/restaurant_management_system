@@ -37,9 +37,22 @@ public class MenuItemService {
         menuItem.setName(request.getName());
         menuItem.setDescription(request.getDescription());
         menuItem.setPrice(request.getPrice());
-        menuItem.setAvailable(request.isAvailable());
+        menuItem.setAvailable(request.getAvailable());
         menuItem.setRestaurant(restaurant);
 
         return menuItemRepository.save(menuItem);
     }
+    
+    public MenuItem update(Long id, MenuItemRequest request) {
+    	MenuItem menuItem = menuItemRepository.findById(id)
+    			.orElseThrow(() -> new RuntimeException("MenuItem not found with id"));
+    	menuItem.setName(request.getName());
+    	menuItem.setDescription(request.getDescription());
+    	menuItem.setPrice(request.getPrice());
+    	menuItem.setAvailable(request.getAvailable());
+    	
+    	return menuItemRepository.save(menuItem);
+    }
+    
+    
 }
