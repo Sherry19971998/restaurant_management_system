@@ -30,3 +30,19 @@
 - The system must use widely adopted technologies (Java 17, Spring Boot, H2 database) to ensure maintainability.
 - The codebase must be well-documented and follow standard coding conventions.
 - Configuration should be externalized and easy to modify for different environments (e.g., dev, test, prod).
+
+
+# Requirements for Case 2
+## Functional Requirements:
+FR-1: System shall allow staff to create a reservation for a customer.
+FR-2: System shall validate reservation inputs (date/time, party size, customer).
+FR-3: System shall check table availability for the requested time slot.
+FR-4: System shall prevent double-booking of the same table/time slot.
+FR-5: System shall store reservation details and return a confirmation ID.
+FR-6: System shall update the table schedule/status when a reservation is created.
+
+## Non-Functional Requirements:
+NFR-1 (Performance): Availability check shall respond within 2 seconds.
+NFR-2 (Reliability): Reservation creation shall be atomic (all-or-nothing).
+NFR-3 (Security): Only authorized staff can create reservations.
+NFR-4 (Auditability): System shall log reservation create attempts (success/fail).

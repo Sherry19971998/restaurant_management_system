@@ -17,23 +17,47 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:** Order and items are saved; status is PLACED.
 
-## Use Case 2: Make Reservation
+## Use Case 2: Make Reservation (Rodolfo R Bours)
 - **ID:** UC-2
 - **Primary Actor:** Staff
+- **Level:** User goal
 - **Goal:** Reserve a table for a customer.
-- **Preconditions:** Customer exists; table is available.
+- **Stakeholders & Interests:**
+- 1. Customer: Wants a reserved table at a specific time.
+- 2. Restaurant/Staff: Wants accurate scheduling and no double-booking.
+- 3. Management: Wants reservation records for tracking and service planning.
+- **Preconditions:**
+  1. Customer exists in the system.
+  2. Staff is authenticated/authorized.
+- 3. Table inventory exists.
+- 4. The requested table/time slot is available.
+- **Trigger:** Staff selects "Make Reservation" for a customer.
 - **Flow of Events:**
-  1. Staff enters reservation details.
-  2. System checks table availability.
-  3. System creates Reservation linked to customer and table.
-  4. System returns reservation confirmation.
+  1. Staff selects "Make Reservation".
+  2. Staff enters reservation details (customer, date/time, party size, table preference or table ID, notes/contact).
+  3. System validates the input (required fields, time in the future, party size > 0).
+  4. System checks table availability for the requested date/time and party size
+  5. System creates a Reservation linked to the customer and assigned table.
+  6. System updates table status/schedule for that time slot (marks as reserved).
+  7. System returns a confirmation (reservation ID + details)
 - **Extensions:**
-  - 2a. Table already reserved: System returns error.
+  - 2a. Missing/Invalid Data:
+    2a1. System highlights missing fields (date/time, party size, customer).
+    2a2. Staff corrects and resubmits.
+  - 4a. Table already reserved / no available tables
+    4a1. System shows “No availability for selected time.”
+    4a2. System suggests available time slots or tables.
+    4a3. Staff selects a new option → continue at step 4.
+  - 1a. Customer does not exist
+    1a1. System prompts to create customer or search again.
+    1a2. If created, continue at step 2.  
 - **Alternative Flow 2:**
   (Describe any alternative flow here if needed)
-- **Postconditions:** Reservation is saved; table status updated.
+- **Postconditions:**
+  1. Success: Reservation is saved, table is reserved for that time slot, and confirmation is displayed
+  2. Failure: No reservation created nor table status changes saved. 
 
-## Use Case 3: Update Order Status (Kitchen)
+## Use Case 3: Update Order Status (Kitchen) (Justin Ulloa)
 - **ID:** UC-3
 - **Primary Actor:** Kitchen Staff
 - **Goal:** Mark an order as READY.
@@ -49,7 +73,7 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:** Order status is updated.
 
-## Use Case 4: Validate Customer Input
+## Use Case 4: Validate Customer Input (Annie Asher)
 - **ID:** UC-4
 - **Primary Actor:** Customer
 - **Goal:** Register as a new customer.

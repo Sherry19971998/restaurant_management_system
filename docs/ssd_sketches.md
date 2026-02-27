@@ -36,3 +36,7 @@
 - Staff → System: PATCH /api/tables/{id}/status (new status)
 - System → DB: Validate and update table status
 - System → Staff: Confirmation or error
+
+# SSD Diagram for Use Case 2
+<img width="1001" height="622" alt="image" src="https://github.com/user-attachments/assets/e0005439-9923-4cb4-a867-cc6e46b5ef91" />
+
