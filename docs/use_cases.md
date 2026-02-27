@@ -89,7 +89,7 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:** Customer is saved.
 
-## Use Case 5: Manager Updates Menu Item
+## Use Case 5: Manager Updates Menu Item (Griffith Wiele)
 - **ID:** UC-5
 - **Primary Actor:** Manager
 - **Goal:** Add or update a menu item.
