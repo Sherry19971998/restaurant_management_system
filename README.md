@@ -421,7 +421,7 @@ graph TD
     note1["Spring Boot runs on server (localhost or cloud VM)"]
     note2["H2 Database runs in-memory (dev) or file (prod)"]
     note3["Clients interact via REST (CRUD, data fetch) and WebSocket (real-time updates, notifications) endpoints"]
-    note4["Production databases (e.g., PostgreSQL) will be supported in Phase 2/3"]
+    note4["Production databases (e.g., PostgreSQL) might be supported in Phase 2/3"]
     
     App -.-> note1
     DB -.-> note2
@@ -463,13 +463,6 @@ gantt
     Authentication & Security                      :         sec1, 2026-04-26, 2026-04-27
     Deployment & Documentation                     :         dep1, 2026-04-28, 2026-05-01
 ```
-
-#### Diagram Generation Instructions
-- All diagrams above use Mermaid syntax and can be rendered in VS Code (with Mermaid plugin), Typora, GitHub, or any Mermaid-compatible environment.
-- To export as images, paste the code into [Mermaid Live Editor](https://mermaid.live/) and export as SVG/PNG.
-- Timeline and dates are automatically updated to the current date.
-
----
 
 **Status:** Phase 1 Complete (Data Model + Repositories + Basic REST)  
 **Last Updated:** February 2026  
