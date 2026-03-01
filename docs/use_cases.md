@@ -3,19 +3,37 @@
 ## Use Case 1: Place Order with Items (Xinyi Xie)
 - **ID:** UC-1
 - **Primary Actor:** Customer
+- **Level:** User goal
 - **Goal:** Place a new order for a table, including multiple menu items.
-- **Preconditions:** Customer and table exist; menu items are available.
+- **Stakeholders & Interests:**
+  1. Customer: Wants to successfully place an order and select desired menu items.
+  2. Restaurant/Staff: Wants accurate order information, sufficient inventory, and a smooth process.
+  3. Management: Wants order records for statistics and service optimization.
+- **Preconditions:**
+  1. Customer exists in the system.
+  2. Table exists and is available.
+  3. Menu items are in stock.
+- **Trigger:** Customer selects "Place Order" in the system.
 - **Flow of Events:**
-  1. Customer selects table and menu items.
-  2. System validates table and menu item availability.
-  3. System creates RestaurantOrder and associated OrderItems.
-  4. System returns order confirmation.
+  1. Customer selects a table and menu items, enters quantity for each item.
+  2. System validates table and menu item availability and inventory.
+  3. System creates a RestaurantOrder and associated OrderItems, linking to the Customer and Table.
+  4. System returns order confirmation (order ID, details, estimated wait time, etc.).
 - **Extensions:**
-  - 2a. Table unavailable: System returns error.
-  - 3a. Menu item out of stock: System returns error.
-- **Alternative Flow 2:**
+  - 2a. Table unavailable:
+    2a1. System returns error message "Table unavailable".
+    2a2. Customer selects another table.
+  - 3a. Menu item out of stock:
+    3a1. System notifies "Some menu items are out of stock".
+    3a2. Customer may choose to replace, reduce quantity, or cancel the order.
+  - 1a. Customer does not exist:
+    1a1. System prompts to register or search again.
+    1a2. After registration, continue with order placement.
+- **Alternative Flow:**
   (Describe any alternative flow here if needed)
-- **Postconditions:** Order and items are saved; status is PLACED.
+- **Postconditions:**
+  1. Success: Order and order items are saved, status is PLACED, system records updated.
+  2. Failure: No order is created, no changes in the system.
 
 ## Use Case 2: Make Reservation (Rodolfo R Bours)
 - **ID:** UC-2

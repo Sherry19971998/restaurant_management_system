@@ -3,14 +3,28 @@
 > **Note:** All SSD diagrams are intended for implementation in Visual Paradigm (UML tool). You will implement, test, demonstrate, and deliver documentation for these use cases as part of your project deliverables.
 
 ## Place Order with Items
+- Customer → System: Select table, menu items, quantities
 - Customer → System: POST /api/orders (order details)
-- System → DB: Validate table/menu items, create RestaurantOrder, create OrderItems
-- System → Customer: Order confirmation
+- System → DB: Validate customer existence
+- System → DB: Validate table availability
+- System → DB: Validate menu item inventory
+- System → DB: Create RestaurantOrder, create OrderItems
+- System → Customer: Order confirmation (order ID, details, estimated wait time)
+- [Alt] System → Customer: Error (table unavailable, menu item out of stock, customer not found)
 
 ## Make Reservation
-- Staff → System: POST /api/reservations (reservation details)
-- System → DB: Validate table, create Reservation
-- System → Staff: Reservation confirmation
+- Staff → System: Select 'Make Reservation'
+- Staff → System: Enter reservation details (customer, date/time, party size, table preference, notes/contact)
+- System → DB: Validate required fields (date/time, party size, customer)
+- [Alt] System → Staff: Error (missing/invalid data)
+- System → DB: Validate customer existence
+- [Alt] System → Staff: Prompt to create customer or search again
+- System → DB: Check table availability for requested date/time and party size
+- [Alt] System → Staff: Error (table already reserved/no available tables)
+- [Alt] System → Staff: Suggest available time slots or tables
+- System → DB: Create Reservation linked to customer and assigned table
+- System → DB: Update table status/schedule for that time slot (mark as reserved)
+- System → Staff: Reservation confirmation (reservation ID + details)
 
 ## Update Order Status (Kitchen)
 - Kitchen Staff → System: PATCH /api/orders/{id}/status (READY)
