@@ -140,7 +140,8 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:** Order is marked as PAID.
 
-## Use Case 7: Manage Table Status
+## Use Case 7: Manage Table Status(Anh Nguyen)
+
 - **ID:** UC-7
 - **Primary Actor:** Waiter/Staff
 - **Goal:** Update the status of a dining table (e.g., available, occupied, reserved, needs cleaning).
