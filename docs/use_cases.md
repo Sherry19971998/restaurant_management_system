@@ -141,11 +141,18 @@
 - **Postconditions:** Order is marked as PAID.
 
 ## Use Case 7: Manage Table Status(Anh Nguyen)
-
 - **ID:** UC-7
 - **Primary Actor:** Waiter/Staff
 - **Goal:** Update the status of a dining table (e.g., available, occupied, reserved, needs cleaning).
-- **Preconditions:** Table exists in the system.
+- **Stakeholder and Intersts:**
+- i. Restaurant/Staff: Want to maximize the ability of provide the best services. It means update table status at all time.
+- ii. Customer: Wants to have table status information accurate on clean, available and ready.
+- iii. Management: Wants to satisfice customers and at the same time not conflict with all the employee on provide table status.
+- **Preconditions:**
+- i.   Table exists in the system.
+- ii.  Table avaliable, clean, and ready so service. 
+- **Trigger:**
+- Customer ask to "Dinning in".
 - **Flow of Events:**
   1. Staff selects a table.
   2. Staff updates the table status.
@@ -153,7 +160,12 @@
   4. System updates the table record.
   5. System returns confirmation.
 - **Extensions:**
-  - 3a. Invalid status: System returns error.
+  - 1a. Invalid status: System returns error.
+  - 1b. Avaliable status: System return avaliable.
+  - 1c. Unavaliable status: System return unavaliable.
+  - 2a. Validate by staff.
 - **Alternative Flow 2:**
   (Describe any alternative flow here if needed)
-- **Postconditions:** Table status is updated in the system.
+- **Postconditions:**
+- i.  Avaliable:   Table is clean and ready to service.
+- ii. Unavaliable: Table is unclean, and unavaliable table appear. 
