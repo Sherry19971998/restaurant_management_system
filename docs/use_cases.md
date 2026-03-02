@@ -163,9 +163,16 @@
   - 1a. Invalid status: System returns error.
   - 1b. Avaliable status: System return avaliable.
   - 1c. Unavaliable status: System return unavaliable.
-  - 2a. Validate by staff.
+  - 2a. Staff update avaliable.
+  - 2b. Staff update occupied.
+  - 2c. Staff update reserved.
+  - 2d. Staff update needs cleaning.
+  - 3a. Staff check table status.
+  - 3b. Staff confirm table status.
+  - 4a. Staff record table frequence avaliable and unavaliable.
+  - 5a. Staff confirm all the information into system( table status and table record).
 - **Alternative Flow 2:**
   (Describe any alternative flow here if needed)
 - **Postconditions:**
 - i.  Avaliable:   Table is clean and ready to service.
-- ii. Unavaliable: Table is unclean, and unavaliable table appear. 
+- ii. Unavaliable: Table is unclean, need to be clean and unavaliable table appear. 
