@@ -123,7 +123,7 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:** MenuItem is updated.
 
-## Use Case 6: Process Payment for Order
+## Use Case 6: Process Payment for Order (Jennifer Barajas)
 - **ID:** UC-6
 - **Primary Actor:** Waiter/Staff
 - **Goal:** Complete payment for a served order.
