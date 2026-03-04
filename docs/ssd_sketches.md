@@ -41,12 +41,16 @@
 - System → DB: Create Customer record
 - System → Customer: Confirmation (registration successful)
 
+
 ### Manager Updates Menu Item (UC-5)
-- Manager → System: Submit menu item details (add/update)
-- System → DB: Validate input (name, price, availability)
-- [Alt] System → Manager: Error (invalid input)
-- System → DB: Create or update MenuItem
-- System → Manager: Confirmation (menu item updated)
+- Manager → System: Select "Add Menu Item" or "Update Menu Item"
+- Manager → System: Enter or edit menu item details (name, price, description, inventory, category, availability)
+- System → DB: Validate required fields (name, price format, inventory quantity, etc.)
+- [Alt] System → Manager: Error (invalid input, e.g., missing name, invalid price)
+- System → DB: Check if menu item exists (for update)
+- [Alt] System → Manager: Error (menu item not found when updating)
+- System → DB: Create new menu item or update existing menu item
+- System → Manager: Confirmation (menu item ID, details, success message)
 
 ### Process Payment for Order (UC-6)
 - Staff → System: Select order ready for payment

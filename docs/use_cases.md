@@ -110,18 +110,35 @@
 ## Use Case 5: Manager Updates Menu Item (Griffith Wiele)
 - **ID:** UC-5
 - **Primary Actor:** Manager
-- **Goal:** Add or update a menu item.
-- **Preconditions:** Manager is authenticated.
+- **Level:** User goal
+- **Goal:** Add or update a menu item in the restaurant system.
+- **Stakeholders & Interests:**
+  1. Manager: Wants to flexibly add or modify menu items, ensuring menu information is accurate and updated in time.
+  2. Kitchen/Staff: Need the latest menu information to correctly process orders.
+  3. Customer: Expects menu content to be real, prices accurate, and items available.
+  4. Management: Needs menu data for statistics, analysis, and business optimization.
+- **Preconditions:**
+  1. Manager is logged in and authenticated.
+  2. Menu item information (such as name, price, description, etc.) is prepared.
+- **Trigger:** Manager selects "Add/Update Menu Item" in the system.
 - **Flow of Events:**
-  1. Manager submits menu item details.
-  2. System validates input.
-  3. System creates or updates MenuItem.
-  4. System returns confirmation.
+  1. Manager chooses to add a new menu item or update an existing one.
+  2. Manager enters or edits menu item details (name, price, description, inventory, category, etc.).
+  3. System validates the input (required fields, price format, inventory quantity, etc.).
+  4. System checks if the menu item already exists (for update, finds the original item).
+  5. System saves the new menu item or updates the existing menu item information.
+  6. System returns operation confirmation (menu item ID, details, success message, etc.).
 - **Extensions:**
-  - 2a. Invalid input: System returns error.
-- **Alternative Flow 2:**
-  (Describe any alternative flow here if needed)
-- **Postconditions:** MenuItem is updated.
+  - 3a. Invalid input:
+    3a1. System prompts error message (e.g., "Invalid price format" or "Name cannot be empty").
+    3a2. Manager corrects and resubmits.
+  - 4a. Menu item not found (when updating):
+    4a1. System prompts "Menu item not found", Manager may choose to add a new item or re-enter.
+- **Alternative Flow:**
+  - Manager cancels operation: System makes no changes and returns to the main interface.
+- **Postconditions:**
+  1. Success: Menu item is added or updated, system menu information is synchronized, and relevant staff can see the latest menu.
+  2. Failure: Menu item is not saved or updated, no changes in the system.
 
 ## Use Case 6: Process Payment for Order (Jennifer Barajas)
 - **ID:** UC-6
