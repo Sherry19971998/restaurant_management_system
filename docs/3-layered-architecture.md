@@ -63,9 +63,6 @@ Restaurant, DiningTable, Customer, Reservation, RestaurantOrder, OrderItem, Menu
 
 ---
 
-## Example: Place Order (UC-1) in 3-Layered Architecture
-
-
 ## Use Case Implementation Examples
 
 - **UC-1: Place Order with Items**
