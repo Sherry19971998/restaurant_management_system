@@ -9,10 +9,8 @@ import com.example.restaurant.model.PasswordResetToken;
 import com.example.restaurant.repository.UserRepository;
 import com.example.restaurant.repository.PasswordResetTokenRepository;
 import com.example.restaurant.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,19 +20,29 @@ import java.util.Collections;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
+import org.springframework.security.authentication.AuthenticationManager;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+
+    public AuthController(UserRepository userRepository,
+                         PasswordEncoder passwordEncoder,
+                         AuthenticationManager authenticationManager,
+                         JwtUtil jwtUtil,
+                         PasswordResetTokenRepository passwordResetTokenRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {

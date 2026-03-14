@@ -109,6 +109,50 @@ Seed data loads automatically from [src/main/resources/data.sql](src/main/resour
 
 ---
 
+
+## 🔐 Auth & Security Quick Test
+
+### Register a New User
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8080/api/auth/register" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"username":"testuser","password":"123456","roles":["USER"]}'
+```
+
+### Login and Get JWT Token
+```powershell
+$response = Invoke-RestMethod -Uri "http://localhost:8080/api/auth/login" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"username":"testuser","password":"123456"}'
+$response.token
+```
+
+### Access Protected Endpoint with Token
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8080/api/orders" `
+    -Headers @{"Authorization"="Bearer <your_full_token_here>"}
+```
+> Replace `<your_full_token_here>` with the full string from `$response.token` above.
+
+### Forgot Password & Reset Password
+```powershell
+# Request password reset link
+Invoke-RestMethod -Uri "http://localhost:8080/api/auth/forgot-password" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"emailOrUsername":"testuser"}'
+
+# Use the returned token to reset password
+Invoke-RestMethod -Uri "http://localhost:8080/api/auth/reset-password" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"token":"<token>","newPassword":"newpass"}'
+```
+
+---
+
 ## 📡 REST API Overview
 
 | Resource | Endpoints | Methods |

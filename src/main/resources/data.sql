@@ -7,11 +7,11 @@ VALUES
   ('T2', 2, 'AVAILABLE', 1),
   ('T3', 6, 'RESERVED', 1);
 
-INSERT INTO menu_items (name, description, price, available, restaurant_id)
+INSERT INTO menu_items (name, description, price, available, inventory, restaurant_id)
 VALUES
-  ('Margherita Pizza', 'Tomato, basil, mozzarella', 12.50, TRUE, 1),
-  ('Caesar Salad', 'Romaine, parmesan, croutons', 8.00, TRUE, 1),
-  ('Iced Tea', 'Fresh brewed', 3.00, TRUE, 1);
+  ('Margherita Pizza', 'Tomato, basil, mozzarella', 12.50, TRUE, 100, 1),
+  ('Caesar Salad', 'Romaine, parmesan, croutons', 8.00, TRUE, 100, 1),
+  ('Iced Tea', 'Fresh brewed', 3.00, TRUE, 100, 1);
 
 INSERT INTO customers (name, phone, email)
 VALUES
