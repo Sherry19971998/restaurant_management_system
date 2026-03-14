@@ -6,6 +6,33 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 public class OrderRequest {
+        // For auto-creating customer if not found
+        private String customerName;
+        private String customerPhone;
+        private String customerEmail;
+        public String getCustomerName() {
+            return customerName;
+        }
+
+        public void setCustomerName(String customerName) {
+            this.customerName = customerName;
+        }
+
+        public String getCustomerPhone() {
+            return customerPhone;
+        }
+
+        public void setCustomerPhone(String customerPhone) {
+            this.customerPhone = customerPhone;
+        }
+
+        public String getCustomerEmail() {
+            return customerEmail;
+        }
+
+        public void setCustomerEmail(String customerEmail) {
+            this.customerEmail = customerEmail;
+        }
     @NotNull
     private Long diningTableId;
     private Long customerId;

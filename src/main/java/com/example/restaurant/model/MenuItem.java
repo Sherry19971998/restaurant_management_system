@@ -29,9 +29,20 @@ public class MenuItem {
     @Column(nullable = false)
     private Boolean available = true;
 
+
+    @Column(nullable = false)
+    private Integer inventory = 0;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
+    public Integer getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Integer inventory) {
+        this.inventory = inventory;
+    }
 
     public Long getId() {
         return id;

@@ -46,36 +46,79 @@ public class OrderService {
     public RestaurantOrder create(OrderRequest request) {
         DiningTable table = diningTableRepository.findById(request.getDiningTableId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Table not found"));
+        // Business rule: Table must be AVAILABLE
+        if (table.getStatus() != com.example.restaurant.model.enums.TableStatus.AVAILABLE) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Table is not available");
+        }
 
         Customer customer = null;
         if (request.getCustomerId() != null) {
-            customer = customerRepository.findById(request.getCustomerId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
+            customer = customerRepository.findById(request.getCustomerId()).orElse(null);
+            if (customer == null) {
+                // Require at least one of name, phone, or email for auto-creation
+                String name = request.getCustomerName();
+                String phone = request.getCustomerPhone();
+                String email = request.getCustomerEmail();
+                if ((name == null || name.isBlank()) && (phone == null || phone.isBlank()) && (email == null || email.isBlank())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "At least one of customer name, phone, or email must be provided for new customer");
+                }
+                customer = new Customer();
+                customer.setName(name != null && !name.isBlank() ? name : "Guest");
+                customer.setPhone(phone != null && !phone.isBlank() ? phone : "N/A");
+                customer.setEmail(email != null && !email.isBlank() ? email : ("guest" + System.currentTimeMillis() + "@example.com"));
+                customer = customerRepository.save(customer);
+            }
+        } else {
+            // Require at least one of name, phone, or email for auto-creation
+            String name = request.getCustomerName();
+            String phone = request.getCustomerPhone();
+            String email = request.getCustomerEmail();
+            if ((name == null || name.isBlank()) && (phone == null || phone.isBlank()) && (email == null || email.isBlank())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "At least one of customer name, phone, or email must be provided for new customer");
+            }
+            customer = new Customer();
+            customer.setName(name != null && !name.isBlank() ? name : "Guest");
+            customer.setPhone(phone != null && !phone.isBlank() ? phone : "N/A");
+            customer.setEmail(email != null && !email.isBlank() ? email : ("guest" + System.currentTimeMillis() + "@example.com"));
+            customer = customerRepository.save(customer);
         }
 
         RestaurantOrder order = new RestaurantOrder();
         order.setDiningTable(table);
         order.setCustomer(customer);
-        if (request.getStatus() != null) {
-            order.setStatus(request.getStatus());
+        order.setStatus(com.example.restaurant.model.enums.OrderStatus.PLACED);
+
+        if (request.getItems() == null || request.getItems().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order must contain at least one item");
         }
-
-        if (request.getItems() != null) {
-            for (OrderItemRequest itemRequest : request.getItems()) {
-                MenuItem menuItem = menuItemRepository.findById(itemRequest.getMenuItemId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found"));
-
-                OrderItem orderItem = new OrderItem();
-                orderItem.setMenuItem(menuItem);
-                orderItem.setQuantity(itemRequest.getQuantity());
-                orderItem.setPriceAtOrder(itemRequest.getPriceAtOrder() != null
-                        ? itemRequest.getPriceAtOrder()
-                        : menuItem.getPrice());
-                orderItem.setNote(itemRequest.getNote());
-
-                order.addItem(orderItem);
+        for (OrderItemRequest itemRequest : request.getItems()) {
+            MenuItem menuItem = menuItemRepository.findById(itemRequest.getMenuItemId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found"));
+            // Business rule: Menu item must be available
+            if (!menuItem.getAvailable()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Menu item '" + menuItem.getName() + "' is not available");
             }
+            // Business rule: Menu item must have enough inventory
+            if (menuItem.getInventory() == null || menuItem.getInventory() < itemRequest.getQuantity()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Menu item '" + menuItem.getName() + "' does not have enough inventory");
+            }
+            // Deduct inventory
+            menuItem.setInventory(menuItem.getInventory() - itemRequest.getQuantity());
+            menuItemRepository.save(menuItem);
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setMenuItem(menuItem);
+            orderItem.setQuantity(itemRequest.getQuantity());
+            orderItem.setPriceAtOrder(itemRequest.getPriceAtOrder() != null
+                    ? itemRequest.getPriceAtOrder()
+                    : menuItem.getPrice());
+            orderItem.setNote(itemRequest.getNote());
+            order.addItem(orderItem);
         }
+
+        // Optionally, set table status to OCCUPIED after placing order
+        table.setStatus(com.example.restaurant.model.enums.TableStatus.OCCUPIED);
+        diningTableRepository.save(table);
 
         return orderRepository.save(order);
     }
