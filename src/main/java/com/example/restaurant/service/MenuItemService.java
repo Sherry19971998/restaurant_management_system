@@ -9,9 +9,12 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class MenuItemService {
+    private static final Logger logger = LoggerFactory.getLogger(MenuItemService.class);
     private final MenuItemRepository menuItemRepository;
     private final RestaurantRepository restaurantRepository;
 
@@ -21,15 +24,18 @@ public class MenuItemService {
     }
 
     public List<MenuItem> getAll() {
+        logger.info("Fetching all menu items");
         return menuItemRepository.findAll();
     }
 
     public MenuItem getById(Long id) {
+        logger.info("Fetching menu item by id: {}", id);
         return menuItemRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found"));
     }
 
     public MenuItem create(MenuItemRequest request) {
+        logger.info("Creating new menu item for restaurantId: {}", request.getRestaurantId());
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found"));
 
@@ -44,14 +50,14 @@ public class MenuItemService {
     }
     
     public MenuItem update(Long id, MenuItemRequest request) {
-    	MenuItem menuItem = menuItemRepository.findById(id)
-    			.orElseThrow(() -> new RuntimeException("MenuItem not found with id"));
-    	menuItem.setName(request.getName());
-    	menuItem.setDescription(request.getDescription());
-    	menuItem.setPrice(request.getPrice());
-    	menuItem.setAvailable(request.getAvailable());
-    	
-    	return menuItemRepository.save(menuItem);
+        logger.info("Updating menu item with id: {}", id);
+        MenuItem menuItem = menuItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("MenuItem not found with id"));
+        menuItem.setName(request.getName());
+        menuItem.setDescription(request.getDescription());
+        menuItem.setPrice(request.getPrice());
+        menuItem.setAvailable(request.getAvailable());
+        return menuItemRepository.save(menuItem);
     }
     
     
