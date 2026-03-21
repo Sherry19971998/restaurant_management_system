@@ -137,6 +137,67 @@
           }
         },
         {
+          "name": "Auth",
+          "item": [
+            {
+              "name": "Register",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\",\n  \"roles\": [\"USER\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/auth/register"
+              }
+            },
+            {
+              "name": "Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\"\n}"
+                },
+                "url": "{{baseUrl}}/api/auth/login"
+              }
+            },
+            {
+              "name": "Forgot Password",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emailOrUsername\": \"testuser\"\n}"
+                },
+                "url": "{{baseUrl}}/api/auth/forgot-password"
+              }
+            },
+            {
+              "name": "Reset Password",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"<reset_token>\",\n  \"newPassword\": \"newpass123\"\n}"
+                },
+                "url": "{{baseUrl}}/api/auth/reset-password"
+              }
+            }
+          ]
+        },
+        {
           "name": "Create Customer",
           "request": {
             "method": "POST",

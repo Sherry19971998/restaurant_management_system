@@ -1,6 +1,11 @@
 # Use Case Documentation (Fully Dressed)
-
+ 
 ## Use Case 1: Place Order with Items (Xinyi Xie)
+【Code Files】
+- Controller: customer-service/src/main/java/com/example/customerservice/controller/OrderController.java
+- Service: customer-service/src/main/java/com/example/customerservice/service/OrderService.java
+- Repository: customer-service/src/main/java/com/example/customerservice/repository/OrderRepository.java
+【customer-service】
 - **ID:** UC-1
 - **Primary Actor:** Customer
 - **Level:** User goal
@@ -36,6 +41,11 @@
   2. Failure: No order is created, no changes in the system.
 
 ## Use Case 2: Make Reservation (Rodolfo R Bours)
+【Code Files】
+- Controller: admin-service/src/main/java/com/example/adminservice/controller/ReservationController.java
+- Service: admin-service/src/main/java/com/example/adminservice/service/ReservationService.java
+- Repository: admin-service/src/main/java/com/example/adminservice/repository/ReservationRepository.java
+【customer-service】
 - **ID:** UC-2
 - **Primary Actor:** Staff
 - **Level:** User goal
@@ -76,6 +86,11 @@
   2. Failure: No reservation created nor table status changes saved. 
 
 ## Use Case 3: Update Order Status (Kitchen) (Justin Ulloa)
+【Code Files】
+- Controller: customer-service/src/main/java/com/example/customerservice/controller/OrderController.java
+- Service: customer-service/src/main/java/com/example/customerservice/service/OrderService.java
+- Repository: customer-service/src/main/java/com/example/customerservice/repository/OrderRepository.java
+【customer-service】
 - **ID:** UC-3
 - **Primary Actor:** Kitchen Staff
 - **Goal:** Mark an order as READY.
@@ -92,6 +107,11 @@
 - **Postconditions:** Order status is updated.
 
 ## Use Case 4: Validate Customer Input (Annie Asher)
+【Code Files】
+- Controller: customer-service/src/main/java/com/example/customerservice/controller/CustomerController.java
+- Service: customer-service/src/main/java/com/example/customerservice/service/CustomerService.java
+- Repository: customer-service/src/main/java/com/example/customerservice/repository/CustomerRepository.java
+【customer-service】
 - **ID:** UC-4
 - **Primary Actor:** Customer
 - **Goal:** Register as a new customer.
@@ -108,6 +128,11 @@
 - **Postconditions:** Customer is saved.
 
 ## Use Case 5: Manager Updates Menu Item (Griffith Wiele)
+【Code Files】
+- Controller: admin-service/src/main/java/com/example/adminservice/controller/MenuItemController.java
+- Service: admin-service/src/main/java/com/example/adminservice/service/MenuItemService.java
+- Repository: admin-service/src/main/java/com/example/adminservice/repository/MenuItemRepository.java
+【admin-service】
 - **ID:** UC-5
 - **Primary Actor:** Manager
 - **Level:** User goal
@@ -141,6 +166,11 @@
   2. Failure: Menu item is not saved or updated, no changes in the system.
 
 ## Use Case 6: Process Payment for Order (Jennifer Barajas)
+【Code Files】
+- Controller: customer-service/src/main/java/com/example/customerservice/controller/OrderController.java
+- Service: customer-service/src/main/java/com/example/customerservice/service/OrderService.java
+- Repository: customer-service/src/main/java/com/example/customerservice/repository/OrderRepository.java
+【customer-service】
 - **ID:** UC-6
 - **Primary Actor:** Waiter/Staff
 - **Goal:** Complete payment for a served order.
@@ -158,6 +188,11 @@
 - **Postconditions:** Order is marked as PAID.
 
 ## Use Case 7: Manage Table Status(Anh Nguyen)
+【Code Files】
+- Controller: admin-service/src/main/java/com/example/adminservice/controller/DiningTableController.java
+- Service: admin-service/src/main/java/com/example/adminservice/service/DiningTableService.java
+- Repository: admin-service/src/main/java/com/example/adminservice/repository/DiningTableRepository.java
+【admin-service】
 - **ID:** UC-7
 - **Primary Actor:** Waiter/Staff
 - **Goal:** Update the status of a dining table (e.g., available, occupied, reserved, needs cleaning).
@@ -192,4 +227,4 @@
   (Describe any alternative flow here if needed)
 - **Postconditions:**
 - i.  Avaliable:   Table is clean and ready to service.
-- ii. Unavaliable: Table is unclean, need to be clean and unavaliable table appear. 
+- ii. Unavaliable: Table is unclean, need to be clean and unavaliable table appear.

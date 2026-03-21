@@ -1,8 +1,9 @@
 # System Sequence Diagram (SSD) Sketches
 
-> **Note:** All SSD diagrams are intended for implementation in UML tool. You will implement, test, demonstrate, and deliver documentation for these use cases as part of your project deliverables.
+> **Note:** All SSD diagrams are intended for implementation in UML tool. Each use case is now handled by a specific microservice (admin-service or customer-service) as annotated below. System boundaries reflect the microservice split.
 
 ### Place Order with Items (UC-1)
+- **Service:** customer-service
 - Customer → System: Select table, menu items, quantities
 - Customer → System: POST /api/orders (order details)
 - System → DB: Validate customer existence
@@ -13,6 +14,7 @@
 - [Alt] System → Customer: Error (table unavailable, menu item out of stock, customer not found)
 
 ### Make Reservation (UC-2)
+- **Service:** customer-service
 - Staff → System: Select 'Make Reservation'
 - Staff → System: Enter reservation details (customer, date/time, party size, table preference, notes/contact)
 - System → DB: Validate required fields (date/time, party size, customer)
@@ -27,6 +29,7 @@
 - System → Staff: Reservation confirmation (reservation ID + details)
 
 ### Update Order Status (Kitchen) (UC-3)
+- **Service:** customer-service
 - Kitchen Staff → System: Select order to update
 - Kitchen Staff → System: PATCH /api/orders/{id}/status (READY)
 - System → DB: Validate order existence and current status
@@ -35,6 +38,7 @@
 - System → Kitchen Staff: Confirmation (status updated)
 
 ### Validate Customer Input (UC-4)
+- **Service:** customer-service
 - Customer → System: Submit registration form
 - System → DB: Validate input (email, phone, required fields)
 - [Alt] System → Customer: Error (invalid input)
@@ -43,6 +47,7 @@
 
 
 ### Manager Updates Menu Item (UC-5)
+- **Service:** admin-service
 - Manager → System: Select "Add Menu Item" or "Update Menu Item"
 - Manager → System: Enter or edit menu item details (name, price, description, inventory, category, availability)
 - System → DB: Validate required fields (name, price format, inventory quantity, etc.)
@@ -53,6 +58,7 @@
 - System → Manager: Confirmation (menu item ID, details, success message)
 
 ### Process Payment for Order (UC-6)
+- **Service:** customer-service
 - Staff → System: Select order ready for payment
 - Staff → System: POST /api/orders/{id}/pay (payment details)
 - System → DB: Validate order status (REQUESTED_CHECK or SERVED)
@@ -61,6 +67,7 @@
 - System → Staff: Payment confirmation (order marked as PAID)
 
 ### Manage Table Status (UC-7)
+- **Service:** admin-service
 - Staff → System: Select a table
 - Staff → System: PATCH /api/tables/{id}/status (new status)
 - System → DB: Validate table existence and new status
