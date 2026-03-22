@@ -22,3 +22,49 @@ This project, now split into two microservices (admin-service and customer-servi
   - Logback configuration in both services ensures logs are separated by level and retained for 15 days, supporting compliance and operational monitoring.
 
 These enhancements bring both admin-service and customer-service in line with modern enterprise Java standards and make the system production-ready, maintainable, and easy to extend. The microservice split also improves scalability, separation of concerns, and independent deployment.
+
+
+
+---
+
+## Personal Contributions & Learnings (Reservation Use Case)
+
+### Implemented Feature
+
+The **Make Reservation (UC-2)** use case in the admin-service was implemented using a 3-layered architecture:
+
+* **Controller**: handled REST endpoints (`/api/reservations`)
+* **Service**: implemented business logic and validation
+* **Repository**: handled database operations using JPA
+
+---
+
+### API Endpoints Developed
+
+* `POST /api/reservations` → create reservation
+* `GET /api/reservations` → retrieve all reservations
+* `GET /api/reservations/{id}` → retrieve reservation by ID
+
+These endpoints were tested using Postman.
+
+---
+
+### Business Logic Implemented
+
+* Reservation time must be in the future
+* Party size must be greater than 0
+* Table must exist
+* Customer must exist
+* Party size must not exceed table capacity
+
+---
+
+### Testing
+
+All endpoints were tested using Postman, including:
+
+* creating a reservation
+* retrieving reservations
+* verifying system responses
+
+
