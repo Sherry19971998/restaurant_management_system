@@ -1,0 +1,161 @@
+2026-03-20 18:00:21.857 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Your project setup is incompatible with our requirements due to following reasons:
+
+- Spring Boot [3.2.2] is not compatible with this Spring Cloud release train
+
+
+Action:
+
+Consider applying the following actions:
+
+- Change Spring Boot version to one of the following versions [3.0.x, 3.1.x] .
+You can find the latest Spring Boot versions here [https://spring.io/projects/spring-boot#learn]. 
+If you want to learn more about the Spring Cloud Release train compatibility, you can visit this page [https://spring.io/projects/spring-cloud#overview] and check the [Release Trains] section.
+If you want to disable this check, just set the property [spring.cloud.compatibility-verifier.enabled=false]
+
+
+2026-03-20 18:00:50.997 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Your project setup is incompatible with our requirements due to following reasons:
+
+- Spring Boot [3.2.2] is not compatible with this Spring Cloud release train
+
+
+Action:
+
+Consider applying the following actions:
+
+- Change Spring Boot version to one of the following versions [3.0.x, 3.1.x] .
+You can find the latest Spring Boot versions here [https://spring.io/projects/spring-boot#learn]. 
+If you want to learn more about the Spring Cloud Release train compatibility, you can visit this page [https://spring.io/projects/spring-cloud#overview] and check the [Release Trains] section.
+If you want to disable this check, just set the property [spring.cloud.compatibility-verifier.enabled=false]
+
+
+2026-03-20 18:02:05.198 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Your project setup is incompatible with our requirements due to following reasons:
+
+- Spring Boot [3.2.2] is not compatible with this Spring Cloud release train
+
+
+Action:
+
+Consider applying the following actions:
+
+- Change Spring Boot version to one of the following versions [3.0.x, 3.1.x] .
+You can find the latest Spring Boot versions here [https://spring.io/projects/spring-boot#learn]. 
+If you want to learn more about the Spring Cloud Release train compatibility, you can visit this page [https://spring.io/projects/spring-cloud#overview] and check the [Release Trains] section.
+If you want to disable this check, just set the property [spring.cloud.compatibility-verifier.enabled=false]
+
+
+2026-03-20 18:02:22.648 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Your project setup is incompatible with our requirements due to following reasons:
+
+- Spring Boot [3.2.2] is not compatible with this Spring Cloud release train
+
+
+Action:
+
+Consider applying the following actions:
+
+- Change Spring Boot version to one of the following versions [3.0.x, 3.1.x] .
+You can find the latest Spring Boot versions here [https://spring.io/projects/spring-boot#learn]. 
+If you want to learn more about the Spring Cloud Release train compatibility, you can visit this page [https://spring.io/projects/spring-cloud#overview] and check the [Release Trains] section.
+If you want to disable this check, just set the property [spring.cloud.compatibility-verifier.enabled=false]
+
+
+2026-03-20 18:02:40.830 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Your project setup is incompatible with our requirements due to following reasons:
+
+- Spring Boot [3.2.2] is not compatible with this Spring Cloud release train
+
+
+Action:
+
+Consider applying the following actions:
+
+- Change Spring Boot version to one of the following versions [3.0.x, 3.1.x] .
+You can find the latest Spring Boot versions here [https://spring.io/projects/spring-boot#learn]. 
+If you want to learn more about the Spring Cloud Release train compatibility, you can visit this page [https://spring.io/projects/spring-cloud#overview] and check the [Release Trains] section.
+If you want to disable this check, just set the property [spring.cloud.compatibility-verifier.enabled=false]
+
+
+2026-03-20 18:03:48.670 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Your project setup is incompatible with our requirements due to following reasons:
+
+- Spring Boot [3.2.2] is not compatible with this Spring Cloud release train
+
+
+Action:
+
+Consider applying the following actions:
+
+- Change Spring Boot version to one of the following versions [3.0.x, 3.1.x] .
+You can find the latest Spring Boot versions here [https://spring.io/projects/spring-boot#learn]. 
+If you want to learn more about the Spring Cloud Release train compatibility, you can visit this page [https://spring.io/projects/spring-cloud#overview] and check the [Release Trains] section.
+If you want to disable this check, just set the property [spring.cloud.compatibility-verifier.enabled=false]
+
+
+2026-03-20 18:05:38.239 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Your project setup is incompatible with our requirements due to following reasons:
+
+- Spring Boot [3.2.2] is not compatible with this Spring Cloud release train
+
+
+Action:
+
+Consider applying the following actions:
+
+- Change Spring Boot version to one of the following versions [3.0.x, 3.1.x] .
+You can find the latest Spring Boot versions here [https://spring.io/projects/spring-boot#learn]. 
+If you want to learn more about the Spring Cloud Release train compatibility, you can visit this page [https://spring.io/projects/spring-cloud#overview] and check the [Release Trains] section.
+If you want to disable this check, just set the property [spring.cloud.compatibility-verifier.enabled=false]
+
+
