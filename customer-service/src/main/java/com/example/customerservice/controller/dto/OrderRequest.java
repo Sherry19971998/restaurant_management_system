@@ -1,0 +1,75 @@
+package com.example.customerservice.controller.dto;
+
+import com.example.customerservice.model.enums.OrderStatus;
+import java.util.List;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+
+public class OrderRequest {
+        // For auto-creating customer if not found
+        private String customerName;
+        private String customerPhone;
+        private String customerEmail;
+        public String getCustomerName() {
+            return customerName;
+        }
+
+        public void setCustomerName(String customerName) {
+            this.customerName = customerName;
+        }
+
+        public String getCustomerPhone() {
+            return customerPhone;
+        }
+
+        public void setCustomerPhone(String customerPhone) {
+            this.customerPhone = customerPhone;
+        }
+
+        public String getCustomerEmail() {
+            return customerEmail;
+        }
+
+        public void setCustomerEmail(String customerEmail) {
+            this.customerEmail = customerEmail;
+        }
+    @NotNull
+    private Long diningTableId;
+    private Long customerId;
+    private OrderStatus status;
+
+    @Valid
+    private List<OrderItemRequest> items;
+
+    public Long getDiningTableId() {
+        return diningTableId;
+    }
+
+    public void setDiningTableId(Long diningTableId) {
+        this.diningTableId = diningTableId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public List<OrderItemRequest> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItemRequest> items) {
+        this.items = items;
+    }
+}
