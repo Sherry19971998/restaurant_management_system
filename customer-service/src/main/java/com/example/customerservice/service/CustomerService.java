@@ -32,10 +32,26 @@ public class CustomerService {
 
     public Customer create(CustomerRequest request) {
         logger.info("Creating new customer: {}", request.getName());
+
+        String name = request.getName().trim();
+        String phone = request.getPhone().trim();
+        String email = request.getEmail() != null ? request.getEmail().trim() : null;
+
+        if (!phone.matches("^\\d{10}$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Phone number must be exactly 10 digits");
+        }
+
+        if (email != null && !email.isBlank() && customerRepository.findByEmail(email).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Email is already registered");
+        }
+
         Customer customer = new Customer();
-        customer.setName(request.getName());
-        customer.setPhone(request.getPhone());
-        customer.setEmail(request.getEmail());
+        customer.setName(name);
+        customer.setPhone(phone);
+        customer.setEmail(email);
+
         return customerRepository.save(customer);
     }
 }

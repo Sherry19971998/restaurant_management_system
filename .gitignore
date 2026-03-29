@@ -9,3 +9,6 @@ logs/
 *.iml
 .DS_Store
 frontend/node_modules/
+*.jar
+*.class
+*.log
