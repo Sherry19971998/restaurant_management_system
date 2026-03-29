@@ -305,114 +305,72 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ## 🎥 Presentation & Demo Script (Phase 2)
 
-### 1. Security Features Demo
+### 1. Security Features
 
-#### User Registration (customer-service)
-- Show registering a new user via frontend or Postman (`/api/auth/register` on customer-service).
-- Demonstrate registration with different roles (USER, ADMIN).
+This system implements the following security features, all based on industry best practices for stateless authentication and authorization:
 
-**PowerShell Example:**
+1. **User Registration**
+   - Users can register via the frontend or by sending a POST request to `/api/auth/register` (customer-service).
+   - Registration supports different roles (e.g., USER, ADMIN).
+
+2. **Authentication (Login)**
+   - Users log in via the frontend or `/api/auth/login` (customer-service).
+   - On successful login, the backend returns a JWT (bearer token).
+
+3. **Authorization (Access Control)**
+   - All protected API endpoints require the `Authorization: Bearer <token>` header.
+   - The backend validates the token, extracts user info and roles, and grants or denies access accordingly.
+   - Both customer-service and admin-service use the same JWT validation logic, so a token issued by one service is valid across all backend services.
+
+4. **Password Reminder (Reset)**
+   - Users can request a password reset link/token via `/api/auth/forgot-password` (customer-service).
+   - They can then reset their password using `/api/auth/reset-password` with the provided token.
+
+### 2. Bearer Token Usage Across Services
+
+The JWT (bearer token) is the key to secure, stateless authentication and authorization across all microservices:
+
+1. **Obtain the token** after login (see Authentication above).
+2. **Store the token** on the client (frontend, Postman, etc.).
+3. **Send the token** with every protected API request using the `Authorization: Bearer <token>` header.
+4. **Any backend service** (customer-service, admin-service) can validate the token and extract user identity and roles, enabling secure access control and seamless cross-service authentication.
+
+**Example PowerShell Usage:**
 ```powershell
+# Register
 Invoke-RestMethod -Uri "http://localhost:8082/api/auth/register" `
-    -Method Post `
-    -Headers @{"Content-Type"="application/json"} `
-    -Body '{"username":"testuser","password":"123456","roles":["USER"]}'
-```
+  -Method Post `
+  -Headers @{"Content-Type"="application/json"} `
+  -Body '{"username":"testuser","password":"123456","roles":["USER"]}'
 
-#### Authentication (customer-service)
-- Login as a user and show JWT token returned (`/api/auth/login` on customer-service).
-- Show login failure with wrong credentials.
-
-**PowerShell Example:**
-```powershell
+# Login and get token
 $response = Invoke-RestMethod -Uri "http://localhost:8082/api/auth/login" `
-    -Method Post `
-    -Headers @{"Content-Type"="application/json"} `
-    -Body '{"username":"testuser","password":"123456"}'
-$response.token
-```
+  -Method Post `
+  -Headers @{"Content-Type"="application/json"} `
+  -Body '{"username":"testuser","password":"123456"}'
+$token = $response.token
 
-#### Authorization (customer-service & admin-service)
-- Access a protected endpoint/page as a logged-in user (e.g., `/api/orders` for USER, `/api/menu-items` for ADMIN).
-- Attempt to access admin-only endpoint as USER and show permission denied.
-
-**PowerShell Example:**
-```powershell
+# Access a protected endpoint (works for both services)
 Invoke-RestMethod -Uri "http://localhost:8082/api/orders" `
-    -Headers @{"Authorization"="Bearer <your_full_token_here>"}
-```
-> Replace `<your_full_token_here>` with the full string from `$response.token` above.
+  -Headers @{"Authorization"="Bearer $token"}
 
-#### Password Reminder (customer-service)
-- Use the "Forgot Password" feature on the frontend or send a request to `/api/auth/forgot-password` (customer-service) to get a reset link/token.
-- Use the returned token to set a new password via `/api/auth/reset-password` (customer-service).
-
-**PowerShell Example:**
-```powershell
-# Request password reset link
+# Request password reset
 Invoke-RestMethod -Uri "http://localhost:8082/api/auth/forgot-password" `
-    -Method Post `
-    -Headers @{"Content-Type"="application/json"} `
-    -Body '{"emailOrUsername":"testuser"}'
+  -Method Post `
+  -Headers @{"Content-Type"="application/json"} `
+  -Body '{"emailOrUsername":"testuser"}'
 
-# Use the returned token to reset password
+# Reset password with token
 Invoke-RestMethod -Uri "http://localhost:8082/api/auth/reset-password" `
-    -Method Post `
-    -Headers @{"Content-Type"="application/json"} `
-    -Body '{"token":"<token>","newPassword":"newpass"}'
+  -Method Post `
+  -Headers @{"Content-Type"="application/json"} `
+  -Body '{"token":"<token>","newPassword":"newpass"}'
 ```
 
-### 2. Bearer Token Usage
-
-#### Bearer Token Usage (Step-by-Step)
-1. **Obtain JWT Token**
-   - After login, the backend returns a token (see the "Authentication" example above).
-   - Example:
-     ```powershell
-     $response = Invoke-RestMethod -Uri "http://localhost:8082/api/auth/login" `
-         -Method Post `
-         -Headers @{"Content-Type"="application/json"} `
-         -Body '{"username":"testuser","password":"123456"}'
-     $token = $response.token
-     ```
-2. **Store the token on the frontend/client**
-   - The frontend typically stores the token in localStorage, sessionStorage, or a memory variable.
-   - Example (JS):
-     ```js
-     localStorage.setItem('jwt', token);
-     ```
-3. **Send the token with protected API requests**
-   - Every request must include the header `Authorization: Bearer <token>`.
-   - Postman example:
-     - Choose "Authorization" type as "Bearer Token" and paste the token.
-   - PowerShell example:
-     ```powershell
-     Invoke-RestMethod -Uri "http://localhost:8082/api/orders" `
-         -Headers @{"Authorization"="Bearer $token"}
-     ```
-   - JS fetch example:
-     ```js
-     fetch('/api/orders', {
-       headers: { 'Authorization': 'Bearer ' + token }
-     })
-     ```
-4. **Backend validates the token**
-   - Spring Security automatically intercepts requests, parses the token, and checks the signature and expiration.
-   - If the token is valid, user info and roles are injected automatically.
-   - Example (pseudo-code):
-     ```java
-     @GetMapping("/api/orders")
-     public List<Order> getOrders(Authentication auth) {
-         // auth.getName(), auth.getAuthorities() provide current user and roles
-     }
-     ```
-5. **Demo token expiration/insufficient permissions**
-   - Use an invalid token or a regular user token to access an admin endpoint; should return 401/403.
-   - In Postman, you can directly modify the token or switch roles to verify.
-
-**Demo Tips:**
-- Record the Postman request header, or use browser F12 to show request headers.
-- Show backend logs to verify the token is correctly parsed or rejected.
+**Key Points:**
+- The same JWT is valid for all backend services, enabling seamless cross-service authentication and authorization.
+- No session state is stored on the server; all user info is encoded in the token and validated on each request.
+- This approach supports horizontal scaling and microservice architectures.
 
 ### 3. Service Discovery (Eureka)
 
