@@ -744,7 +744,7 @@ gantt
 # Start admin-service
 cd admin-service && ../mvnw spring-boot:run
 # Start customer-service (in a new terminal)
-cd ../customer-service && ../mvnw spring-boot:run
+cd customer-service && ../mvnw spring-boot:run
 ```
 - admin-service: http://localhost:8081 (default)
 - customer-service: http://localhost:8082 (default)
