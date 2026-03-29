@@ -1,4 +1,4 @@
-package com.example.restaurant.repository;
+package com.example.adminservice.repository;
 
 import com.example.adminservice.model.PasswordResetToken;
 import com.example.adminservice.model.User;

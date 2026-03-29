@@ -1,4 +1,4 @@
-package com.example.restaurant.controller.dto;
+package com.example.adminservice.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

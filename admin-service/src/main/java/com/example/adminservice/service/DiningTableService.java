@@ -1,10 +1,10 @@
-package com.example.restaurant.service;
+package com.example.adminservice.service;
 
-import com.example.restaurant.controller.dto.DiningTableRequest;
+import com.example.adminservice.controller.dto.DiningTableRequest;
 import com.example.adminservice.model.DiningTable;
 import com.example.adminservice.model.Restaurant;
-import com.example.restaurant.repository.DiningTableRepository;
-import com.example.restaurant.repository.RestaurantRepository;
+import com.example.adminservice.repository.DiningTableRepository;
+import com.example.adminservice.repository.RestaurantRepository;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -45,6 +45,20 @@ public class DiningTableService {
         table.setStatus(request.getStatus());
         table.setRestaurant(restaurant);
 
+        return diningTableRepository.save(table);
+    }
+
+    public DiningTable updateTableStatus(Long tableId, com.example.adminservice.model.enums.TableStatus newStatus) {
+        logger.info("Updating status of table {} to {}", tableId, newStatus);
+        DiningTable table = diningTableRepository.findById(tableId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Table not found"));
+
+        // Validate status
+        if (newStatus == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status must not be null");
+        }
+
+        table.setStatus(newStatus);
         return diningTableRepository.save(table);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.restaurant.security;
+package com.example.adminservice.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

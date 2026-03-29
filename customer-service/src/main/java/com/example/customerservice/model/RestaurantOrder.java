@@ -47,6 +47,37 @@ public class RestaurantOrder {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
+    // Payment fields
+    @Column(precision = 10, scale = 2)
+    private java.math.BigDecimal paidAmount;
+
+    private java.time.LocalDateTime paidAt;
+
+    private String paymentMethod;
+    public java.math.BigDecimal getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(java.math.BigDecimal paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public java.time.LocalDateTime getPaidAt() {
+        return paidAt;
+    }
+
+    public void setPaidAt(java.time.LocalDateTime paidAt) {
+        this.paidAt = paidAt;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();

@@ -1,4 +1,4 @@
-package com.example.restaurant.security;
+package com.example.adminservice.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

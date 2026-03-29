@@ -1,7 +1,7 @@
-package com.example.restaurant.security;
+package com.example.adminservice.security;
 
 import com.example.adminservice.model.User;
-import com.example.restaurant.repository.UserRepository;
+import com.example.adminservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

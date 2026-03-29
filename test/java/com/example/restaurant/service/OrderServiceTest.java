@@ -43,5 +43,37 @@ class OrderServiceTest {
         assertThrows(ResponseStatusException.class, () -> orderService.getById(1L));
     }
 
-    // 可继续补充更多测试用例
+    @Test
+    void processPayment_success() {
+        RestaurantOrder order = new RestaurantOrder();
+        order.setId(1L);
+        order.setStatus("SERVED");
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        when(orderRepository.save(any(RestaurantOrder.class))).thenReturn(order);
+        RestaurantOrder paid = orderService.processPayment(1L, 100.0, "CASH");
+        assertEquals("PAID", paid.getStatus());
+    }
+
+    @Test
+    void processPayment_orderNotFound() {
+        when(orderRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> orderService.processPayment(1L, 100.0, "CASH"));
+    }
+
+    @Test
+    void updateStatus_success() {
+        RestaurantOrder order = new RestaurantOrder();
+        order.setId(1L);
+        order.setStatus("IN_PROGRESS");
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        when(orderRepository.save(any(RestaurantOrder.class))).thenReturn(order);
+        RestaurantOrder updated = orderService.updateStatus(1L, "READY");
+        assertEquals("READY", updated.getStatus());
+    }
+
+    @Test
+    void updateStatus_orderNotFound() {
+        when(orderRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> orderService.updateStatus(1L, "READY"));
+    }
 }

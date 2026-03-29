@@ -1,4 +1,4 @@
-package com.example.restaurant.controller.dto;
+package com.example.adminservice.controller.dto;
 
 import com.example.adminservice.model.enums.ReservationStatus;
 import java.time.LocalDateTime;
@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public class ReservationRequest {
+        // 可选：用于自动创建顾客
+        private String customerName;
+        private String customerPhone;
+        private String customerEmail;
     private LocalDateTime reservationTime;
 
     @Min(1)
@@ -56,5 +60,29 @@ public class ReservationRequest {
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 }

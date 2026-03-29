@@ -23,6 +23,46 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderService {
+        /**
+         * UC-6 – Process Payment for Order
+         *
+         * @param id Order ID
+         * @param amount Amount paid
+         * @param paymentMethod Payment method
+         * @return Updated RestaurantOrder
+         */
+        @Transactional
+        public RestaurantOrder processPayment(Long id, java.math.BigDecimal amount, String paymentMethod) {
+            logger.info("Processing payment for order {}: amount={}, method={}", id, amount, paymentMethod);
+            RestaurantOrder order = orderRepository.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+
+            // Only allow payment if status is REQUESTED_CHECK or SERVED
+            if (order.getStatus() != OrderStatus.REQUESTED_CHECK && order.getStatus() != OrderStatus.SERVED) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order is not ready for payment");
+            }
+
+            // Calculate total
+            java.math.BigDecimal total = java.math.BigDecimal.ZERO;
+            for (com.example.customerservice.model.OrderItem item : order.getItems()) {
+                if (item.getPriceAtOrder() == null) {
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Order item missing price");
+                }
+                total = total.add(item.getPriceAtOrder().multiply(java.math.BigDecimal.valueOf(item.getQuantity())));
+            }
+
+            // Amount must match total
+            if (amount == null || total.compareTo(amount) != 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payment amount does not match order total");
+            }
+
+            // Record payment
+            order.setPaidAmount(amount);
+            order.setPaidAt(java.time.LocalDateTime.now());
+            order.setPaymentMethod(paymentMethod);
+            order.setStatus(OrderStatus.PAID);
+            return orderRepository.save(order);
+        }
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
     private final RestaurantOrderRepository orderRepository;
     private final DiningTableRepository diningTableRepository;

@@ -17,6 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
+        // UC-6: Process Payment for Order
+        // PATCH /api/orders/{id}/pay
+        @PatchMapping("/{id}/pay")
+        public RestaurantOrder payOrder(
+                @PathVariable Long id,
+                @Valid @RequestBody com.example.customerservice.controller.dto.PaymentRequest request) {
+            return orderService.processPayment(id, request.getAmount(), request.getPaymentMethod());
+        }
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {

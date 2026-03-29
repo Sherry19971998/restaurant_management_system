@@ -1,4 +1,4 @@
-package com.example.restaurant.security;
+package com.example.adminservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package com.example.restaurant.controller.dto;
+package com.example.adminservice.controller.dto;
 
 import com.example.adminservice.model.enums.TableStatus;
 import jakarta.validation.constraints.Min;

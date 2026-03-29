@@ -1,8 +1,8 @@
-package com.example.restaurant.controller;
+package com.example.adminservice.controller;
 
-import com.example.restaurant.controller.dto.ReservationRequest;
+import com.example.adminservice.controller.dto.ReservationRequest;
 import com.example.adminservice.model.Reservation;
-import com.example.restaurant.service.ReservationService;
+import com.example.adminservice.service.ReservationService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.example.restaurant.exception;
+package com.example.adminservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

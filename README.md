@@ -306,48 +306,211 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 ## 🎥 Presentation & Demo Script (Phase 2)
 
 ### 1. Security Features Demo
-- **User Registration (customer-service):**
-  - Show registering a new user via frontend or Postman (`/api/auth/register` on customer-service).
-  - Demonstrate registration with different roles (USER, ADMIN).
-- **Authentication (customer-service):**
-  - Login as a user and show JWT token returned (`/api/auth/login` on customer-service).
-  - Show login failure with wrong credentials.
-- **Authorization (customer-service & admin-service):**
-  - Access a protected endpoint/page as a logged-in user (e.g., `/api/orders` for USER, `/api/menu-items` for ADMIN).
-  - Attempt to access admin-only endpoint as USER and show permission denied.
-- **Password Reminder (customer-service):**
-  - Use "Forgot Password" on frontend or `/api/auth/forgot-password` (customer-service) to request a reset link.
-  - Use the reset token to set a new password via `/api/auth/reset-password` (customer-service).
 
-### 2. Bearer Token Usage
-- Explain that after login, the frontend stores the JWT token and attaches it as an `Authorization: Bearer <token>` header for all protected API requests.
-- Show a request in browser dev tools or Postman with the Bearer token in the header.
-- Mention that the backend (customer-service/admin-service) validates the token on every request and extracts user roles for authorization.
+#### User Registration (customer-service)
+- Show registering a new user via frontend or Postman (`/api/auth/register` on customer-service).
+- Demonstrate registration with different roles (USER, ADMIN).
 
-### 3. Service Discovery (Eureka)
-- Explain that in this microservice setup, each service registers with a discovery server (Eureka).
-- Show the Eureka dashboard (`http://localhost:8761`) with both `customer-service` and `admin-service` registered.
-- Optionally, show a sample `application.yml` Eureka client config for one service:
-
-```yaml
-spring:
-  application:
-    name: customer-service
-  cloud:
-    discovery:
-      enabled: true
-    eureka:
-      client:
-        service-url:
-          defaultZone: http://localhost:8761/eureka/
+**PowerShell Example:**
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8082/api/auth/register" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"username":"testuser","password":"123456","roles":["USER"]}'
 ```
 
+#### Authentication (customer-service)
+- Login as a user and show JWT token returned (`/api/auth/login` on customer-service).
+- Show login failure with wrong credentials.
+
+**PowerShell Example:**
+```powershell
+$response = Invoke-RestMethod -Uri "http://localhost:8082/api/auth/login" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"username":"testuser","password":"123456"}'
+$response.token
+```
+
+#### Authorization (customer-service & admin-service)
+- Access a protected endpoint/page as a logged-in user (e.g., `/api/orders` for USER, `/api/menu-items` for ADMIN).
+- Attempt to access admin-only endpoint as USER and show permission denied.
+
+**PowerShell Example:**
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8082/api/orders" `
+    -Headers @{"Authorization"="Bearer <your_full_token_here>"}
+```
+> Replace `<your_full_token_here>` with the full string from `$response.token` above.
+
+#### Password Reminder (customer-service)
+- Use the "Forgot Password" feature on the frontend or send a request to `/api/auth/forgot-password` (customer-service) to get a reset link/token.
+- Use the returned token to set a new password via `/api/auth/reset-password` (customer-service).
+
+**PowerShell Example:**
+```powershell
+# Request password reset link
+Invoke-RestMethod -Uri "http://localhost:8082/api/auth/forgot-password" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"emailOrUsername":"testuser"}'
+
+# Use the returned token to reset password
+Invoke-RestMethod -Uri "http://localhost:8082/api/auth/reset-password" `
+    -Method Post `
+    -Headers @{"Content-Type"="application/json"} `
+    -Body '{"token":"<token>","newPassword":"newpass"}'
+```
+
+### 2. Bearer Token Usage
+
+#### Bearer Token Usage (Step-by-Step)
+1. **Obtain JWT Token**
+   - After login, the backend returns a token (see the "Authentication" example above).
+   - Example:
+     ```powershell
+     $response = Invoke-RestMethod -Uri "http://localhost:8082/api/auth/login" `
+         -Method Post `
+         -Headers @{"Content-Type"="application/json"} `
+         -Body '{"username":"testuser","password":"123456"}'
+     $token = $response.token
+     ```
+2. **Store the token on the frontend/client**
+   - The frontend typically stores the token in localStorage, sessionStorage, or a memory variable.
+   - Example (JS):
+     ```js
+     localStorage.setItem('jwt', token);
+     ```
+3. **Send the token with protected API requests**
+   - Every request must include the header `Authorization: Bearer <token>`.
+   - Postman example:
+     - Choose "Authorization" type as "Bearer Token" and paste the token.
+   - PowerShell example:
+     ```powershell
+     Invoke-RestMethod -Uri "http://localhost:8082/api/orders" `
+         -Headers @{"Authorization"="Bearer $token"}
+     ```
+   - JS fetch example:
+     ```js
+     fetch('/api/orders', {
+       headers: { 'Authorization': 'Bearer ' + token }
+     })
+     ```
+4. **Backend validates the token**
+   - Spring Security automatically intercepts requests, parses the token, and checks the signature and expiration.
+   - If the token is valid, user info and roles are injected automatically.
+   - Example (pseudo-code):
+     ```java
+     @GetMapping("/api/orders")
+     public List<Order> getOrders(Authentication auth) {
+         // auth.getName(), auth.getAuthorities() provide current user and roles
+     }
+     ```
+5. **Demo token expiration/insufficient permissions**
+   - Use an invalid token or a regular user token to access an admin endpoint; should return 401/403.
+   - In Postman, you can directly modify the token or switch roles to verify.
+
+**Demo Tips:**
+- Record the Postman request header, or use browser F12 to show request headers.
+- Show backend logs to verify the token is correctly parsed or rejected.
+
+### 3. Service Discovery (Eureka)
+
+#### Eureka Service Discovery Demo
+1. **Start the Eureka registry server**
+   - Run the Eureka Server (default port: 8761).
+   - The console should show "Started EurekaServerApplication".
+2. **Start all microservices**
+   - Start admin-service and customer-service, and configure `spring.application.name` and eureka client in application.yml.
+   - Key configuration example:
+     ```yaml
+     spring:
+       application:
+         name: customer-service
+     eureka:
+       client:
+         service-url:
+           defaultZone: http://localhost:8761/eureka/
+     ```
+3. **Access the Eureka Dashboard**
+   - Open http://localhost:8761
+   - The page should show the list of registered services (customer-service, admin-service).
+   - You can demonstrate service shutdown/restart and Eureka's automatic detection.
+4. **Inter-service calls (optional)**
+   - Explain that services can discover each other by service name (e.g., using RestTemplate, FeignClient, etc.).
+   - Example:
+     ```java
+     @FeignClient(name = "admin-service")
+     public interface AdminClient { ... }
+     ```
+
+**Demo Tips:**
+- Record the Eureka UI, showing dynamic registration/deregistration of services.
+- Show the key application.yml configuration.
+
 ### 4. Scalability & Resilience Demo (Stress Test)
-- Introduce Gatling (or similar tool) for load testing.
-- Show a simple Gatling script that simulates multiple users logging in, placing orders, and accessing protected endpoints (against customer-service and admin-service APIs).
-- Run the test and display results: response times, error rates, throughput.
-- Discuss how the backend handles concurrent requests and how stateless JWT authentication supports horizontal scaling.
-- Optionally, mention resilience patterns (retry, circuit breaker) for future microservices.
+
+#### Gatling Stress Test Demo
+1. **Prepare the Gatling script**
+   - See `gatling/RestaurantApiSimulation.scala`. The script now covers a comprehensive set of scenarios:
+     - Multiple users logging in concurrently
+     - Placing orders
+     - (Simulated) making payments (as part of order placement)
+     - Accessing protected APIs (with Authorization headers)
+     - Reservation peak load (many users making reservations at once)
+     - Menu browsing at scale (high-frequency GET requests)
+     - Order status polling (clients polling for updates)
+     - Admin operations under load (updating menu items, etc.)
+     - Error/edge case simulation (invalid tokens, bad order IDs)
+     - Long-running session simulation (users staying logged in and active)
+   - Example snippet:
+     ```scala
+     val register = exec(http("Register User")
+       .post("/api/auth/register")
+       .body(StringBody("{"username":"${username}","password":"${password}","roles":["USER"]}"))
+       .asJson.check(status.is(200)))
+     val login = exec(http("Login User")
+       .post("/api/auth/login")
+       .body(StringBody("{"username":"${username}","password":"${password}"}"))
+       .asJson.check(jsonPath("$.token").saveAs("jwtToken")))
+     val placeOrder = exec(http("Place Order")
+       .post("/api/orders")
+       .header("Authorization", "Bearer ${jwtToken}")
+       .body(StringBody("{"diningTableId":1,"customerId":1,"status":"PLACED","items":[{"menuItemId":1,"quantity":2,"priceAtOrder":12.50}]}"))
+       .asJson.check(status.in(200, 400)))
+     val makeReservation = exec(http("Make Reservation")
+       .post("/api/reservations")
+       .header("Authorization", "Bearer ${jwtToken}")
+       .body(StringBody("{"diningTableId":1,"customerId":1,"reservationDate":"2026-03-28T19:00:00","partySize":2,"status":"BOOKED","guestName":"Test User","guestPhone":"1234567890"}"))
+       .asJson.check(status.in(200, 400, 409)))
+     // ...and more (see script for all scenarios)
+     ```
+   - Each scenario is injected with users and ramp-up time to simulate real-world load.
+   - Gatling automatically measures response times, throughput, and error rates for all requests.
+
+2. **Run the stress test**
+   - Run Gatling from the command line:
+     ```bash
+     cd gatling && ./gradlew gatlingRun-RestaurantApiSimulation
+     ```
+   - Watch the console for real-time output: response times, throughput, error rates.
+
+3. **Analyze the results**
+   - Open the generated Gatling HTML report to view:
+     - Response distribution and concurrency bottlenecks
+     - Success rate and latency under high concurrency
+     - Error/edge case handling and system stability
+
+4. **Horizontal scaling and resilience explanation**
+   - Stateless JWT authentication supports multi-instance scaling (no session stickiness required).
+   - Optionally, demonstrate dynamic scaling in combination with Eureka (service discovery and load balancing).
+
+5. **Resilience and fault tolerance (optional)**
+   - Explain that retry, circuit breaker, and other microservice resilience patterns (e.g., Resilience4j) can be integrated for production.
+
+**Demo Tips:**
+- Record Gatling execution and report analysis.
+- Show service logs to demonstrate system behavior under high concurrency and error conditions.
 
 ---
 

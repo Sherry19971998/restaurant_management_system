@@ -1,4 +1,4 @@
-package com.example.restaurant.controller.dto;
+package com.example.adminservice.controller.dto;
 
 import java.math.BigDecimal;
 import jakarta.validation.constraints.DecimalMin;

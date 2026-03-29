@@ -249,6 +249,34 @@
             },
             "url": "{{baseUrl}}/api/orders"
           }
+        },
+        {
+          "name": "Pay Order",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100.00,\n  \"paymentMethod\": \"CASH\"\n}"
+            },
+            "url": "{{baseUrl}}/api/orders/1/pay"
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PAID\"\n}"
+            },
+            "url": "{{baseUrl}}/api/orders/1/status"
+          }
         }
       ]
     },
@@ -289,4 +317,18 @@
       ]
     }
   ]
+              },
+              {
+                "name": "Update Table Status",
+                "request": {
+                  "method": "PATCH",
+                  "header": [
+                    { "key": "Content-Type", "value": "application/json" }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"status\": \"OCCUPIED\"\n}"
+                  },
+                  "url": "{{baseUrl}}/api/tables/1/status"
+                }
 }

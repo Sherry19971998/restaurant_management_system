@@ -1,10 +1,10 @@
-package com.example.restaurant.service;
+package com.example.adminservice.service;
 
-import com.example.restaurant.controller.dto.MenuItemRequest;
+import com.example.adminservice.controller.dto.MenuItemRequest;
 import com.example.adminservice.model.MenuItem;
 import com.example.adminservice.model.Restaurant;
-import com.example.restaurant.repository.MenuItemRepository;
-import com.example.restaurant.repository.RestaurantRepository;
+import com.example.adminservice.repository.MenuItemRepository;
+import com.example.adminservice.repository.RestaurantRepository;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

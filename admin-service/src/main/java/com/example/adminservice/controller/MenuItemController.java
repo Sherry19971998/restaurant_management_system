@@ -1,8 +1,8 @@
-package com.example.restaurant.controller;
+package com.example.adminservice.controller;
 
-import com.example.restaurant.controller.dto.MenuItemRequest;
+import com.example.adminservice.controller.dto.MenuItemRequest;
 import com.example.adminservice.model.MenuItem;
-import com.example.restaurant.service.MenuItemService;
+import com.example.adminservice.service.MenuItemService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
