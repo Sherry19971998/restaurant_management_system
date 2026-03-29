@@ -306,6 +306,8 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ### 1. Security Features
 
+Table 1
+
 | Feature                | Description                                                                                                   |
 |------------------------|---------------------------------------------------------------------------------------------------------------|
 | User Registration      | Users can register via the frontend or by sending a POST request to `/api/auth/register` (customer-service).<br>Registration supports different roles (e.g., USER, ADMIN). |
@@ -314,6 +316,8 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 | Password Reminder (Reset) | Users can request a password reset link/token via `/api/auth/forgot-password` (customer-service).<br>They can then reset their password using `/api/auth/reset-password` with the provided token. |
 
 ### 2. Bearer Token Usage Across Services
+
+Table 2
 
 | Step                | Description                                                                                                   |
 |---------------------|---------------------------------------------------------------------------------------------------------------|
@@ -342,6 +346,8 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ### 3. Service Discovery (Eureka)
 
+Table 3
+
 | Step                | Description                                                                                                   |
 |---------------------|---------------------------------------------------------------------------------------------------------------|
 | Start Eureka Server | Run the Eureka Server (default port: 8761).<br>The console should show "Started EurekaServerApplication".      |
@@ -362,18 +368,20 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 1. **Prepare the Gatling script**
    - See `gatling/RestaurantApiSimulation.scala`. The script covers the following scenarios:
 
+Table 4
+
 | Scenario                              | Description |
-|---------------------------------------|-------------|
-| Multiple users login concurrently     | Simulate many users logging in at the same time to test authentication performance |
-| Placing orders                        | Users place orders to test the order creation workflow |
-| Simulated payments                    | Simulate payments after order placement to test payment APIs and flow |
-| Accessing protected APIs              | Access APIs with Authorization header to test permission checks and performance |
-| Reservation peak load                 | Many users make reservations simultaneously to test concurrency and conflict handling |
-| Menu browsing at scale                | High-frequency GET requests for menu browsing to test read performance |
-| Order status polling                  | Clients poll order status frequently to test system responsiveness |
-| Admin operations under load           | Admins update menu items and perform other operations under high concurrency to test backend stability |
-| Error/edge case simulation            | Simulate invalid tokens, bad order IDs, etc., to test error handling |
-| Long-running session simulation       | Users stay logged in and active for a long time to test session stability |
+|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Multiple users login concurrently      | Simulate many users logging in at the same time to test authentication performance                                                |
+| Placing orders                        | Users place orders to test the order creation workflow                                                                            |
+| Simulated payments                    | Simulate payments after order placement to test payment APIs and flow                                                             |
+| Accessing protected APIs              | Access APIs with Authorization header to test permission checks and performance                                                    |
+| Reservation peak load                 | Many users make reservations simultaneously to test concurrency and conflict handling                                              |
+| Menu browsing at scale                | High-frequency GET requests for menu browsing to test read performance                                                            |
+| Order status polling                  | Clients poll order status frequently to test system responsiveness                                                                |
+| Admin operations under load            | Admins update menu items and perform other operations under high concurrency to test backend stability                             |
+| Error/edge case simulation            | Simulate invalid tokens, bad order IDs, etc., to test error handling                                                              |
+| Long-running session simulation       | Users stay logged in and active for a long time to test session stability                                                         |
 
    - Example snippet:
      ```scala
