@@ -26,6 +26,7 @@ C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\exam
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\security\CustomUserDetailsService.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\model\Customer.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\service\MenuItemService.java
+C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\controller\dto\UpdateTableStatusRequest.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\controller\dto\DiningTableRequest.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\controller\dto\RestaurantRequest.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\model\Reservation.java
