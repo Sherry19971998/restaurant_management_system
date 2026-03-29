@@ -360,17 +360,21 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 #### Gatling Stress Test Demo
 1. **Prepare the Gatling script**
-   - See `gatling/RestaurantApiSimulation.scala`. The script now covers a comprehensive set of scenarios:
-     - Multiple users logging in concurrently
-     - Placing orders
-     - (Simulated) making payments (as part of order placement)
-     - Accessing protected APIs (with Authorization headers)
-     - Reservation peak load (many users making reservations at once)
-     - Menu browsing at scale (high-frequency GET requests)
-     - Order status polling (clients polling for updates)
-     - Admin operations under load (updating menu items, etc.)
-     - Error/edge case simulation (invalid tokens, bad order IDs)
-     - Long-running session simulation (users staying logged in and active)
+   - See `gatling/RestaurantApiSimulation.scala`. The script covers the following scenarios:
+
+| Scenario                              | Description |
+|---------------------------------------|-------------|
+| Multiple users login concurrently     | Simulate many users logging in at the same time to test authentication performance |
+| Placing orders                        | Users place orders to test the order creation workflow |
+| Simulated payments                    | Simulate payments after order placement to test payment APIs and flow |
+| Accessing protected APIs              | Access APIs with Authorization header to test permission checks and performance |
+| Reservation peak load                 | Many users make reservations simultaneously to test concurrency and conflict handling |
+| Menu browsing at scale                | High-frequency GET requests for menu browsing to test read performance |
+| Order status polling                  | Clients poll order status frequently to test system responsiveness |
+| Admin operations under load           | Admins update menu items and perform other operations under high concurrency to test backend stability |
+| Error/edge case simulation            | Simulate invalid tokens, bad order IDs, etc., to test error handling |
+| Long-running session simulation       | Users stay logged in and active for a long time to test session stability |
+
    - Example snippet:
      ```scala
      val register = exec(http("Register User")
@@ -382,21 +386,67 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
        .body(StringBody("{"username":"${username}","password":"${password}"}"))
        .asJson.check(jsonPath("$.token").saveAs("jwtToken")))
      val placeOrder = exec(http("Place Order")
+       .post("/api/orders")
+       .header("Authorization", "Bearer ${jwtToken}")
+       .body(StringBody("{"diningTableId":1,"customerId":1,"status":"PLACED","items":[{"menuItemId":1,"quantity":2,"priceAtOrder":12.50}]}"))
+       .asJson.check(status.in(200, 400)))
+     val makeReservation = exec(http("Make Reservation")
+       .post("/api/reservations")
+       .header("Authorization", "Bearer ${jwtToken}")
+       .body(StringBody("{"diningTableId":1,"customerId":1,"reservationDate":"2026-03-28T19:00:00","partySize":2,"status":"BOOKED","guestName":"Test User","guestPhone":"1234567890"}"))
+       .asJson.check(status.in(200, 400, 409)))
+     // ...and more (see script for all scenarios)
+     ```
+   - Each scenario is injected with users and ramp-up time to simulate real-world load.
+   - Gatling automatically measures response times, throughput, and error rates for all requests.
 
-      | Step | Description |
-      |------|-------------|
-      | Prepare the Gatling script | See `gatling/RestaurantApiSimulation.scala`. The script now covers a comprehensive set of scenarios:<ul><li>Multiple users logging in concurrently</li><li>Placing orders</li><li>(Simulated) making payments (as part of order placement)</li><li>Accessing protected APIs (with Authorization headers)</li><li>Reservation peak load (many users making reservations at once)</li><li>Menu browsing at scale (high-frequency GET requests)</li><li>Order status polling (clients polling for updates)</li><li>Admin operations under load (updating menu items, etc.)</li><li>Error/edge case simulation (invalid tokens, bad order IDs)</li><li>Long-running session simulation (users staying logged in and active)</li></ul>Example snippet:<br><br>```scala<br>val register = exec(http("Register User")<br>  .post("/api/auth/register")<br>  .body(StringBody("{"username":"${username}","password":"${password}","roles":["USER"]}"))<br>  .asJson.check(status.is(200)))<br>val login = exec(http("Login User")<br>  .post("/api/auth/login")<br>  .body(StringBody("{"username":"${username}","password":"${password}"}"))<br>  .asJson.check(jsonPath("$.token").saveAs("jwtToken")))<br>val placeOrder = exec(http("Place Order")<br>  .post("/api/orders")<br>  .header("Authorization", "Bearer ${jwtToken}")<br>  .body(StringBody("{"diningTableId":1,"customerId":1,"status":"PLACED","items":[{"menuItemId":1,"quantity":2,"priceAtOrder":12.50}]}"))<br>  .asJson.check(status.in(200, 400)))<br>val makeReservation = exec(http("Make Reservation")<br>  .post("/api/reservations")<br>  .header("Authorization", "Bearer ${jwtToken}")<br>  .body(StringBody("{"diningTableId":1,"customerId":1,"reservationDate":"2026-03-28T19:00:00","partySize":2,"status":"BOOKED","guestName":"Test User","guestPhone":"1234567890"}"))<br>  .asJson.check(status.in(200, 400, 409)))<br>// ...and more (see script for all scenarios)<br>```<br>Each scenario is injected with users and ramp-up time to simulate real-world load.<br>Gatling automatically measures response times, throughput, and error rates for all requests. |
-      | Run the stress test | Run Gatling from the command line:<br>```bash<br>cd gatling && ./gradlew gatlingRun-RestaurantApiSimulation<br>```<br>Watch the console for real-time output: response times, throughput, error rates. |
-      | Analyze the results | Open the generated Gatling HTML report to view:<ul><li>Response distribution and concurrency bottlenecks</li><li>Success rate and latency under high concurrency</li><li>Error/edge case handling and system stability</li></ul> |
-      | Horizontal scaling and resilience explanation | Stateless JWT authentication supports multi-instance scaling (no session stickiness required).<br>Optionally, demonstrate dynamic scaling in combination with Eureka (service discovery and load balancing). |
-      | Resilience and fault tolerance (optional) | Explain that retry, circuit breaker, and other microservice resilience patterns (e.g., Resilience4j) can be integrated for production. |
+2. **Run the stress test**
+   - Run Gatling from the command line:
+     ```bash
+     cd gatling && ./gradlew gatlingRun-RestaurantApiSimulation
+     ```
+   - Watch the console for real-time output: response times, throughput, error rates.
 
-      **Demo Tips:**
+3. **Analyze the results**
+   - Open the generated Gatling HTML report to view:
+     - Response distribution and concurrency bottlenecks
+     - Success rate and latency under high concurrency
+     - Error/edge case handling and system stability
 
-      | Tip |
-      |-----|
-      | Record Gatling execution and report analysis. |
-      | Show service logs to demonstrate system behavior under high concurrency and error conditions. |
+4. **Horizontal scaling and resilience explanation**
+   - Stateless JWT authentication supports multi-instance scaling (no session stickiness required).
+   - Optionally, demonstrate dynamic scaling in combination with Eureka (service discovery and load balancing).
+
+5. **Resilience and fault tolerance (optional)**
+   - Explain that retry, circuit breaker, and other microservice resilience patterns (e.g., Resilience4j) can be integrated for production.
+
+**Demo Tips:**
+- Record Gatling execution and report analysis.
+- Show service logs to demonstrate system behavior under high concurrency and error conditions.
+
+---
+
+**Tip:** Record the above steps as a video, narrating each feature and showing both frontend and backend behavior, including API calls, error handling, and system response under load.
+
+---
+
+## 📁 Project Structure
+
+```
+restaurant-management-system/
+├── customer-service/
+│   ├── src/main/java/com/example/customerservice/
+│   │   ├── CustomerServiceApplication.java
+│   │   ├── controller/
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── security/
+│   │   └── service/
+│   └── src/main/resources/
+│       ├── application.properties
+│       └── data.sql
+├── admin-service/
+│   ├── src/main/java/com/example/adminservice/
 │   │   ├── AdminServiceApplication.java
 │   │   ├── controller/
 │   │   ├── model/
