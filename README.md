@@ -120,13 +120,12 @@ cd ../customer-service && ../mvnw spring-boot:run
 cd ../frontend && npm install && npm run dev
 ```
 
-**Default ports:**
-- admin-service: `http://localhost:8081` (example, check your config)
-- customer-service: `http://localhost:8082` (example, check your config)
+- admin-service: `http://localhost:8082` (example, check your config)
+- customer-service: `http://localhost:8081` (example, check your config)
 - Eureka: `http://localhost:8761` (if enabled)
 - Frontend: `http://localhost:5173`
 
-**H2 Console:** Each service exposes its own H2 console, e.g. `http://localhost:8082/h2-console`
+**H2 Console:** Each service exposes its own H2 console, e.g. `http://localhost:8081/h2-console`
 
 Seed data loads automatically from each service's `src/main/resources/data.sql`
 
@@ -136,7 +135,7 @@ Seed data loads automatically from each service's `src/main/resources/data.sql`
 
 ### Register a New User (customer-service)
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8082/api/auth/register" `
+Invoke-RestMethod -Uri "http://localhost:8081/api/auth/register" `
     -Method Post `
     -Headers @{"Content-Type"="application/json"} `
     -Body '{"username":"testuser","password":"123456","roles":["USER"]}'
@@ -144,7 +143,7 @@ Invoke-RestMethod -Uri "http://localhost:8082/api/auth/register" `
 
 ### Login and Get JWT Token (customer-service)
 ```powershell
-$response = Invoke-RestMethod -Uri "http://localhost:8082/api/auth/login" `
+  $response = Invoke-RestMethod -Uri "http://localhost:8081/api/auth/login" `
     -Method Post `
     -Headers @{"Content-Type"="application/json"} `
     -Body '{"username":"testuser","password":"123456"}'
@@ -153,7 +152,7 @@ $response.token
 
 ### Access Protected Endpoint with Token (customer-service)
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8082/api/orders" `
+Invoke-RestMethod -Uri "http://localhost:8081/api/orders" `
     -Headers @{"Authorization"="Bearer <your_full_token_here>"}
 ```
 > Replace `<your_full_token_here>` with the full string from `$response.token` above.
@@ -161,13 +160,13 @@ Invoke-RestMethod -Uri "http://localhost:8082/api/orders" `
 ### Forgot Password & Reset Password (customer-service)
 ```powershell
 # Request password reset link
-Invoke-RestMethod -Uri "http://localhost:8082/api/auth/forgot-password" `
+Invoke-RestMethod -Uri "http://localhost:8081/api/auth/forgot-password" `
     -Method Post `
     -Headers @{"Content-Type"="application/json"} `
     -Body '{"emailOrUsername":"testuser"}'
 
 # Use the returned token to reset password
-Invoke-RestMethod -Uri "http://localhost:8082/api/auth/reset-password" `
+Invoke-RestMethod -Uri "http://localhost:8081/api/auth/reset-password" `
     -Method Post `
     -Headers @{"Content-Type"="application/json"} `
     -Body '{"token":"<token>","newPassword":"newpass"}'
@@ -224,8 +223,8 @@ Wait for: `Tomcat started on port 8081` (admin-service), `Tomcat started on port
 
 **Verify Database Seed**
 - Open H2 console for each service:
-  - admin-service: http://localhost:8081/h2-console
-  - customer-service: http://localhost:8082/h2-console
+  - admin-service: http://localhost:8082/h2-console
+  - customer-service: http://localhost:8081/h2-console
 - Run: `SELECT COUNT(*) FROM RESTAURANT;` (admin-service)
 - Should show 2-3 seeded restaurants
 
@@ -307,104 +306,55 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ### 1. Security Features
 
-This system implements the following security features, all based on industry best practices for stateless authentication and authorization:
-
-1. **User Registration**
-   - Users can register via the frontend or by sending a POST request to `/api/auth/register` (customer-service).
-   - Registration supports different roles (e.g., USER, ADMIN).
-
-2. **Authentication (Login)**
-   - Users log in via the frontend or `/api/auth/login` (customer-service).
-   - On successful login, the backend returns a JWT (bearer token).
-
-3. **Authorization (Access Control)**
-   - All protected API endpoints require the `Authorization: Bearer <token>` header.
-   - The backend validates the token, extracts user info and roles, and grants or denies access accordingly.
-   - Both customer-service and admin-service use the same JWT validation logic, so a token issued by one service is valid across all backend services.
-
-4. **Password Reminder (Reset)**
-   - Users can request a password reset link/token via `/api/auth/forgot-password` (customer-service).
-   - They can then reset their password using `/api/auth/reset-password` with the provided token.
+| Feature                | Description                                                                                                   |
+|------------------------|---------------------------------------------------------------------------------------------------------------|
+| User Registration      | Users can register via the frontend or by sending a POST request to `/api/auth/register` (customer-service).<br>Registration supports different roles (e.g., USER, ADMIN). |
+| Authentication (Login) | Users log in via the frontend or `/api/auth/login` (customer-service).<br>On successful login, the backend returns a JWT (bearer token). |
+| Authorization (Access Control) | All protected API endpoints require the `Authorization: Bearer <token>` header.<br>The backend validates the token, extracts user info and roles, and grants or denies access accordingly.<br>Both customer-service and admin-service use the same JWT validation logic, so a token issued by one service is valid across all backend services. |
+| Password Reminder (Reset) | Users can request a password reset link/token via `/api/auth/forgot-password` (customer-service).<br>They can then reset their password using `/api/auth/reset-password` with the provided token. |
 
 ### 2. Bearer Token Usage Across Services
 
-The JWT (bearer token) is the key to secure, stateless authentication and authorization across all microservices:
-
-1. **Obtain the token** after login (see Authentication above).
-2. **Store the token** on the client (frontend, Postman, etc.).
-3. **Send the token** with every protected API request using the `Authorization: Bearer <token>` header.
-4. **Any backend service** (customer-service, admin-service) can validate the token and extract user identity and roles, enabling secure access control and seamless cross-service authentication.
+| Step                | Description                                                                                                   |
+|---------------------|---------------------------------------------------------------------------------------------------------------|
+| Obtain the token    | After login (see Authentication above).                                                                       |
+| Store the token     | On the client (frontend, Postman, etc.).                                                                      |
+| Send the token      | With every protected API request using the `Authorization: Bearer <token>` header.                            |
+| Validate the token  | Any backend service (customer-service, admin-service) can validate the token and extract user identity and roles, enabling secure access control and seamless cross-service authentication. |
 
 **Example PowerShell Usage:**
-```powershell
-# Register
-Invoke-RestMethod -Uri "http://localhost:8082/api/auth/register" `
-  -Method Post `
-  -Headers @{"Content-Type"="application/json"} `
-  -Body '{"username":"testuser","password":"123456","roles":["USER"]}'
 
-# Login and get token
-$response = Invoke-RestMethod -Uri "http://localhost:8082/api/auth/login" `
-  -Method Post `
-  -Headers @{"Content-Type"="application/json"} `
-  -Body '{"username":"testuser","password":"123456"}'
-$token = $response.token
+| Operation                | Command/Script                                                                                           |
+|--------------------------|----------------------------------------------------------------------------------------------------------|
+| Register                 | `Invoke-RestMethod -Uri "http://localhost:8081/api/auth/register" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"username":"testuser","password":"123456","roles":["USER"]}'` |
+| Login and get token      | `$response = Invoke-RestMethod -Uri "http://localhost:8081/api/auth/login" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"username":"testuser","password":"123456"}'`<br>`$token = $response.token` |
+| Access protected endpoint| `Invoke-RestMethod -Uri "http://localhost:8081/api/orders" -Headers @{"Authorization"="Bearer $token"}`  |
+| Request password reset   | `Invoke-RestMethod -Uri "http://localhost:8081/api/auth/forgot-password" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"emailOrUsername":"testuser"}'` |
+| Reset password with token| `Invoke-RestMethod -Uri "http://localhost:8081/api/auth/reset-password" -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"token":"<token>","newPassword":"newpass"}'` |
 
-# Access a protected endpoint (works for both services)
-Invoke-RestMethod -Uri "http://localhost:8082/api/orders" `
-  -Headers @{"Authorization"="Bearer $token"}
+**Key Points Table:**
 
-# Request password reset
-Invoke-RestMethod -Uri "http://localhost:8082/api/auth/forgot-password" `
-  -Method Post `
-  -Headers @{"Content-Type"="application/json"} `
-  -Body '{"emailOrUsername":"testuser"}'
-
-# Reset password with token
-Invoke-RestMethod -Uri "http://localhost:8082/api/auth/reset-password" `
-  -Method Post `
-  -Headers @{"Content-Type"="application/json"} `
-  -Body '{"token":"<token>","newPassword":"newpass"}'
-```
-
-**Key Points:**
-- The same JWT is valid for all backend services, enabling seamless cross-service authentication and authorization.
-- No session state is stored on the server; all user info is encoded in the token and validated on each request.
-- This approach supports horizontal scaling and microservice architectures.
+| Key Point                                                                                      |
+|------------------------------------------------------------------------------------------------|
+| The same JWT is valid for all backend services, enabling seamless cross-service authentication and authorization. |
+| No session state is stored on the server; all user info is encoded in the token and validated on each request.    |
+| This approach supports horizontal scaling and microservice architectures.                      |
 
 ### 3. Service Discovery (Eureka)
 
-#### Eureka Service Discovery Demo
-1. **Start the Eureka registry server**
-   - Run the Eureka Server (default port: 8761).
-   - The console should show "Started EurekaServerApplication".
-2. **Start all microservices**
-   - Start admin-service and customer-service, and configure `spring.application.name` and eureka client in application.yml.
-   - Key configuration example:
-     ```yaml
-     spring:
-       application:
-         name: customer-service
-     eureka:
-       client:
-         service-url:
-           defaultZone: http://localhost:8761/eureka/
-     ```
-3. **Access the Eureka Dashboard**
-   - Open http://localhost:8761
-   - The page should show the list of registered services (customer-service, admin-service).
-   - You can demonstrate service shutdown/restart and Eureka's automatic detection.
-4. **Inter-service calls (optional)**
-   - Explain that services can discover each other by service name (e.g., using RestTemplate, FeignClient, etc.).
-   - Example:
-     ```java
-     @FeignClient(name = "admin-service")
-     public interface AdminClient { ... }
-     ```
+| Step                | Description                                                                                                   |
+|---------------------|---------------------------------------------------------------------------------------------------------------|
+| Start Eureka Server | Run the Eureka Server (default port: 8761).<br>The console should show "Started EurekaServerApplication".      |
+| Start Microservices | Start admin-service and customer-service, and configure `spring.application.name` and the Eureka client in application.properties.<br>Key configuration example (application.properties):<br>```properties<br>spring.application.name=customer-service<br>eureka.client.service-url.defaultZone=http://localhost:8761/eureka/<br>``` |
+| Access Dashboard    | Open http://localhost:8761<br>The page should show the list of registered services (customer-service, admin-service).<br>You can demonstrate service shutdown/restart and Eureka's automatic detection. |
+| Inter-service Calls | Services can discover each other by service name (e.g., using RestTemplate, FeignClient, etc.).<br>Example:<br>```java<br>@FeignClient(name = "admin-service")<br>public interface AdminClient { ... }<br>``` |
 
-**Demo Tips:**
-- Record the Eureka UI, showing dynamic registration/deregistration of services.
-- Show the key application.yml configuration.
+**Demo Tips Table:**
+
+| Tip                                                                                           |
+|-----------------------------------------------------------------------------------------------|
+| Record the Eureka UI, showing dynamic registration/deregistration of services.                |
+| Show the key application.properties configuration:<br>- admin-service/src/main/resources/application.properties<br>- customer-service/src/main/resources/application.properties |
 
 ### 4. Scalability & Resilience Demo (Stress Test)
 
@@ -432,67 +382,21 @@ Invoke-RestMethod -Uri "http://localhost:8082/api/auth/reset-password" `
        .body(StringBody("{"username":"${username}","password":"${password}"}"))
        .asJson.check(jsonPath("$.token").saveAs("jwtToken")))
      val placeOrder = exec(http("Place Order")
-       .post("/api/orders")
-       .header("Authorization", "Bearer ${jwtToken}")
-       .body(StringBody("{"diningTableId":1,"customerId":1,"status":"PLACED","items":[{"menuItemId":1,"quantity":2,"priceAtOrder":12.50}]}"))
-       .asJson.check(status.in(200, 400)))
-     val makeReservation = exec(http("Make Reservation")
-       .post("/api/reservations")
-       .header("Authorization", "Bearer ${jwtToken}")
-       .body(StringBody("{"diningTableId":1,"customerId":1,"reservationDate":"2026-03-28T19:00:00","partySize":2,"status":"BOOKED","guestName":"Test User","guestPhone":"1234567890"}"))
-       .asJson.check(status.in(200, 400, 409)))
-     // ...and more (see script for all scenarios)
-     ```
-   - Each scenario is injected with users and ramp-up time to simulate real-world load.
-   - Gatling automatically measures response times, throughput, and error rates for all requests.
 
-2. **Run the stress test**
-   - Run Gatling from the command line:
-     ```bash
-     cd gatling && ./gradlew gatlingRun-RestaurantApiSimulation
-     ```
-   - Watch the console for real-time output: response times, throughput, error rates.
+      | Step | Description |
+      |------|-------------|
+      | Prepare the Gatling script | See `gatling/RestaurantApiSimulation.scala`. The script now covers a comprehensive set of scenarios:<ul><li>Multiple users logging in concurrently</li><li>Placing orders</li><li>(Simulated) making payments (as part of order placement)</li><li>Accessing protected APIs (with Authorization headers)</li><li>Reservation peak load (many users making reservations at once)</li><li>Menu browsing at scale (high-frequency GET requests)</li><li>Order status polling (clients polling for updates)</li><li>Admin operations under load (updating menu items, etc.)</li><li>Error/edge case simulation (invalid tokens, bad order IDs)</li><li>Long-running session simulation (users staying logged in and active)</li></ul>Example snippet:<br><br>```scala<br>val register = exec(http("Register User")<br>  .post("/api/auth/register")<br>  .body(StringBody("{"username":"${username}","password":"${password}","roles":["USER"]}"))<br>  .asJson.check(status.is(200)))<br>val login = exec(http("Login User")<br>  .post("/api/auth/login")<br>  .body(StringBody("{"username":"${username}","password":"${password}"}"))<br>  .asJson.check(jsonPath("$.token").saveAs("jwtToken")))<br>val placeOrder = exec(http("Place Order")<br>  .post("/api/orders")<br>  .header("Authorization", "Bearer ${jwtToken}")<br>  .body(StringBody("{"diningTableId":1,"customerId":1,"status":"PLACED","items":[{"menuItemId":1,"quantity":2,"priceAtOrder":12.50}]}"))<br>  .asJson.check(status.in(200, 400)))<br>val makeReservation = exec(http("Make Reservation")<br>  .post("/api/reservations")<br>  .header("Authorization", "Bearer ${jwtToken}")<br>  .body(StringBody("{"diningTableId":1,"customerId":1,"reservationDate":"2026-03-28T19:00:00","partySize":2,"status":"BOOKED","guestName":"Test User","guestPhone":"1234567890"}"))<br>  .asJson.check(status.in(200, 400, 409)))<br>// ...and more (see script for all scenarios)<br>```<br>Each scenario is injected with users and ramp-up time to simulate real-world load.<br>Gatling automatically measures response times, throughput, and error rates for all requests. |
+      | Run the stress test | Run Gatling from the command line:<br>```bash<br>cd gatling && ./gradlew gatlingRun-RestaurantApiSimulation<br>```<br>Watch the console for real-time output: response times, throughput, error rates. |
+      | Analyze the results | Open the generated Gatling HTML report to view:<ul><li>Response distribution and concurrency bottlenecks</li><li>Success rate and latency under high concurrency</li><li>Error/edge case handling and system stability</li></ul> |
+      | Horizontal scaling and resilience explanation | Stateless JWT authentication supports multi-instance scaling (no session stickiness required).<br>Optionally, demonstrate dynamic scaling in combination with Eureka (service discovery and load balancing). |
+      | Resilience and fault tolerance (optional) | Explain that retry, circuit breaker, and other microservice resilience patterns (e.g., Resilience4j) can be integrated for production. |
 
-3. **Analyze the results**
-   - Open the generated Gatling HTML report to view:
-     - Response distribution and concurrency bottlenecks
-     - Success rate and latency under high concurrency
-     - Error/edge case handling and system stability
+      **Demo Tips:**
 
-4. **Horizontal scaling and resilience explanation**
-   - Stateless JWT authentication supports multi-instance scaling (no session stickiness required).
-   - Optionally, demonstrate dynamic scaling in combination with Eureka (service discovery and load balancing).
-
-5. **Resilience and fault tolerance (optional)**
-   - Explain that retry, circuit breaker, and other microservice resilience patterns (e.g., Resilience4j) can be integrated for production.
-
-**Demo Tips:**
-- Record Gatling execution and report analysis.
-- Show service logs to demonstrate system behavior under high concurrency and error conditions.
-
----
-
-**Tip:** Record the above steps as a video, narrating each feature and showing both frontend and backend behavior, including API calls, error handling, and system response under load.
-
----
-
-## 📁 Project Structure
-
-```
-restaurant-management-system/
-├── customer-service/
-│   ├── src/main/java/com/example/customerservice/
-│   │   ├── CustomerServiceApplication.java
-│   │   ├── controller/
-│   │   ├── model/
-│   │   ├── repository/
-│   │   ├── security/
-│   │   └── service/
-│   └── src/main/resources/
-│       ├── application.properties
-│       └── data.sql
-├── admin-service/
-│   ├── src/main/java/com/example/adminservice/
+      | Tip |
+      |-----|
+      | Record Gatling execution and report analysis. |
+      | Show service logs to demonstrate system behavior under high concurrency and error conditions. |
 │   │   ├── AdminServiceApplication.java
 │   │   ├── controller/
 │   │   ├── model/
@@ -737,18 +641,20 @@ gantt
 ### 1. Start Backend Services (Spring Boot)
 
 ```bash
-# In project root, build all modules (skip tests for speed)
+# In the project root, build all modules (skip tests for speed)
 ./mvnw -DskipTests package
 
-# Start Eureka server (if used)
-# Start admin-service
-cd admin-service && ../mvnw spring-boot:run
-# Start customer-service (in a new terminal)
-cd customer-service && ../mvnw spring-boot:run
+# Start Eureka Server (service registry, port 8761)
+cd eureka-server && ../mvnw spring-boot:run
+# Start admin-service (in a new terminal)
+cd ../admin-service && ../mvnw spring-boot:run
+# Start customer-service (in another new terminal)
+cd ../customer-service && ../mvnw spring-boot:run
 ```
-- admin-service: http://localhost:8081 (default)
-- customer-service: http://localhost:8082 (default)
-- Eureka: http://localhost:8761 (if enabled)
+- admin-service: http://localhost:8082 (default)
+- customer-service: http://localhost:8081 (default)
+- Eureka Server: http://localhost:8761
+  > Visit this page to view service registration status. Start Eureka Server first, then start other services.
 
 ### 2. Start Frontend (React + Vite)
 

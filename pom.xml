@@ -26,6 +26,8 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
     </properties>
 
+
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -116,8 +118,4 @@
         </plugins>
     </build>
 
-    <modules>
-        <module>customer-service</module>
-        <module>admin-service</module>
-    </modules>
 </project>
