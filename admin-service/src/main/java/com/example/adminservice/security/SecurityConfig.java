@@ -35,10 +35,16 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/orders/**").hasRole("USER")
-                .anyRequest().authenticated()
+                // Only allow GET for USER and ADMIN on menu-items and tables
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/menu-items/**", "/api/tables/**").hasAnyRole("USER", "ADMIN")
+                // All other methods on menu-items and tables require ADMIN
+                .requestMatchers("/api/menu-items/**", "/api/tables/**").hasRole("ADMIN")
+                .anyRequest().permitAll()
             )
+            .headers(headers -> headers.frameOptions().disable())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

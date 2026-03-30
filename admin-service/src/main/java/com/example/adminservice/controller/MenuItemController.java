@@ -38,6 +38,12 @@ public class MenuItemController {
     
     @PatchMapping("/update/{id}")
     public MenuItem update(@PathVariable Long id, @RequestBody MenuItemRequest request) {
-    	return menuItemService.update(id, request);
+        return menuItemService.update(id, request);
+    }
+
+    // 标准 RESTful PUT 更新接口
+    @PutMapping("/{id}")
+    public MenuItem updateMenuItem(@PathVariable Long id, @Valid @RequestBody MenuItemRequest request) {
+        return menuItemService.update(id, request);
     }
 }

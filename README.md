@@ -304,9 +304,9 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ## 🎥 Presentation & Demo Script (Phase 2)
 
-Table 1
-
 The following table summarizes the main business use cases supported in Phase 2, mapping each scenario to the responsible service module, relevant API endpoints, and a brief description. This overview helps demonstrate how the system’s microservices and REST APIs work together to support core restaurant operations.
+
+Table 1
 
 | Use Case                              | Service Module      | API Endpoint(s) & Method(s)                                                                                       | Description |
 |---------------------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------|-------------|
@@ -720,6 +720,7 @@ gantt
 
 ```bash
 # In the project root, build all modules (skip tests for speed)
+./mvnw clean
 ./mvnw -DskipTests package
 
 # Start Eureka Server (service registry, port 8761)

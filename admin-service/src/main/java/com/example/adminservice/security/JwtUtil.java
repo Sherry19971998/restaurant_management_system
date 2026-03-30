@@ -1,5 +1,10 @@
 package com.example.adminservice.security;
 
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,7 +32,9 @@ public class JwtUtil {
     }
 
     public Set<String> getRolesFromToken(String token) {
-        return (Set<String>) getClaims(token).get("roles", Set.class);
+        // Parse roles as List, then convert to Set to avoid RequiredTypeException
+        List<String> rolesList = getClaims(token).get("roles", List.class);
+        return rolesList == null ? Collections.emptySet() : new HashSet<>(rolesList);
     }
 
     public boolean validateToken(String token) {

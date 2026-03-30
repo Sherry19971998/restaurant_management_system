@@ -9,6 +9,7 @@ C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\exam
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\security\JwtUtil.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\model\RestaurantOrder.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\repository\CustomerRepository.java
+C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\controller\RegisterController.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\security\SecurityConfig.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\controller\dto\ReservationRequest.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\service\ReservationService.java
@@ -19,6 +20,7 @@ C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\exam
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\service\DiningTableService.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\model\PasswordResetToken.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\repository\DiningTableRepository.java
+C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\controller\AuthController.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\controller\ReservationController.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\AdminServiceApplication.java
 C:\Users\xiexi\restaurant_management_system\admin-service\src\main\java\com\example\adminservice\model\DiningTable.java

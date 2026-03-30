@@ -6,6 +6,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Collections;
 
 @Component
 public class JwtUtil {
@@ -27,7 +30,9 @@ public class JwtUtil {
     }
 
     public Set<String> getRolesFromToken(String token) {
-        return (Set<String>) getClaims(token).get("roles", Set.class);
+        // Parse roles as List, then convert to Set to avoid RequiredTypeException
+        List<String> rolesList = getClaims(token).get("roles", List.class);
+        return rolesList == null ? Collections.emptySet() : new HashSet<>(rolesList);
     }
 
     public boolean validateToken(String token) {

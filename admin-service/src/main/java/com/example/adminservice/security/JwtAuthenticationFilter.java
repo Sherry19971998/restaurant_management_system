@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -38,10 +39,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (Exception ignored) {}
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            java.util.Set<String> roles = jwtUtil.getRolesFromToken(token);
+            System.out.println("[JWT DEBUG] username=" + username + ", roles=" + roles);
+            java.util.List<org.springframework.security.core.GrantedAuthority> authorities = roles.stream()
+                .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+                .map(org.springframework.security.core.authority.SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+            org.springframework.security.core.userdetails.UserDetails userDetails =
+                new org.springframework.security.core.userdetails.User(username, "", authorities);
             if (jwtUtil.validateToken(token)) {
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        userDetails, null, authorities);
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
