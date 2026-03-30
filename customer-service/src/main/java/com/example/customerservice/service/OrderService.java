@@ -15,6 +15,8 @@ import com.example.customerservice.model.DiningTable;
 import com.example.customerservice.model.MenuItem;
 import com.example.customerservice.model.OrderItem;
 import com.example.customerservice.model.RestaurantOrder;
+import com.example.customerservice.repository.CustomerRepository;
+import com.example.customerservice.repository.MenuItemRepository;
 import com.example.customerservice.repository.RestaurantOrderRepository;
 import com.example.customerservice.model.enums.OrderStatus;
 import java.util.List;
@@ -73,12 +75,18 @@ public class OrderService {
     private final org.springframework.web.client.RestTemplate restTemplate;
     @org.springframework.beans.factory.annotation.Value("${admin.service.url:http://localhost:8081}")
     private String adminServiceUrl;
+    private final CustomerRepository customerRepository;
+    private final MenuItemRepository menuItemRepository;
 
     public OrderService(
             RestaurantOrderRepository orderRepository,
-            org.springframework.web.client.RestTemplate restTemplate) {
+            org.springframework.web.client.RestTemplate restTemplate,
+            CustomerRepository customerRepository,
+            MenuItemRepository menuItemRepository) {
         this.orderRepository = orderRepository;
         this.restTemplate = restTemplate;
+        this.customerRepository = customerRepository;
+        this.menuItemRepository = menuItemRepository;
     }
 
     public List<RestaurantOrder> getAll() {
@@ -125,28 +133,25 @@ public class OrderService {
 
         Customer customer = null;
         if (request.getCustomerId() != null) {
-            // Fetch customer from admin-service
-            String custUrl = adminServiceUrl + "/api/customers/" + request.getCustomerId();
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-                if (attrs != null) {
-                    HttpServletRequest servletRequest = attrs.getRequest();
-                    String auth = servletRequest.getHeader("Authorization");
-                    if (auth != null) {
-                        headers.set("Authorization", auth);
-                    }
+            customer = customerRepository.findById(request.getCustomerId()).orElse(null);
+            if (customer == null) {
+                logger.info("Customer not found by id, creating new customer");
+                // Require at least one of name, phone, or email for auto-creation
+                String name = request.getCustomerName();
+                String phone = request.getCustomerPhone();
+                String email = request.getCustomerEmail();
+                if ((name == null || name.isBlank()) && (phone == null || phone.isBlank()) && (email == null || email.isBlank())) {
+                    logger.error("No customer info provided for new customer");
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "At least one of customer name, phone, or email must be provided for new customer");
                 }
-                HttpEntity<Void> entity = new HttpEntity<>(headers);
-                ResponseEntity<Customer> resp = restTemplate.exchange(custUrl, HttpMethod.GET, entity, Customer.class);
-                customer = resp.getBody();
-                if (customer == null) throw new Exception();
-            } catch (Exception e) {
-                logger.warn("Customer not found in admin-service: {}", request.getCustomerId());
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+                customer = new Customer();
+                customer.setName(name != null && !name.isBlank() ? name : "Guest");
+                customer.setPhone(phone != null && !phone.isBlank() ? phone : "N/A");
+                customer.setEmail(email != null && !email.isBlank() ? email : ("guest" + System.currentTimeMillis() + "@example.com"));
+                customer = customerRepository.save(customer);
             }
         } else {
-            // Optionally, create customer via admin-service if needed (not implemented here)
+            // Require at least one of name, phone, or email for auto-creation
             String name = request.getCustomerName();
             String phone = request.getCustomerPhone();
             String email = request.getCustomerEmail();
@@ -158,7 +163,7 @@ public class OrderService {
             customer.setName(name != null && !name.isBlank() ? name : "Guest");
             customer.setPhone(phone != null && !phone.isBlank() ? phone : "N/A");
             customer.setEmail(email != null && !email.isBlank() ? email : ("guest" + System.currentTimeMillis() + "@example.com"));
-            // TODO: Optionally, POST to admin-service to create customer
+            customer = customerRepository.save(customer);
         }
 
         RestaurantOrder order = new RestaurantOrder();
@@ -171,27 +176,8 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order must contain at least one item");
         }
         for (OrderItemRequest itemRequest : request.getItems()) {
-            // Fetch menu item from admin-service
-            MenuItem menuItem;
-            String menuUrl = adminServiceUrl + "/api/menu-items/" + itemRequest.getMenuItemId();
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-                if (attrs != null) {
-                    HttpServletRequest servletRequest = attrs.getRequest();
-                    String auth = servletRequest.getHeader("Authorization");
-                    if (auth != null) {
-                        headers.set("Authorization", auth);
-                    }
-                }
-                HttpEntity<Void> entity = new HttpEntity<>(headers);
-                ResponseEntity<MenuItem> resp = restTemplate.exchange(menuUrl, HttpMethod.GET, entity, MenuItem.class);
-                menuItem = resp.getBody();
-                if (menuItem == null) throw new Exception();
-            } catch (Exception e) {
-                logger.warn("Menu item not found in admin-service: {}", itemRequest.getMenuItemId());
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found");
-            }
+            MenuItem menuItem = menuItemRepository.findById(itemRequest.getMenuItemId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found"));
             // Business rule: Menu item must be available
             if (!menuItem.getAvailable()) {
                 logger.warn("Menu item '{}' is not available", menuItem.getName());
@@ -202,7 +188,9 @@ public class OrderService {
                 logger.warn("Menu item '{}' does not have enough inventory", menuItem.getName());
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Menu item '" + menuItem.getName() + "' does not have enough inventory");
             }
-            // TODO: Optionally, update inventory via admin-service
+            // Deduct inventory
+            menuItem.setInventory(menuItem.getInventory() - itemRequest.getQuantity());
+            menuItemRepository.save(menuItem);
 
             OrderItem orderItem = new OrderItem();
             orderItem.setMenuItem(menuItem);
