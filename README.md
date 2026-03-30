@@ -304,9 +304,25 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ## 🎥 Presentation & Demo Script (Phase 2)
 
+Table 1
+
+The following table summarizes the main business use cases supported in Phase 2, mapping each scenario to the responsible service module, relevant API endpoints, and a brief description. This overview helps demonstrate how the system’s microservices and REST APIs work together to support core restaurant operations.
+
+| Use Case                              | Service Module      | API Endpoint(s) & Method(s)                                                                                       | Description |
+|---------------------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------|-------------|
+| Place Order with Items                | customer-service    | POST /api/orders<br>GET /api/orders/{id}<br>GET /api/customers/{id}<br>GET /api/tables<br>GET /api/menu-items     | Place a new order with multiple items, check order/customer/table/menu info |
+| Make Reservation                      | customer-service    | POST /api/reservations<br>GET /api/reservations/{id}<br>GET /api/customers/{id}<br>GET /api/tables               | Reserve a table for a customer, check reservation/customer/table info |
+| Update Order Status                   | customer-service    | PATCH /api/orders/{id}/status<br>GET /api/orders/{id}                                                            | Update order status (e.g., READY, PAID), check order info |
+| Register Customer                     | customer-service    | POST /api/auth/register<br>POST /api/customers<br>GET /api/customers/{id}                                         | Register a new user/customer, validate input |
+| Manager Updates Menu Item             | admin-service       | POST /api/menu-items<br>PUT/PATCH /api/menu-items/{id}<br>GET /api/menu-items/{id}                               | Add or update menu items, check menu info |
+| Process Payment for Order             | customer-service    | PATCH /api/orders/{id}/pay<br>PATCH /api/orders/{id}/status<br>GET /api/orders/{id}                              | Complete payment for an order, update/check status |
+| Manage Table Status                   | admin-service       | PATCH /api/tables/{id}/status<br>GET /api/tables/{id}                                                            | Update and check table status |
+
 ### 1. Security Features
 
-Table 1
+The application implements a full suite of security features to protect user data and control access. User registration allows new users to sign up with unique credentials and roles. Authentication is handled via JWT tokens—users log in to receive a token, which must be included in the Authorization header for all protected API requests. Authorization ensures that only users with the correct roles can access specific endpoints, with both customer-service and admin-service enforcing role-based access control. For password management, users can request a password reset link via email or username, and securely reset their password using a token. These features are demonstrated through the registration, login, protected resource access, and password reminder/reset flows, ensuring robust security across all services.
+
+Table 2
 
 | Feature                | Description                                                                                                   |
 |------------------------|---------------------------------------------------------------------------------------------------------------|
@@ -317,7 +333,9 @@ Table 1
 
 ### 2. Bearer Token Usage Across Services
 
-Table 2
+In this system, authentication is handled using JWT bearer tokens. After a user logs in and receives a token from customer-service, this token can be used to access any protected API in both customer-service and admin-service. Each backend service validates the token independently, extracting user identity and roles from the token payload. This enables seamless, stateless authentication and authorization across all microservices—no session state is stored on the server, and the same token is valid for all backend services. This approach supports secure, scalable, and decoupled service interactions in a microservice architecture.
+
+Table 3
 
 | Step                | Description                                                                                                   |
 |---------------------|---------------------------------------------------------------------------------------------------------------|
@@ -346,7 +364,7 @@ Table 2
 
 ### 3. Service Discovery (Eureka)
 
-Table 3
+In this system, we use Spring Cloud Netflix Eureka for service discovery. Each microservice (admin-service and customer-service) registers itself with the Eureka server at startup. This allows services to dynamically discover each other by logical service name, rather than relying on hardcoded hostnames or ports. For example, customer-service can call admin-service using its service name, and Eureka will resolve the actual instance address. This approach enables load balancing, failover, and easy scaling, as new service instances are automatically registered and discoverable. Service discovery is essential for microservice architectures, supporting resilience and flexibility in deployment.
 
 | Step                | Description                                                                                                   |
 |---------------------|---------------------------------------------------------------------------------------------------------------|
@@ -363,6 +381,8 @@ Table 3
 | Show the key application.properties configuration:<br>- admin-service/src/main/resources/application.properties<br>- customer-service/src/main/resources/application.properties |
 
 ### 4. Scalability & Resilience Demo (Stress Test)
+
+To demonstrate the scalability and resilience of the application, we developed a comprehensive stress test using Gatling. The test simulates high-concurrency scenarios such as multiple users logging in, placing orders, making reservations, and accessing protected APIs simultaneously. By ramping up the number of virtual users and requests, we can observe how the system handles load, measures response times, and maintains stability under pressure. The stateless JWT authentication and Eureka-based service discovery enable horizontal scaling and fault tolerance, as new service instances can be added or restarted without disrupting user sessions. Gatling reports provide detailed insights into throughput, error rates, and bottlenecks, helping validate the system's robustness and readiness for real-world usage.
 
 #### Gatling Stress Test Demo
 1. **Prepare the Gatling script**
