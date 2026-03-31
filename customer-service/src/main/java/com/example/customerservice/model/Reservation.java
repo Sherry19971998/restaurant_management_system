@@ -29,5 +29,16 @@ public class Reservation {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    // getters and setters ...
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public LocalDateTime getReservationTime() { return reservationTime; }
+    public void setReservationTime(LocalDateTime reservationTime) { this.reservationTime = reservationTime; }
+    public int getPartySize() { return partySize; }
+    public void setPartySize(int partySize) { this.partySize = partySize; }
+    public ReservationStatus getStatus() { return status; }
+    public void setStatus(ReservationStatus status) { this.status = status; }
+    public DiningTable getDiningTable() { return diningTable; }
+    public void setDiningTable(DiningTable diningTable) { this.diningTable = diningTable; }
+    public Customer getCustomer() { return customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
 }

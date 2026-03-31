@@ -24,6 +24,14 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
+    @ExceptionHandler(org.springframework.web.server.ResponseStatusException.class)
+    public ResponseEntity<Object> handleResponseStatusException(org.springframework.web.server.ResponseStatusException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", ex.getStatusCode().toString());
+        body.put("message", ex.getReason());
+        return new ResponseEntity<>(body, ex.getStatusCode());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex) {
         Map<String, Object> body = new HashMap<>();

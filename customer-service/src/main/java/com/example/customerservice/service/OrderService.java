@@ -77,16 +77,22 @@ public class OrderService {
     private String adminServiceUrl;
     private final CustomerRepository customerRepository;
     private final MenuItemRepository menuItemRepository;
+    private final com.example.customerservice.repository.DiningTableRepository diningTableRepository;
+    private final com.example.customerservice.repository.RestaurantRepository restaurantRepository;
 
     public OrderService(
             RestaurantOrderRepository orderRepository,
             org.springframework.web.client.RestTemplate restTemplate,
             CustomerRepository customerRepository,
-            MenuItemRepository menuItemRepository) {
+            MenuItemRepository menuItemRepository,
+            com.example.customerservice.repository.DiningTableRepository diningTableRepository,
+            com.example.customerservice.repository.RestaurantRepository restaurantRepository) {
         this.orderRepository = orderRepository;
         this.restTemplate = restTemplate;
         this.customerRepository = customerRepository;
         this.menuItemRepository = menuItemRepository;
+        this.diningTableRepository = diningTableRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public List<RestaurantOrder> getAll() {
@@ -131,6 +137,9 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Table is not available");
         }
 
+        // Sync table (and its restaurant) to local DB so FK references work
+        DiningTable localTable = getOrSyncTable(table);
+
         Customer customer = null;
         if (request.getCustomerId() != null) {
             customer = customerRepository.findById(request.getCustomerId()).orElse(null);
@@ -167,7 +176,7 @@ public class OrderService {
         }
 
         RestaurantOrder order = new RestaurantOrder();
-        order.setDiningTable(table);
+        order.setDiningTable(localTable);
         order.setCustomer(customer);
         order.setStatus(com.example.customerservice.model.enums.OrderStatus.PLACED);
 
@@ -176,8 +185,7 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order must contain at least one item");
         }
         for (OrderItemRequest itemRequest : request.getItems()) {
-            MenuItem menuItem = menuItemRepository.findById(itemRequest.getMenuItemId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found"));
+            MenuItem menuItem = getOrSyncMenuItem(itemRequest.getMenuItemId());
             // Business rule: Menu item must be available
             if (!menuItem.getAvailable()) {
                 logger.warn("Menu item '{}' is not available", menuItem.getName());
@@ -265,5 +273,74 @@ public class OrderService {
 
         logger.info("Order {} status updated: {} -> {}", id, currentStatus, newStatus);
         return updated;
+    }
+
+    // --- Admin-service data sync helpers ---
+
+    private HttpHeaders getForwardHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attrs != null) {
+            String auth = attrs.getRequest().getHeader("Authorization");
+            if (auth != null) headers.set("Authorization", auth);
+        }
+        return headers;
+    }
+
+    private com.example.customerservice.model.Restaurant getOrSyncRestaurant(
+            com.example.customerservice.model.Restaurant adminRestaurant) {
+        if (adminRestaurant == null || adminRestaurant.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Restaurant data missing from admin-service response");
+        }
+        return restaurantRepository.findById(adminRestaurant.getId()).orElseGet(() -> {
+            com.example.customerservice.model.Restaurant local = new com.example.customerservice.model.Restaurant();
+            local.setId(adminRestaurant.getId());
+            local.setName(adminRestaurant.getName());
+            local.setAddress(adminRestaurant.getAddress());
+            local.setPhone(adminRestaurant.getPhone());
+            return restaurantRepository.save(local);
+        });
+    }
+
+    private DiningTable getOrSyncTable(DiningTable adminTable) {
+        return diningTableRepository.findById(adminTable.getId()).orElseGet(() -> {
+            com.example.customerservice.model.Restaurant localRestaurant =
+                    getOrSyncRestaurant(adminTable.getRestaurant());
+            DiningTable local = new DiningTable();
+            local.setId(adminTable.getId());
+            local.setTableNumber(adminTable.getTableNumber());
+            local.setCapacity(adminTable.getCapacity());
+            local.setStatus(adminTable.getStatus());
+            local.setRestaurant(localRestaurant);
+            return diningTableRepository.save(local);
+        });
+    }
+
+    private MenuItem getOrSyncMenuItem(Long menuItemId) {
+        return menuItemRepository.findById(menuItemId).orElseGet(() -> {
+            logger.info("Menu item {} not found locally, fetching from admin-service", menuItemId);
+            String url = adminServiceUrl + "/api/menu-items/" + menuItemId;
+            MenuItem adminItem;
+            try {
+                HttpEntity<Void> entity = new HttpEntity<>(getForwardHeaders());
+                ResponseEntity<MenuItem> resp = restTemplate.exchange(
+                        url, HttpMethod.GET, entity, MenuItem.class);
+                adminItem = resp.getBody();
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found");
+            }
+            com.example.customerservice.model.Restaurant localRestaurant =
+                    getOrSyncRestaurant(adminItem.getRestaurant());
+            MenuItem local = new MenuItem();
+            local.setId(adminItem.getId());
+            local.setName(adminItem.getName());
+            local.setDescription(adminItem.getDescription());
+            local.setPrice(adminItem.getPrice());
+            local.setAvailable(adminItem.getAvailable());
+            local.setInventory(adminItem.getInventory());
+            local.setRestaurant(localRestaurant);
+            return menuItemRepository.save(local);
+        });
     }
 }

@@ -18,6 +18,8 @@ public class MenuItemRequest {
     private BigDecimal price;
     private Boolean available = true;
 
+    private Integer inventory = 0;
+
     @NotNull
     private Long restaurantId;
 
@@ -51,6 +53,14 @@ public class MenuItemRequest {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public Integer getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Integer inventory) {
+        this.inventory = inventory;
     }
 
     public Long getRestaurantId() {

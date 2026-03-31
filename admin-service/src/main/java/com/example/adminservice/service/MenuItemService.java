@@ -44,6 +44,7 @@ public class MenuItemService {
         menuItem.setDescription(request.getDescription());
         menuItem.setPrice(request.getPrice());
         menuItem.setAvailable(request.getAvailable());
+        menuItem.setInventory(request.getInventory() != null ? request.getInventory() : 0);
         menuItem.setRestaurant(restaurant);
 
         return menuItemRepository.save(menuItem);
@@ -52,11 +53,12 @@ public class MenuItemService {
     public MenuItem update(Long id, MenuItemRequest request) {
         logger.info("Updating menu item with id: {}", id);
         MenuItem menuItem = menuItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("MenuItem not found with id"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu item not found"));
         menuItem.setName(request.getName());
         menuItem.setDescription(request.getDescription());
         menuItem.setPrice(request.getPrice());
         menuItem.setAvailable(request.getAvailable());
+        menuItem.setInventory(request.getInventory() != null ? request.getInventory() : menuItem.getInventory());
         return menuItemRepository.save(menuItem);
     }
     
