@@ -1,0 +1,870 @@
+{
+  "info": {
+    "name": "Restaurant Order Management – Full Use-Case Demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "End-to-end demo collection covering all 7 use cases.\n\nRun ORDER: Auth Setup → UC-4 → UC-5 → UC-7 → UC-2 → UC-1 → UC-3 → UC-6\n\nPre-requisites:\n1. Eureka Server running on port 8761\n2. Admin-service running on port 8082 (with seed data)\n3. Customer-service running on port 8081\n\nSelect the 'Restaurant Order Management – Demo' environment before running."
+  },
+  "item": [
+    {
+      "name": "0 – Auth Setup",
+      "description": "Registers and logs in users on both services. Tokens are auto-saved to environment variables. A 'testuser' is also registered on admin-service so the customer-service proxy calls (tables/menu-items) work correctly.",
+      "item": [
+        {
+          "name": "[Admin] Register Admin User",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\",\n  \"roles\": [\"ADMIN\"]\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/auth/register"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Admin registered', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "[Admin] Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/auth/login"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Admin login successful', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.token).to.be.a('string');",
+                "    pm.environment.set('adminToken', json.token);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "[Admin] Register Proxy User (testuser)",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\",\n  \"roles\": [\"USER\"]\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/auth/register"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Proxy user registered on admin-service', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "[Customer] Register User",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\",\n  \"roles\": [\"USER\"]\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/auth/register"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Customer user registered', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "[Customer] Login User",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/auth/login"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Customer login successful', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.token).to.be.a('string');",
+                "    pm.environment.set('customerToken', json.token);",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "UC-4 – Validate Customer Input",
+      "description": "Demonstrates customer creation with input validation (customer-service :8081).\n- Creates a valid customer → 200\n- Attempts invalid input (missing required name) → 400\n- Retrieves the created customer to verify",
+      "item": [
+        {
+          "name": "Create Customer (Valid)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jordan Lee\",\n  \"phone\": \"555-3333\",\n  \"email\": \"jordan@example.com\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/customers"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Customer created (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.id).to.be.a('number');",
+                "    pm.expect(json.name).to.eql('Jordan Lee');",
+                "    pm.environment.set('customerId', json.id);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Create Customer (Error – Missing Name → 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"555-0000\",\n  \"email\": \"bad@example.com\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/customers"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Should return 400 Bad Request', function () {",
+                "    pm.expect(pm.response.code).to.eql(400);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Customer By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "url": "{{customerBaseUrl}}/api/customers/{{customerId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Customer retrieved (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.name).to.eql('Jordan Lee');",
+                "    pm.expect(json.phone).to.eql('555-3333');",
+                "    pm.expect(json.email).to.eql('jordan@example.com');",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "UC-5 – Manager Updates Menu Item",
+      "description": "Demonstrates adding and updating menu items (admin-service :8082).\n- Lists seed menu items (3 pre-loaded)\n- Adds a new menu item\n- Updates its price and description\n- Verifies the update",
+      "item": [
+        {
+          "name": "Get All Menu Items (Seed Data)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "url": "{{adminBaseUrl}}/api/menu-items"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Menu items returned (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.length).to.be.at.least(3);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Add New Menu Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pasta Alfredo\",\n  \"description\": \"Rich creamy sauce with fettuccine\",\n  \"price\": 14.50,\n  \"available\": true,\n  \"inventory\": 50,\n  \"restaurantId\": 1\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/menu-items"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Menu item created (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.id).to.be.a('number');",
+                "    pm.expect(json.name).to.eql('Pasta Alfredo');",
+                "    pm.environment.set('newMenuItemId', json.id);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Update Menu Item (Price & Description)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pasta Alfredo\",\n  \"description\": \"Rich creamy sauce with fettuccine – Chef's Special\",\n  \"price\": 16.00,\n  \"available\": true,\n  \"inventory\": 75,\n  \"restaurantId\": 1\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/menu-items/{{newMenuItemId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Menu item updated (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.price).to.eql(16.0);",
+                "    pm.expect(json.inventory).to.eql(75);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Menu Item (Verify Update)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "url": "{{adminBaseUrl}}/api/menu-items/{{newMenuItemId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Menu item verified (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.description).to.include('Chef');",
+                "    pm.expect(json.price).to.eql(16.0);",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "UC-7 – Manage Table Status",
+      "description": "Demonstrates dining table status management (admin-service :8082).\n- Lists seed tables (3 pre-loaded)\n- Creates a new table T4\n- Sets T4 → OCCUPIED then → AVAILABLE\n- Verifies final status",
+      "item": [
+        {
+          "name": "Get All Tables (Seed Data)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "url": "{{adminBaseUrl}}/api/tables"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Tables returned (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.length).to.be.at.least(3);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Create New Table (T4)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tableNumber\": \"T4\",\n  \"capacity\": 8,\n  \"status\": \"AVAILABLE\",\n  \"restaurantId\": 1\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/tables"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Table created (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.id).to.be.a('number');",
+                "    pm.expect(json.tableNumber).to.eql('T4');",
+                "    pm.environment.set('newTableId', json.id);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Set Table → OCCUPIED",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"OCCUPIED\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/tables/{{newTableId}}/status"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Table set to OCCUPIED (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('OCCUPIED');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Set Table → AVAILABLE",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"AVAILABLE\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/tables/{{newTableId}}/status"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Table set back to AVAILABLE (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('AVAILABLE');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Table (Verify Status)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "url": "{{adminBaseUrl}}/api/tables/{{newTableId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Table verified AVAILABLE (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('AVAILABLE');",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "UC-2 – Make Reservation",
+      "description": "Demonstrates reservation creation on admin-service :8082.\n- Creates a reservation for Table 1 (seed customer Alex Chen, id=1)\n- Retrieves and verifies the reservation\n- Attempts a conflicting reservation on the same table/time → 409\n\nNote: After this folder, Table 1 status will be RESERVED (set by the service).",
+      "item": [
+        {
+          "name": "Create Reservation (Happy Path)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": 1,\n  \"diningTableId\": 1,\n  \"partySize\": 3,\n  \"reservationTime\": \"2026-06-15T19:00:00\",\n  \"status\": \"REQUESTED\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/reservations"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Reservation created (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.id).to.be.a('number');",
+                "    pm.expect(json.partySize).to.eql(3);",
+                "    pm.environment.set('reservationId', json.id);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Reservation By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "url": "{{adminBaseUrl}}/api/reservations/{{reservationId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Reservation found (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.partySize).to.eql(3);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Create Reservation (Error – Conflict → 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{adminToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": 2,\n  \"diningTableId\": 1,\n  \"partySize\": 2,\n  \"reservationTime\": \"2026-06-15T19:30:00\",\n  \"status\": \"REQUESTED\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{adminBaseUrl}}/api/reservations"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Should return 409 Conflict (double-booking)', function () {",
+                "    pm.expect(pm.response.code).to.eql(409);",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "UC-1 – Place Order",
+      "description": "Demonstrates placing an order on customer-service :8081.\n- Browses tables and menu items via admin-service proxy\n- Places an order for Table 2 (AVAILABLE) with 2× Margherita Pizza + 1× Iced Tea\n- Verifies the created order\n\nTotal: 2 × $12.50 + 1 × $3.00 = $28.00 (needed for UC-6 payment).",
+      "item": [
+        {
+          "name": "Browse Tables (Proxy → Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "url": "{{customerBaseUrl}}/api/proxy/tables"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Tables retrieved via proxy (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Browse Menu Items (Proxy → Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "url": "{{customerBaseUrl}}/api/proxy/menu-items"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Menu items retrieved via proxy (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Place Order with Items",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"diningTableId\": 2,\n  \"customerId\": {{customerId}},\n  \"status\": \"PLACED\",\n  \"items\": [\n    {\n      \"menuItemId\": 1,\n      \"quantity\": 2,\n      \"priceAtOrder\": 12.50,\n      \"note\": \"Extra cheese\"\n    },\n    {\n      \"menuItemId\": 3,\n      \"quantity\": 1,\n      \"priceAtOrder\": 3.00\n    }\n  ]\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/orders"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Order placed (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.id).to.be.a('number');",
+                "    pm.expect(json.status).to.eql('PLACED');",
+                "    pm.environment.set('orderId', json.id);",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Order (Verify PLACED)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Order is PLACED (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('PLACED');",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "UC-3 – Update Order Status",
+      "description": "Demonstrates the order status lifecycle on customer-service :8081.\nAdvances the order step-by-step: PLACED → IN_PROGRESS → READY → SERVED → REQUESTED_CHECK.\n\nThe enum enforces sequential transitions – skipping or going backward is rejected with 400.",
+      "item": [
+        {
+          "name": "Update → IN_PROGRESS",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"IN_PROGRESS\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}/status"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Status updated to IN_PROGRESS (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('IN_PROGRESS');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Update → READY",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"READY\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}/status"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Status updated to READY (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('READY');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Update → SERVED",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"SERVED\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}/status"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Status updated to SERVED (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('SERVED');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Update → REQUESTED_CHECK",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"REQUESTED_CHECK\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}/status"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Status updated to REQUESTED_CHECK (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('REQUESTED_CHECK');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Order (Verify REQUESTED_CHECK)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Order is REQUESTED_CHECK (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    pm.expect(pm.response.json().status).to.eql('REQUESTED_CHECK');",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "UC-6 – Process Payment",
+      "description": "Demonstrates payment processing on customer-service :8081.\n- Pays the order with the exact total ($28.00 = 2×$12.50 + 1×$3.00)\n- Verifies the order is now PAID with payment details recorded",
+      "item": [
+        {
+          "name": "Pay Order",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 28.00,\n  \"paymentMethod\": \"CREDIT_CARD\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}/pay"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Payment processed – order is PAID (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.status).to.eql('PAID');",
+                "    pm.expect(json.paymentMethod).to.eql('CREDIT_CARD');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Order (Verify PAID)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{customerToken}}"}
+            ],
+            "url": "{{customerBaseUrl}}/api/orders/{{orderId}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Order is PAID with payment details (200)', function () {",
+                "    pm.expect(pm.response.code).to.eql(200);",
+                "    var json = pm.response.json();",
+                "    pm.expect(json.status).to.eql('PAID');",
+                "    pm.expect(json.paymentMethod).to.eql('CREDIT_CARD');",
+                "});"
+              ]
+            }
+          }]
+        }
+      ]
+    }
+  ]
+}
