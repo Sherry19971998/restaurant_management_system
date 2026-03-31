@@ -726,9 +726,9 @@ gantt
 # Start Eureka Server (service registry, port 8761)
 cd eureka-server && ../mvnw spring-boot:run
 # Start admin-service (in a new terminal)
-cd ../admin-service && ../mvnw spring-boot:run
+cd admin-service && ../mvnw spring-boot:run
 # Start customer-service (in another new terminal)
-cd ../customer-service && ../mvnw spring-boot:run
+cd customer-service && ../mvnw spring-boot:run
 ```
 - admin-service: http://localhost:8082 (default)
 - customer-service: http://localhost:8081 (default)
