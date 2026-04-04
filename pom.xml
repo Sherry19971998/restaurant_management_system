@@ -18,6 +18,12 @@
     <name>restaurant-management-system</name>
     <description>Restaurant Order Management System - Phase 1</description>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gatling</id>
+            <url>https://repo.gatling.io/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.5</spring-cloud.version>
@@ -110,6 +116,15 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.gatling</groupId>
+                    <artifactId>gatling-maven-plugin</artifactId>
+                    <version>3.2.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -118,4 +133,9 @@
         </plugins>
     </build>
 
+    <modules>
+        <module>admin-service</module>
+        <module>customer-service</module>
+        <module>eureka-server</module>
+    </modules>
 </project>

@@ -304,6 +304,28 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ## 🎥 Presentation & Demo Script (Phase 2)
 
+## 🚀 How to Run (Backend + Frontend) （for grader）
+
+### 1. Start Backend Services (Spring Boot)
+
+```bash
+# In the project root, build all modules (skip tests for speed)
+./mvnw clean
+./mvnw -DskipTests package
+
+# Start Eureka Server (service registry, port 8761)
+cd eureka-server && ../mvnw spring-boot:run
+# Start admin-service (in a new terminal)
+cd admin-service && ../mvnw spring-boot:run
+# Start customer-service (in another new terminal)
+cd customer-service && ../mvnw spring-boot:run
+```
+- admin-service: http://localhost:8082 (default)
+- customer-service: http://localhost:8081 (default)
+- Eureka Server: http://localhost:8761
+  > Visit this page to view service registration status. Start Eureka Server first, then start other services.
+
+
 The following table summarizes the main business use cases supported in Phase 2, mapping each scenario to the responsible service module, relevant API endpoints, and a brief description. This overview helps demonstrate how the system’s microservices and REST APIs work together to support core restaurant operations.
 
 Table 1
@@ -344,7 +366,7 @@ Table 3
 | Send the token      | With every protected API request using the `Authorization: Bearer <token>` header.                            |
 | Validate the token  | Any backend service (customer-service, admin-service) can validate the token and extract user identity and roles, enabling secure access control and seamless cross-service authentication. |
 
-**Example PowerShell Usage:**
+**Example PowerShell Usage:（for grader）**
 
 | Operation                | Command/Script                                                                                           |
 |--------------------------|----------------------------------------------------------------------------------------------------------|
@@ -366,6 +388,8 @@ Table 3
 
 In this system, we use Spring Cloud Netflix Eureka for service discovery. Each microservice (admin-service and customer-service) registers itself with the Eureka server at startup. This allows services to dynamically discover each other by logical service name, rather than relying on hardcoded hostnames or ports. For example, customer-service can call admin-service using its service name, and Eureka will resolve the actual instance address. This approach enables load balancing, failover, and easy scaling, as new service instances are automatically registered and discoverable. Service discovery is essential for microservice architectures, supporting resilience and flexibility in deployment.
 
+**Example Usage:（for grader）**
+
 | Step                | Description                                                                                                   |
 |---------------------|---------------------------------------------------------------------------------------------------------------|
 | Start Eureka Server | Run the Eureka Server (default port: 8761).<br>The console should show "Started EurekaServerApplication".      |
@@ -382,75 +406,39 @@ In this system, we use Spring Cloud Netflix Eureka for service discovery. Each m
 
 ### 4. Scalability & Resilience Demo (Stress Test)
 
-To demonstrate the scalability and resilience of the application, we developed a comprehensive stress test using Gatling. The test simulates high-concurrency scenarios such as multiple users logging in, placing orders, making reservations, and accessing protected APIs simultaneously. By ramping up the number of virtual users and requests, we can observe how the system handles load, measures response times, and maintains stability under pressure. The stateless JWT authentication and Eureka-based service discovery enable horizontal scaling and fault tolerance, as new service instances can be added or restarted without disrupting user sessions. Gatling reports provide detailed insights into throughput, error rates, and bottlenecks, helping validate the system's robustness and readiness for real-world usage.
+To demonstrate the scalability and resilience of the application, we developed a focused stress test using Gatling. The test simulates high-concurrency scenarios where many users register and log in simultaneously, targeting only the user registration and login endpoints. By ramping up the number of virtual users and requests, we can observe how the authentication system handles load, measures response times, and maintains stability under pressure. The stateless JWT authentication and Eureka-based service discovery enable horizontal scaling and fault tolerance, as new service instances can be added or restarted without disrupting user sessions. Gatling reports provide detailed insights into throughput, error rates, and bottlenecks, helping validate the system's robustness and readiness for real-world usage.
 
 #### Gatling Stress Test Demo
 1. **Prepare the Gatling script**
-   - See `gatling/RestaurantApiSimulation.scala`. The script covers the following scenarios:
+  - See `gatling-maven-plugin-demo-java-main/src/test/scala/example/RestaurantApiSimulation.scala`. The script covers the following scenarios:
 
 Table 4
 
 | Scenario                              | Description |
-|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| Multiple users login concurrently      | Simulate many users logging in at the same time to test authentication performance                                                |
-| Placing orders                        | Users place orders to test the order creation workflow                                                                            |
-| Simulated payments                    | Simulate payments after order placement to test payment APIs and flow                                                             |
-| Accessing protected APIs              | Access APIs with Authorization header to test permission checks and performance                                                    |
-| Reservation peak load                 | Many users make reservations simultaneously to test concurrency and conflict handling                                              |
-| Menu browsing at scale                | High-frequency GET requests for menu browsing to test read performance                                                            |
-| Order status polling                  | Clients poll order status frequently to test system responsiveness                                                                |
-| Admin operations under load            | Admins update menu items and perform other operations under high concurrency to test backend stability                             |
-| Error/edge case simulation            | Simulate invalid tokens, bad order IDs, etc., to test error handling                                                              |
-| Long-running session simulation       | Users stay logged in and active for a long time to test session stability                                                         |
+|----------------------------------------|---------------------------------------------------------------|
+| User registration and login stress test| Simulate many users registering and logging in concurrently to test authentication performance |
 
-   - Example snippet:
-     ```scala
-     val register = exec(http("Register User")
-       .post("/api/auth/register")
-       .body(StringBody("{"username":"${username}","password":"${password}","roles":["USER"]}"))
-       .asJson.check(status.is(200)))
-     val login = exec(http("Login User")
-       .post("/api/auth/login")
-       .body(StringBody("{"username":"${username}","password":"${password}"}"))
-       .asJson.check(jsonPath("$.token").saveAs("jwtToken")))
-     val placeOrder = exec(http("Place Order")
-       .post("/api/orders")
-       .header("Authorization", "Bearer ${jwtToken}")
-       .body(StringBody("{"diningTableId":1,"customerId":1,"status":"PLACED","items":[{"menuItemId":1,"quantity":2,"priceAtOrder":12.50}]}"))
-       .asJson.check(status.in(200, 400)))
-     val makeReservation = exec(http("Make Reservation")
-       .post("/api/reservations")
-       .header("Authorization", "Bearer ${jwtToken}")
-       .body(StringBody("{"diningTableId":1,"customerId":1,"reservationDate":"2026-03-28T19:00:00","partySize":2,"status":"BOOKED","guestName":"Test User","guestPhone":"1234567890"}"))
-       .asJson.check(status.in(200, 400, 409)))
-     // ...and more (see script for all scenarios)
-     ```
-   - Each scenario is injected with users and ramp-up time to simulate real-world load.
-   - Gatling automatically measures response times, throughput, and error rates for all requests.
+# How to Run the Gatling Load Test （for grader）
 
-2. **Run the stress test**
-   - Run Gatling from the command line:
-     ```bash
-     cd gatling && ./gradlew gatlingRun-RestaurantApiSimulation
-     ```
-   - Watch the console for real-time output: response times, throughput, error rates.
+1. Make sure your backend service is running at http://localhost:8081.
 
-3. **Analyze the results**
-   - Open the generated Gatling HTML report to view:
-     - Response distribution and concurrency bottlenecks
-     - Success rate and latency under high concurrency
-     - Error/edge case handling and system stability
+2. Open a terminal in the project root directory. 
+   
+  cd gatling-maven-plugin-demo-java-main
 
-4. **Horizontal scaling and resilience explanation**
-   - Stateless JWT authentication supports multi-instance scaling (no session stickiness required).
-   - Optionally, demonstrate dynamic scaling in combination with Eureka (service discovery and load balancing).
+3. Run the following command to execute the Gatling simulation:
 
-5. **Resilience and fault tolerance (optional)**
-   - Explain that retry, circuit breaker, and other microservice resilience patterns (e.g., Resilience4j) can be integrated for production.
+  ```
+  ./mvnw.cmd clean gatling:test "-Dgatling.simulationClass=example.RestaurantApiSimulation" -X
+  ```
 
-**Demo Tips:**
-- Record Gatling execution and report analysis.
-- Show service logs to demonstrate system behavior under high concurrency and error conditions.
+4. After the test completes, open the generated HTML report under:
+
+  target/gatling/restaurantapisimulation-<timestamp>/index.html
+
+Replace <timestamp> with the actual folder name generated during the test.
+
+The script will perform load testing for user registration and login endpoints only.
 
 ---
 
@@ -714,26 +702,6 @@ gantt
 
 ---
 
-## 🚀 How to Run (Backend + Frontend)
-
-### 1. Start Backend Services (Spring Boot)
-
-```bash
-# In the project root, build all modules (skip tests for speed)
-./mvnw clean
-./mvnw -DskipTests package
-
-# Start Eureka Server (service registry, port 8761)
-cd eureka-server && ../mvnw spring-boot:run
-# Start admin-service (in a new terminal)
-cd admin-service && ../mvnw spring-boot:run
-# Start customer-service (in another new terminal)
-cd customer-service && ../mvnw spring-boot:run
-```
-- admin-service: http://localhost:8082 (default)
-- customer-service: http://localhost:8081 (default)
-- Eureka Server: http://localhost:8761
-  > Visit this page to view service registration status. Start Eureka Server first, then start other services.
 
 ### 2. Start Frontend (React + Vite)
 
