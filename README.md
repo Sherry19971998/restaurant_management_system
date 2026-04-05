@@ -304,7 +304,7 @@ SELECT TABLE_NUMBER, STATUS, CAPACITY FROM DINING_TABLE;
 
 ## 🎥 Presentation & Demo Script (Phase 2)
 
-## 🚀 How to Run (Backend + Frontend) （for grader）
+## 🚀 How to Run (Backend & Postman) （for grader）
 
 ### 1. Start Backend Services (Spring Boot)
 
@@ -325,6 +325,42 @@ cd customer-service && ../mvnw spring-boot:run
 - Eureka Server: http://localhost:8761
   > Visit this page to view service registration status. Start Eureka Server first, then start other services.
 
+### 2. Import & Run Postman Collection (for grader)
+
+**Step 1 – Import files into Postman**
+1. Open Postman → click **Import** (top-left)
+2. Import the collection file:
+   `postman/Restaurant_Order_Management_Full_Demo.postman_collection.json`
+3. Import the environment file:
+   `postman/Restaurant_Order_Management_Demo.postman_environment.json`
+
+**Step 2 – Select the environment**
+- In the top-right dropdown of Postman, select **"Restaurant Order Management – Demo"**
+- Confirm that `adminBaseUrl` = `http://localhost:8082` and `customerBaseUrl` = `http://localhost:8081`
+
+**Step 3 – Run requests in order**
+
+| Order | Folder | Service | Purpose |
+|-------|--------|---------|---------|
+| 1 | **0 – Auth Setup** | Both | Register & login users, auto-save JWT tokens to environment variables |
+| 2 | **UC-4 – Validate Customer Input** | customer-service :8081 | Create a valid customer, test invalid input (→ 400) |
+| 3 | **UC-5 – Manager Updates Menu Item** | admin-service :8082 | Add a new menu item, update price & description |
+| 4 | **UC-7 – Manage Table Status** | admin-service :8082 | Create table T4, toggle OCCUPIED → AVAILABLE |
+| 5 | **UC-2 – Make Reservation** | admin-service :8082 | Book a table, test duplicate reservation conflict (→ 409) |
+| 6 | **UC-1 – Place Order** | customer-service :8081 | Browse menu via proxy, place order with items |
+| 7 | **UC-3 – Update Order Status** | customer-service :8081 | Advance order: PLACED → IN_PROGRESS → READY → SERVED → REQUESTED_CHECK |
+| 8 | **UC-6 – Process Payment** | customer-service :8081 | Pay the order, verify status becomes PAID |
+
+> 💡 **Tokens are auto-saved:** After each login request in folder `0 – Auth Setup`, Postman automatically sets `adminToken` and `customerToken` in the environment — no manual copy-paste needed.
+
+**Step 4 – Run the full collection automatically (optional)**
+1. Click **"..."** next to the collection name → select **Run collection**
+2. Ensure the correct environment is selected in the Runner
+3. Click **Run** — Postman will execute all requests in sequence and display pass/fail results for each built-in test
+
+> ⚠️ **Note:** All three backend services (Eureka, admin-service, customer-service) must be running before executing any Postman requests.
+
+### Use Cases
 
 The following table summarizes the main business use cases supported in Phase 2, mapping each scenario to the responsible service module, relevant API endpoints, and a brief description. This overview helps demonstrate how the system’s microservices and REST APIs work together to support core restaurant operations.
 
@@ -340,7 +376,7 @@ Table 1
 | Process Payment for Order             | customer-service    | PATCH /api/orders/{id}/pay<br>PATCH /api/orders/{id}/status<br>GET /api/orders/{id}                              | Complete payment for an order, update/check status |
 | Manage Table Status                   | admin-service       | PATCH /api/tables/{id}/status<br>GET /api/tables/{id}                                                            | Update and check table status |
 
-### 1. Security Features
+### Security Features
 
 The application implements a full suite of security features to protect user data and control access. User registration allows new users to sign up with unique credentials and roles. Authentication is handled via JWT tokens—users log in to receive a token, which must be included in the Authorization header for all protected API requests. Authorization ensures that only users with the correct roles can access specific endpoints, with both customer-service and admin-service enforcing role-based access control. For password management, users can request a password reset link via email or username, and securely reset their password using a token. These features are demonstrated through the registration, login, protected resource access, and password reminder/reset flows, ensuring robust security across all services.
 
@@ -353,7 +389,7 @@ Table 2
 | Authorization (Access Control) | All protected API endpoints require the `Authorization: Bearer <token>` header.<br>The backend validates the token, extracts user info and roles, and grants or denies access accordingly.<br>Both customer-service and admin-service use the same JWT validation logic, so a token issued by one service is valid across all backend services. |
 | Password Reminder (Reset) | Users can request a password reset link/token via `/api/auth/forgot-password` (customer-service).<br>They can then reset their password using `/api/auth/reset-password` with the provided token. |
 
-### 2. Bearer Token Usage Across Services
+### Bearer Token Usage Across Services
 
 In this system, authentication is handled using JWT bearer tokens. After a user logs in and receives a token from customer-service, this token can be used to access any protected API in both customer-service and admin-service. Each backend service validates the token independently, extracting user identity and roles from the token payload. This enables seamless, stateless authentication and authorization across all microservices—no session state is stored on the server, and the same token is valid for all backend services. This approach supports secure, scalable, and decoupled service interactions in a microservice architecture.
 
@@ -384,7 +420,7 @@ Table 3
 | No session state is stored on the server; all user info is encoded in the token and validated on each request.    |
 | This approach supports horizontal scaling and microservice architectures.                      |
 
-### 3. Service Discovery (Eureka)
+### Service Discovery (Eureka)
 
 In this system, we use Spring Cloud Netflix Eureka for service discovery. Each microservice (admin-service and customer-service) registers itself with the Eureka server at startup. This allows services to dynamically discover each other by logical service name, rather than relying on hardcoded hostnames or ports. For example, customer-service can call admin-service using its service name, and Eureka will resolve the actual instance address. This approach enables load balancing, failover, and easy scaling, as new service instances are automatically registered and discoverable. Service discovery is essential for microservice architectures, supporting resilience and flexibility in deployment.
 
@@ -404,7 +440,7 @@ In this system, we use Spring Cloud Netflix Eureka for service discovery. Each m
 | Record the Eureka UI, showing dynamic registration/deregistration of services.                |
 | Show the key application.properties configuration:<br>- admin-service/src/main/resources/application.properties<br>- customer-service/src/main/resources/application.properties |
 
-### 4. Scalability & Resilience Demo (Stress Test)
+### Scalability & Resilience Demo (Stress Test)
 
 To demonstrate the scalability and resilience of the application, we developed a focused stress test using Gatling. The test simulates high-concurrency scenarios where many users register and log in simultaneously, targeting only the user registration and login endpoints. By ramping up the number of virtual users and requests, we can observe how the authentication system handles load, measures response times, and maintains stability under pressure. The stateless JWT authentication and Eureka-based service discovery enable horizontal scaling and fault tolerance, as new service instances can be added or restarted without disrupting user sessions. Gatling reports provide detailed insights into throughput, error rates, and bottlenecks, helping validate the system's robustness and readiness for real-world usage.
 
