@@ -27,8 +27,8 @@ export default function OrderDetailPage() {
     try {
       await updateOrderStatus(id, { status });
       alert('Status updated!');
-    } catch {
-      setError('Update failed');
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Update failed');
     } finally {
       setLoading(false);
     }
@@ -40,8 +40,8 @@ export default function OrderDetailPage() {
     try {
       await payOrder(id, {});
       setPayMsg('Payment successful!');
-    } catch {
-      setPayMsg('Payment failed');
+    } catch (err) {
+      setPayMsg(err?.response?.data?.message || 'Payment failed');
     } finally {
       setLoading(false);
     }

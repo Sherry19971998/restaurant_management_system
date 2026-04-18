@@ -96,7 +96,7 @@ Restaurant, DiningTable, Customer, Reservation, RestaurantOrder, OrderItem, Menu
   5. ReservationRepository persists the reservation.
   6. Controller returns reservation confirmation.
 
-- **UC-3: Update Order Status** (customer-service)
+**UC-3: Update Order Status** (customer-service)
   1. Kitchen staff sends PATCH /api/orders/{id}/status to OrderController.
   2. OrderController validates order existence and input.
   3. OrderService checks current status, applies transition (e.g., IN_PROGRESS → READY).
@@ -117,8 +117,8 @@ Restaurant, DiningTable, Customer, Reservation, RestaurantOrder, OrderItem, Menu
   4. MenuItemRepository creates or updates menu item.
   5. Controller returns operation confirmation.
 
-- **UC-6: Process Payment for Order** (customer-service)
-  1. Staff sends POST /api/orders/{id}/payment to OrderController.
+**UC-6: Process Payment for Order** (customer-service)
+  1. Staff sends PATCH /api/orders/{id}/pay to OrderController.
   2. OrderController validates payment input and order status.
   3. OrderService calculates total, processes payment, updates status to PAID.
   4. RestaurantOrderRepository updates order and payment record.
@@ -176,7 +176,7 @@ Each use case is handled by a dedicated Controller class, acting as the entry po
 | UC-3 Update Order Status | `OrderController` | `PATCH /api/orders/{id}/status` |
 | UC-4 Customer Registration | `CustomerController` | `POST /api/customers` |
 | UC-5 Manage Menu Items | `MenuItemController` | `POST/PUT /api/menu-items` |
-| UC-6 Process Payment | `OrderController` | `POST /api/orders/{id}/pay` |
+| UC-6 Process Payment | `OrderController` | `PATCH /api/orders/{id}/pay` |
 | UC-7 Manage Table Status | `DiningTableController` | `PATCH /api/tables/{id}/status` |
 
 Controllers do **not** contain business logic — they delegate to Services, which matches the Controller pattern (thin controller, fat service).

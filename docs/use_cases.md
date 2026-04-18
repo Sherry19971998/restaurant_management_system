@@ -5,6 +5,9 @@
 - Controller: customer-service/src/main/java/com/example/customerservice/controller/OrderController.java
 - Service: customer-service/src/main/java/com/example/customerservice/service/OrderService.java
 - Repository: customer-service/src/main/java/com/example/customerservice/repository/OrderRepository.java
+【Main Frontend Files】
+- Pages: frontend/src/pages/PlaceOrderPage.jsx, OrderListPage.jsx, OrderDetailPage.jsx
+- API: frontend/src/api/order.js, menuItem.js, table.js, customer.js
 【customer-service】
 - **ID:** UC-1
 - **Primary Actor:** Customer
@@ -45,6 +48,9 @@
 - Controller: admin-service/src/main/java/com/example/adminservice/controller/ReservationController.java
 - Service: admin-service/src/main/java/com/example/adminservice/service/ReservationService.java
 - Repository: admin-service/src/main/java/com/example/adminservice/repository/ReservationRepository.java
+【Main Frontend Files】
+- Pages: frontend/src/pages/AddReservationPage.jsx, ReservationListPage.jsx, ReservationDetailPage.jsx
+- API: frontend/src/api/reservation.js, table.js, customer.js
 【customer-service】
 - **ID:** UC-2
 - **Primary Actor:** Staff
@@ -90,6 +96,9 @@
 - Controller: customer-service/src/main/java/com/example/customerservice/controller/OrderController.java
 - Service: customer-service/src/main/java/com/example/customerservice/service/OrderService.java
 - Repository: customer-service/src/main/java/com/example/customerservice/repository/OrderRepository.java
+【Main Frontend Files】
+- Pages: frontend/src/pages/OrderDetailPage.jsx, OrderListPage.jsx
+- API: frontend/src/api/order.js
 【customer-service】
 - **ID:** UC-3
 - **Primary Actor:** Kitchen Staff
@@ -111,6 +120,9 @@
 - Controller: customer-service/src/main/java/com/example/customerservice/controller/CustomerController.java
 - Service: customer-service/src/main/java/com/example/customerservice/service/CustomerService.java
 - Repository: customer-service/src/main/java/com/example/customerservice/repository/CustomerRepository.java
+【Main Frontend Files】
+- Pages: frontend/src/pages/RegisterPage.jsx, AddCustomerPage.jsx, CustomerListPage.jsx
+- API: frontend/src/api/auth.js, customer.js
 【customer-service】
 - **ID:** UC-4
 - **Primary Actor:** Customer
@@ -132,6 +144,9 @@
 - Controller: admin-service/src/main/java/com/example/adminservice/controller/MenuItemController.java
 - Service: admin-service/src/main/java/com/example/adminservice/service/MenuItemService.java
 - Repository: admin-service/src/main/java/com/example/adminservice/repository/MenuItemRepository.java
+【Main Frontend Files】
+- Pages: frontend/src/pages/AddEditMenuItemPage.jsx, MenuItemListPage.jsx, MenuItemDetailPage.jsx
+- API: frontend/src/api/menuItem.js, restaurant.js
 【admin-service】
 - **ID:** UC-5
 - **Primary Actor:** Manager
@@ -170,6 +185,9 @@
 - Controller: customer-service/src/main/java/com/example/customerservice/controller/OrderController.java
 - Service: customer-service/src/main/java/com/example/customerservice/service/OrderService.java
 - Repository: customer-service/src/main/java/com/example/customerservice/repository/OrderRepository.java
+【Main Frontend Files】
+- Pages: frontend/src/pages/OrderDetailPage.jsx, OrderListPage.jsx
+- API: frontend/src/api/order.js
 【customer-service】
 - **ID:** UC-6
 - **Primary Actor:** Waiter/Staff
@@ -192,6 +210,9 @@
 - Controller: admin-service/src/main/java/com/example/adminservice/controller/DiningTableController.java
 - Service: admin-service/src/main/java/com/example/adminservice/service/DiningTableService.java
 - Repository: admin-service/src/main/java/com/example/adminservice/repository/DiningTableRepository.java
+【Main Frontend Files】
+- Pages: frontend/src/pages/AddTablePage.jsx, TableListPage.jsx, TableDetailPage.jsx
+- API: frontend/src/api/table.js
 【admin-service】
 - **ID:** UC-7
 - **Primary Actor:** Waiter/Staff
