@@ -738,6 +738,26 @@ gantt
 
 ---
 
+### How to Run the Project (Step-by-Step Guide)
+
+### 1. Start Backend (Spring Boot)
+
+```bash
+# In the project root, build all modules (skip tests for speed)
+./mvnw clean
+./mvnw -DskipTests package
+
+# Start Eureka Server (service registry, port 8761)
+cd eureka-server && ../mvnw spring-boot:run
+# Start admin-service (in a new terminal)
+cd admin-service && ../mvnw spring-boot:run
+# Start customer-service (in another new terminal)
+cd customer-service && ../mvnw spring-boot:run
+```
+- admin-service: http://localhost:8082 (default)
+- customer-service: http://localhost:8081 (default)
+- Eureka Server: http://localhost:8761
+  > Visit this page to view service registration status. Start Eureka Server first, then start other services.
 
 ### 2. Start Frontend (React + Vite)
 
