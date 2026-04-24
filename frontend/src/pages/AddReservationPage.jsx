@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import { addReservation } from '../api/reservation';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setReservationId } from '../slices/userSlice';
 
 export default function AddReservationPage() {
-  const [form, setForm] = useState({ reservationTime: '', partySize: '', status: 'CONFIRMED', diningTableId: '', customerId: '' });
+  const customerId = useSelector(state => state.user.customerId);
+  const [form, setForm] = useState({ reservationTime: '', partySize: '', status: 'CONFIRMED', diningTableId: '', customerId: customerId || '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [fieldError, setFieldError] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   const validate = () => {
     const fe = {};
-    if (!form.reservationTime.trim()) fe.reservationTime = 'Reservation time is required';
-    else if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(form.reservationTime)) fe.reservationTime = 'Invalid datetime format';
-    if (!form.partySize || isNaN(form.partySize) || parseInt(form.partySize) <= 0) fe.partySize = 'Party size must be positive';
-    if (!form.diningTableId.trim()) fe.diningTableId = 'Table ID is required';
-    if (!form.customerId.trim()) fe.customerId = 'Customer ID is required';
+      if (!form.reservationTime.trim()) fe.reservationTime = 'Reservation time is required';
+      else if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(form.reservationTime)) fe.reservationTime = 'Invalid datetime format';
+      if (!form.partySize || isNaN(form.partySize) || parseInt(form.partySize) <= 0) fe.partySize = 'Party size must be positive';
+      if (!form.diningTableId.trim()) fe.diningTableId = 'Table ID is required';
+      if (!String(form.customerId).trim()) fe.customerId = 'Customer ID is required';
     return fe;
   };
 
@@ -32,8 +36,14 @@ export default function AddReservationPage() {
       return;
     }
     try {
-      await addReservation(form);
-      navigate('/reservations');
+      const res = await addReservation(form);
+      const reservationId = res?.data?.id;
+      if (reservationId) {
+        dispatch(setReservationId(reservationId));
+        navigate('/orders/place');
+      } else {
+        setError('Reservation created but no ID returned');
+      }
     } catch (err) {
       setError(err?.response?.data?.message || 'Add failed');
     } finally {
@@ -50,7 +60,7 @@ export default function AddReservationPage() {
       {fieldError.partySize && <div style={{color:'red'}}>{fieldError.partySize}</div>}
       <input name="diningTableId" value={form.diningTableId} onChange={handleChange} placeholder="Table ID" />
       {fieldError.diningTableId && <div style={{color:'red'}}>{fieldError.diningTableId}</div>}
-      <input name="customerId" value={form.customerId} onChange={handleChange} placeholder="Customer ID" />
+      <input name="customerId" value={form.customerId} disabled placeholder="Customer ID" />
       {fieldError.customerId && <div style={{color:'red'}}>{fieldError.customerId}</div>}
       <select name="status" value={form.status} onChange={handleChange} required>
         <option value="CONFIRMED">CONFIRMED</option>

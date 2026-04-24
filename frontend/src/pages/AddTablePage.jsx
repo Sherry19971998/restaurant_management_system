@@ -56,6 +56,7 @@ export default function AddTablePage() {
       </select>
       <button type="submit" disabled={loading}>Add</button>
       {error && <div style={{color:'red'}}>{error}</div>}
+      <button type="button" style={{marginTop:16}} onClick={() => navigate('/tables')}>Back</button>
     </form>
   );
 }

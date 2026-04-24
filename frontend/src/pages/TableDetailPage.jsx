@@ -48,6 +48,7 @@ export default function TableDetailPage() {
         </select>
         <button onClick={handleUpdate} disabled={loading}>Update Status</button>
       </div>
+      <button style={{marginTop:16}} onClick={() => window.history.back()}>Back</button>
     </div>
   );
 }

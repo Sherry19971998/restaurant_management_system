@@ -71,6 +71,7 @@ export default function AddEditMenuItemPage() {
       </label>
       <button type="submit" disabled={loading}>{isEdit ? 'Save' : 'Add'}</button>
       {error && <div style={{color:'red'}}>{error}</div>}
+      <button type="button" style={{marginTop:16}} onClick={() => navigate('/menu-items')}>Back</button>
     </form>
   );
 }

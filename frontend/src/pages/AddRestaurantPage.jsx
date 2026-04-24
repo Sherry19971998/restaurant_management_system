@@ -32,6 +32,7 @@ export default function AddRestaurantPage() {
       <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone" required />
       <button type="submit" disabled={loading}>Add</button>
       {error && <div style={{color:'red'}}>{error}</div>}
+      <button type="button" style={{marginTop:16}} onClick={() => navigate('/restaurants')}>Back</button>
     </form>
   );
 }

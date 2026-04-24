@@ -765,6 +765,9 @@ cd customer-service && ../mvnw spring-boot:run
 # In the frontend directory
 cd frontend
 npm install # Only needed once
+npm install react-router-dom
+npm install react-redux @reduxjs/toolkit
+npm install axios
 npm run dev
 ```
 - The frontend will be available at: http://localhost:5173 (default Vite port)

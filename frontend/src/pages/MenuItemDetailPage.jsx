@@ -24,6 +24,7 @@ export default function MenuItemDetailPage() {
       <div>Available: {item.available ? 'Yes' : 'No'}</div>
       <div>Restaurant ID: {item.restaurantId}</div>
       <Link to={`/menu-items/edit/${item.id}`}>Edit</Link>
+      <button style={{marginTop:16}} onClick={() => window.history.back()}>Back</button>
     </div>
   );
 }

@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { placeOrder } from '../api/order';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export default function PlaceOrderPage() {
-  const [form, setForm] = useState({ diningTableId: '', customerId: '', status: 'PLACED', items: [] });
+function PlaceOrderPage() {
+  const customerId = useSelector(state => state.user.customerId);
+  const reservationId = useSelector(state => state.user.reservationId);
+  const [form, setForm] = useState({ diningTableId: '', customerId: '', reservationId: '', status: 'PLACED', items: [] });
   const [item, setItem] = useState({ menuItemId: '', quantity: '', priceAtOrder: '', note: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -11,6 +14,18 @@ export default function PlaceOrderPage() {
   const [fieldError, setFieldError] = useState({});
   const [itemError, setItemError] = useState('');
   const navigate = useNavigate();
+
+  // Redirect to AddCustomerPage if no customerId
+  useEffect(() => {
+    if (!customerId) {
+      navigate('/customers/add');
+    } else if (!reservationId) {
+      navigate('/reservations/add');
+    } else {
+      setForm(f => ({ ...f, customerId, reservationId }));
+    }
+    // eslint-disable-next-line
+  }, [customerId, reservationId]);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
   const handleItemChange = e => setItem({ ...item, [e.target.name]: e.target.value });
@@ -36,7 +51,8 @@ export default function PlaceOrderPage() {
   const validate = () => {
     const fe = {};
     if (!form.diningTableId.trim()) fe.diningTableId = 'Table ID required';
-    if (!form.customerId.trim()) fe.customerId = 'Customer ID required';
+    if (!customerId) fe.customerId = 'Customer ID required';
+    if (!reservationId) fe.reservationId = 'Reservation ID required';
     if (items.length === 0) fe.items = 'At least one item required';
     return fe;
   };
@@ -66,8 +82,10 @@ export default function PlaceOrderPage() {
       <h2>Place Order</h2>
       <input name="diningTableId" value={form.diningTableId} onChange={handleChange} placeholder="Table ID" />
       {fieldError.diningTableId && <div style={{color:'red'}}>{fieldError.diningTableId}</div>}
-      <input name="customerId" value={form.customerId} onChange={handleChange} placeholder="Customer ID" />
+      <input name="customerId" value={customerId || ''} disabled placeholder="Customer ID" />
       {fieldError.customerId && <div style={{color:'red'}}>{fieldError.customerId}</div>}
+      <input name="reservationId" value={reservationId || ''} disabled placeholder="Reservation ID" />
+      {fieldError.reservationId && <div style={{color:'red'}}>{fieldError.reservationId}</div>}
       <div>
         <h4>Add Item</h4>
         <input name="menuItemId" value={item.menuItemId} onChange={handleItemChange} placeholder="Menu Item ID" />
@@ -88,3 +106,5 @@ export default function PlaceOrderPage() {
     </form>
   );
 }
+
+export default PlaceOrderPage;

@@ -1,6 +1,10 @@
+
 import React, { useState } from 'react';
 import { addCustomer } from '../api/customer';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCustomerId } from '../slices/userSlice';
+
 
 export default function AddCustomerPage() {
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
@@ -8,6 +12,7 @@ export default function AddCustomerPage() {
   const [loading, setLoading] = useState(false);
   const [fieldError, setFieldError] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -31,8 +36,14 @@ export default function AddCustomerPage() {
       return;
     }
     try {
-      await addCustomer(form);
-      navigate('/customers');
+      const res = await addCustomer(form);
+      const customerId = res?.data?.id;
+      if (customerId) {
+        dispatch(setCustomerId(customerId));
+        navigate('/reservations/add');
+      } else {
+        setError('Customer created but no ID returned');
+      }
     } catch (err) {
       setError(err?.response?.data?.message || 'Add failed');
     } finally {

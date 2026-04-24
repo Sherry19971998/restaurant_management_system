@@ -1,3 +1,7 @@
+    @GetMapping
+    public ResponseEntity<?> getAllReservations() {
+        return ResponseEntity.ok(new ArrayList<>(reservations.values()));
+    }
 package com.example.customerservice.controller;
 
 import org.springframework.http.ResponseEntity;

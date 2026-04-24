@@ -60,11 +60,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtUtil.generateToken(user.getUsername(), user.getRoles());
-        return ResponseEntity.ok(Collections.singletonMap("token", token));
+        java.util.Map<String, Object> resp = new java.util.HashMap<>();
+        resp.put("token", token);
+        resp.put("roles", user.getRoles());
+        return ResponseEntity.ok(resp);
     }
 
     @PostMapping("/forgot-password")

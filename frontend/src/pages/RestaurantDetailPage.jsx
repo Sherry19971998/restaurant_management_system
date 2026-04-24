@@ -21,6 +21,7 @@ export default function RestaurantDetailPage() {
       <h2>{restaurant.name}</h2>
       <div>Address: {restaurant.address}</div>
       <div>Phone: {restaurant.phone}</div>
+      <button style={{marginTop:16}} onClick={() => window.history.back()}>Back</button>
     </div>
   );
 }
