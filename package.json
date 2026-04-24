@@ -2,6 +2,18 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "antd": "^6.3.3",
-    "react-redux": "^9.2.0"
+    "axios": "^1.15.2",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.14.2"
+  },
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
   }
 }
