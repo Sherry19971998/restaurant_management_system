@@ -1,7 +1,4 @@
-    @GetMapping
-    public ResponseEntity<?> getAllReservations() {
-        return ResponseEntity.ok(new ArrayList<>(reservations.values()));
-    }
+// (removed duplicate package declaration)
 package com.example.customerservice.controller;
 
 import org.springframework.http.ResponseEntity;
@@ -15,12 +12,19 @@ public class ReservationController {
     private final Map<Long, Map<String, Object>> reservations = new HashMap<>();
     private long idCounter = 1;
 
+
     @PostMapping
     public ResponseEntity<?> createReservation(@RequestBody Map<String, Object> request) {
         long id = idCounter++;
         request.put("id", id);
         reservations.put(id, request);
         return ResponseEntity.ok(request);
+    }
+
+    // 获取所有预定列表
+    @GetMapping
+    public ResponseEntity<?> getAllReservations() {
+        return ResponseEntity.ok(reservations.values());
     }
 
     @GetMapping("/{id}")

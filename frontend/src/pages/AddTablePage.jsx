@@ -31,7 +31,7 @@ export default function AddTablePage() {
     }
     try {
       await addTable(form);
-      navigate('/tables');
+      // Do not navigate after add; stay on page
     } catch (err) {
       setError(err?.response?.data?.message || 'Add failed');
     } finally {

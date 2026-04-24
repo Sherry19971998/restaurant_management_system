@@ -70,3 +70,641 @@
 2026-04-24 01:04:24.969 [http-nio-8082-exec-10] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
 2026-04-24 01:04:29.001 [http-nio-8082-exec-3] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
 2026-04-24 01:08:47.792 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:20:38.731 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-04-24 14:20:38.781 [main] INFO  c.e.a.AdminServiceApplication - Starting AdminServiceApplication using Java 17.0.17 with PID 34824 (C:\Users\xiexi\restaurant_management_system\admin-service\target\classes started by xiexi in C:\Users\xiexi\restaurant_management_system\admin-service)
+2026-04-24 14:20:38.783 [main] INFO  c.e.a.AdminServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-24 14:20:39.566 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-24 14:20:39.767 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 190 ms. Found 7 JPA repository interfaces.
+2026-04-24 14:20:40.097 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3c16b76b-9a5d-3fe1-95e8-4466e0e2bb44
+2026-04-24 14:20:40.544 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8082 (http)
+2026-04-24 14:20:40.551 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8082"]
+2026-04-24 14:20:40.554 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-24 14:20:40.555 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.17]
+2026-04-24 14:20:40.696 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-24 14:20:40.697 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1872 ms
+2026-04-24 14:20:40.724 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-24 14:20:40.900 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:admindb user=SA
+2026-04-24 14:20:40.903 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-24 14:20:40.912 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:admindb'
+2026-04-24 14:20:40.988 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-24 14:20:41.030 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.17.Final
+2026-04-24 14:20:41.033 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2026-04-24 14:20:41.330 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-24 14:20:42.738 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-24 14:20:42.873 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 14:20:43.650 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-24 14:20:44.007 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3325f17, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@35e63d26, org.springframework.security.web.context.SecurityContextHolderFilter@1f832df0, org.springframework.security.web.header.HeaderWriterFilter@1c61f9bf, org.springframework.security.web.authentication.logout.LogoutFilter@7bc46dde, com.example.adminservice.security.JwtAuthenticationFilter@55e02661, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@22781286, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@70ed03e4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5d51203b, org.springframework.security.web.session.SessionManagementFilter@1ae8556c, org.springframework.security.web.access.ExceptionTranslationFilter@1252d480, org.springframework.security.web.access.intercept.AuthorizationFilter@33a0b857]
+2026-04-24 14:20:44.666 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2026-04-24 14:20:45.045 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-04-24 14:20:45.081 [main] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2026-04-24 14:20:45.190 [main] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2026-04-24 14:20:45.195 [main] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:20:45.226 [main] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2026-04-24 14:20:45.226 [main] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2026-04-24 14:20:45.226 [main] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2026-04-24 14:20:45.227 [main] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2026-04-24 14:20:45.227 [main] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2026-04-24 14:20:45.227 [main] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2026-04-24 14:20:45.228 [main] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2026-04-24 14:20:45.934 [main] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2026-04-24 14:20:45.938 [main] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2026-04-24 14:20:45.944 [main] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-04-24 14:20:45.952 [main] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1777065645950 with initial instances count: 0
+2026-04-24 14:20:45.956 [main] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application ADMIN-SERVICE with eureka with status UP
+2026-04-24 14:20:45.957 [main] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1777065645957, current=UP, previous=STARTING]
+2026-04-24 14:20:45.961 [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ADMIN-SERVICE/Sherry:admin-service:8082: registering service...
+2026-04-24 14:20:45.961 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8082"]
+2026-04-24 14:20:45.997 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8082 (http) with context path ''
+2026-04-24 14:20:45.998 [main] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8082
+2026-04-24 14:20:46.244 [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ADMIN-SERVICE/Sherry:admin-service:8082 - registration status: 204
+2026-04-24 14:20:46.362 [main] INFO  c.e.a.AdminServiceApplication - Started AdminServiceApplication in 8.275 seconds (process running for 8.764)
+2026-04-24 14:21:15.942 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2026-04-24 14:21:15.942 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2026-04-24 14:21:15.942 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2026-04-24 14:21:15.943 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2026-04-24 14:21:15.943 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2026-04-24 14:21:15.943 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: false
+2026-04-24 14:21:15.944 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2026-04-24 14:21:15.965 [DiscoveryClient-CacheRefreshExecutor-0] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2026-04-24 14:22:06.540 [http-nio-8082-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-24 14:22:06.542 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-24 14:22:06.549 [http-nio-8082-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2026-04-24 14:23:21.140 [http-nio-8082-exec-10] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:23:21.414 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Creating new menu item for restaurantId: 1
+2026-04-24 14:23:21.527 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Updating menu item with id: 4
+2026-04-24 14:23:21.690 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching menu item by id: 4
+2026-04-24 14:23:21.799 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:23:21.923 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Creating new dining table for restaurantId: 1
+2026-04-24 14:23:22.033 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Updating status of table 4 to OCCUPIED
+2026-04-24 14:23:22.146 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Updating status of table 4 to AVAILABLE
+2026-04-24 14:23:22.235 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 14:23:22.369 [http-nio-8082-exec-9] INFO  c.e.a.service.ReservationService - Creating new reservation for tableId: 1 and customerId: 1
+2026-04-24 14:23:22.492 [http-nio-8082-exec-10] INFO  c.e.a.service.ReservationService - Fetching reservation by id: 3
+2026-04-24 14:23:22.590 [http-nio-8082-exec-5] INFO  c.e.a.service.ReservationService - Creating new reservation for tableId: 1 and customerId: 2
+2026-04-24 14:23:22.785 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:23:22.905 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:23:23.197 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 14:23:23.306 [http-nio-8082-exec-1] INFO  c.e.a.service.MenuItemService - Fetching menu item by id: 1
+2026-04-24 14:23:23.351 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching menu item by id: 3
+2026-04-24 14:23:36.838 [http-nio-8082-exec-7] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:23:36.894 [http-nio-8082-exec-9] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:24:22.051 [http-nio-8082-exec-10] INFO  c.e.a.service.RestaurantService - Creating new restaurant: shine
+2026-04-24 14:24:22.109 [http-nio-8082-exec-5] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:24:22.127 [http-nio-8082-exec-6] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:24:23.937 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:24:23.964 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:24:30.483 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Creating new dining table for restaurantId: 1
+2026-04-24 14:24:30.532 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:24:30.572 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:24:31.849 [http-nio-8082-exec-10] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:24:31.876 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:24:43.466 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Creating new menu item for restaurantId: 1
+2026-04-24 14:24:43.512 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:24:43.532 [http-nio-8082-exec-8] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:24:50.193 [http-nio-8082-exec-1] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:24:50.223 [http-nio-8082-exec-2] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:25:45.239 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:26:39.928 [http-nio-8082-exec-7] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:26:39.943 [http-nio-8082-exec-9] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:26:48.330 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:26:48.345 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:26:49.806 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:26:49.823 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:26:53.980 [http-nio-8082-exec-8] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:26:54.004 [http-nio-8082-exec-1] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:26:57.243 [http-nio-8082-exec-2] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:26:57.268 [http-nio-8082-exec-3] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:26:59.693 [http-nio-8082-exec-7] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:26:59.707 [http-nio-8082-exec-9] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:27:00.731 [http-nio-8082-exec-10] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:27:00.747 [http-nio-8082-exec-5] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:27:08.316 [http-nio-8082-exec-6] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:27:08.330 [http-nio-8082-exec-4] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:29:18.888 [http-nio-8082-exec-1] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:29:18.908 [http-nio-8082-exec-2] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:29:58.964 [http-nio-8082-exec-5] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:29:58.978 [http-nio-8082-exec-6] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:30:02.808 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:30:02.831 [http-nio-8082-exec-8] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:30:03.475 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:30:03.493 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:30:04.482 [http-nio-8082-exec-3] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:30:04.503 [http-nio-8082-exec-7] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:30:05.331 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:30:05.357 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:30:06.272 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:30:06.294 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:30:09.693 [http-nio-8082-exec-4] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:30:09.718 [http-nio-8082-exec-8] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:30:10.245 [http-nio-8082-exec-1] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:30:10.272 [http-nio-8082-exec-2] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:30:45.255 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:31:20.500 [http-nio-8082-exec-7] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:20.513 [http-nio-8082-exec-9] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:25.183 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:25.202 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:25.866 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:25.883 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:36.242 [http-nio-8082-exec-8] INFO  c.e.a.service.MenuItemService - Creating new menu item for restaurantId: 1
+2026-04-24 14:31:37.733 [http-nio-8082-exec-1] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:37.749 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:40.938 [http-nio-8082-exec-3] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:40.960 [http-nio-8082-exec-7] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:41.451 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:41.468 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:42.009 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:42.031 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:42.630 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:42.646 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:43.092 [http-nio-8082-exec-1] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:43.111 [http-nio-8082-exec-2] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:43.765 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:43.780 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:44.937 [http-nio-8082-exec-9] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:44.952 [http-nio-8082-exec-10] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:45.382 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:45.400 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:45.821 [http-nio-8082-exec-4] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:45.831 [http-nio-8082-exec-8] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:46.387 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:46.399 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:46.869 [http-nio-8082-exec-3] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:46.883 [http-nio-8082-exec-7] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:31:47.576 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:47.585 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:31:47.935 [http-nio-8082-exec-5] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:31:47.949 [http-nio-8082-exec-6] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:32:35.418 [http-nio-8082-exec-8] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:32:35.434 [http-nio-8082-exec-1] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:32:39.516 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:32:39.531 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:32:40.068 [http-nio-8082-exec-7] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:32:40.084 [http-nio-8082-exec-9] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:32:40.652 [http-nio-8082-exec-10] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:32:40.670 [http-nio-8082-exec-5] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:33:57.393 [http-nio-8082-exec-4] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:33:57.408 [http-nio-8082-exec-8] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:34:00.406 [http-nio-8082-exec-1] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:34:00.418 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:34:01.133 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:34:01.156 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 14:34:01.697 [http-nio-8082-exec-9] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:34:01.714 [http-nio-8082-exec-10] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 14:34:06.326 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:34:06.343 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 14:35:45.267 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:40:45.279 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:45:45.293 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:50:45.300 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 14:55:45.316 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:00:45.324 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:05:45.334 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:10:45.351 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:15:45.352 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:16:06.779 [http-nio-8082-exec-9] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 15:16:06.804 [http-nio-8082-exec-10] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 15:16:09.237 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 15:16:09.277 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 15:16:10.430 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 15:16:10.452 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 15:16:11.015 [http-nio-8082-exec-1] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 15:16:11.029 [http-nio-8082-exec-2] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 15:16:15.346 [http-nio-8082-exec-3] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 15:16:15.389 [http-nio-8082-exec-7] INFO  c.e.a.service.RestaurantService - Fetching all restaurants
+2026-04-24 15:16:16.140 [http-nio-8082-exec-9] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 15:16:16.153 [http-nio-8082-exec-10] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 15:16:18.131 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 15:16:18.150 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 15:20:45.368 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:25:45.381 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:30:45.394 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:35:45.399 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:40:45.406 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:45:45.410 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:50:45.411 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 15:55:45.425 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:00:45.429 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:05:45.443 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:10:45.448 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:14:13.613 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:15:41.791 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:15:41.806 [http-nio-8082-exec-3] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:15:45.460 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:17:30.521 [http-nio-8082-exec-7] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:17:30.537 [http-nio-8082-exec-9] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:17:39.397 [http-nio-8082-exec-10] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:17:39.413 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:19:33.053 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:19:33.089 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:19:37.353 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:19:37.369 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:19:57.353 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:20:01.817 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:20:02.246 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:20:05.658 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:20:05.670 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:20:13.296 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:20:13.310 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:20:15.353 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:20:15.366 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:20:42.204 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:20:42.220 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:20:45.464 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:20:51.611 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:20:51.628 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:20:53.804 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:20:53.818 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:21:10.868 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:21:10.882 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:21:15.147 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:21:15.158 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:21:18.948 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:21:18.959 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:22:02.558 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:22:02.572 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:22:04.895 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:22:04.911 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:23:00.419 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:23:00.432 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:23:02.871 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:23:02.886 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:23:11.768 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:23:11.783 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:23:14.162 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:23:14.173 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:23:16.359 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:23:16.375 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 4
+2026-04-24 16:23:29.356 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:23:29.368 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:23:31.283 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:23:31.300 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:24:41.249 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:24:41.849 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:25:10.578 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:25:26.593 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:25:45.474 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:26:53.167 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:26:58.079 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:27:01.698 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:27:16.481 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:27:16.496 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:27:23.922 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:27:23.935 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:28:00.263 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:28:02.251 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:28:06.064 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:28:06.083 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:28:19.499 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:28:27.284 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:28:27.298 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:28:45.451 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:28:45.470 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:28:50.322 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:28:50.339 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:28:53.450 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:28:53.463 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:30:37.235 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:30:37.258 [http-nio-8082-exec-8] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:30:45.479 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:30:48.566 [http-nio-8082-exec-1] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:30:48.598 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:31:07.250 [http-nio-8082-exec-3] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:31:48.237 [http-nio-8082-exec-7] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:32:20.244 [http-nio-8082-exec-9] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:33:07.444 [http-nio-8082-exec-10] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:33:12.241 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:33:18.079 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:33:18.091 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:33:59.007 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:33:59.019 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:34:03.031 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:34:03.046 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:34:06.275 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:34:06.292 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 1
+2026-04-24 16:34:10.534 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:34:10.543 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:34:16.825 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:34:16.836 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:35:08.697 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:35:18.893 [http-nio-8082-exec-1] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:35:18.917 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:35:28.231 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:35:28.306 [http-nio-8082-exec-7] INFO  c.e.a.service.MenuItemService - Fetching menu item by id: 4
+2026-04-24 16:35:45.492 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:36:55.668 [http-nio-8082-exec-1] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:36:55.684 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:37:07.523 [http-nio-8082-exec-3] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:37:55.855 [http-nio-8082-exec-10] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:37:55.874 [http-nio-8082-exec-5] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:38:02.998 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:38:08.603 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:38:10.090 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 3
+2026-04-24 16:38:40.745 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:38:46.484 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:39:12.686 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:39:12.705 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:39:17.360 [http-nio-8082-exec-6] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:39:17.372 [http-nio-8082-exec-4] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:39:27.413 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching dining table by id: 2
+2026-04-24 16:40:45.494 [AsyncResolver-bootstrap-executor-0] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-04-24 16:41:15.377 [http-nio-8082-exec-2] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:41:15.393 [http-nio-8082-exec-3] INFO  c.e.a.service.MenuItemService - Fetching all menu items
+2026-04-24 16:41:54.136 [http-nio-8082-exec-7] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:41:54.914 [http-nio-8082-exec-9] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:41:55.270 [http-nio-8082-exec-10] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:41:55.425 [http-nio-8082-exec-5] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:41:57.846 [http-nio-8082-exec-6] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:42:00.134 [http-nio-8082-exec-4] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:42:00.533 [http-nio-8082-exec-8] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:42:00.706 [http-nio-8082-exec-1] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:42:05.584 [http-nio-8082-exec-2] INFO  c.e.a.service.DiningTableService - Fetching all dining tables
+2026-04-24 16:43:32.559 [SpringApplicationShutdownHook] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application ADMIN-SERVICE with eureka with status DOWN
+2026-04-24 16:43:32.559 [SpringApplicationShutdownHook] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1777074212559, current=DOWN, previous=UP]
+2026-04-24 16:43:32.559 [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ADMIN-SERVICE/Sherry:admin-service:8082: registering service...
+2026-04-24 16:43:32.606 [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/} exception=I/O error on POST request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:888)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:868)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:764)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:646)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.register(RestTemplateEurekaHttpClient.java:81)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:91)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:820)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:121)
+	at com.netflix.discovery.InstanceInfoReplicator$1.run(InstanceInfoReplicator.java:101)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.lambda$connectSocket$0(PlainConnectionSocketFactory.java:91)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.connectSocket(PlainConnectionSocketFactory.java:90)
+	at org.apache.hc.client5.http.socket.ConnectionSocketFactory.connectSocket(ConnectionSocketFactory.java:123)
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:184)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:447)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:162)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:172)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:142)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:96)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:152)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:115)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:170)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:106)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:93)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:101)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$0(RestTemplateTransportClientFactory.java:143)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:87)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:862)
+	... 21 more
+
+2026-04-24 16:43:32.606 [DiscoveryClient-InstanceInfoReplicator-0] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on POST request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+2026-04-24 16:43:32.614 [DiscoveryClient-InstanceInfoReplicator-0] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/}, exception=I/O error on POST request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:888)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:868)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:764)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:646)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.register(RestTemplateEurekaHttpClient.java:81)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:121)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:80)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:820)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:121)
+	at com.netflix.discovery.InstanceInfoReplicator$1.run(InstanceInfoReplicator.java:101)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.lambda$connectSocket$0(PlainConnectionSocketFactory.java:91)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.connectSocket(PlainConnectionSocketFactory.java:90)
+	at org.apache.hc.client5.http.socket.ConnectionSocketFactory.connectSocket(ConnectionSocketFactory.java:123)
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:184)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:447)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:162)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:172)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:142)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:96)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:152)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:115)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:170)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:106)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:93)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:101)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$0(RestTemplateTransportClientFactory.java:143)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:87)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:862)
+	... 22 more
+
+2026-04-24 16:43:32.615 [DiscoveryClient-InstanceInfoReplicator-0] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on POST request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+2026-04-24 16:43:32.617 [DiscoveryClient-InstanceInfoReplicator-0] WARN  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ADMIN-SERVICE/Sherry:admin-service:8082 - registration failed Cannot execute request on any known server
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:820)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:121)
+	at com.netflix.discovery.InstanceInfoReplicator$1.run(InstanceInfoReplicator.java:101)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-04-24 16:43:32.623 [DiscoveryClient-InstanceInfoReplicator-0] WARN  c.n.discovery.InstanceInfoReplicator - There was a problem with the instance info replicator
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$1.execute(EurekaHttpClientDecorator.java:59)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.register(EurekaHttpClientDecorator.java:56)
+	at com.netflix.discovery.DiscoveryClient.register(DiscoveryClient.java:820)
+	at com.netflix.discovery.InstanceInfoReplicator.run(InstanceInfoReplicator.java:121)
+	at com.netflix.discovery.InstanceInfoReplicator$1.run(InstanceInfoReplicator.java:101)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-04-24 16:43:32.630 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 16:43:32.643 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-24 16:43:32.644 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-24 16:43:32.645 [SpringApplicationShutdownHook] INFO  c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2026-04-24 16:43:35.654 [SpringApplicationShutdownHook] INFO  c.netflix.discovery.DiscoveryClient - Unregistering ...
+2026-04-24 16:43:35.687 [SpringApplicationShutdownHook] INFO  c.n.d.s.t.d.RedirectingEurekaHttpClient - Request execution error. endpoint=DefaultEndpoint{ serviceUrl='http://localhost:8761/eureka/}, exception=I/O error on DELETE request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE/Sherry:admin-service:8082": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt stacktrace=org.springframework.web.client.ResourceAccessException: I/O error on DELETE request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE/Sherry:admin-service:8082": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:888)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:868)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:764)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:646)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateEurekaHttpClient.cancel(RestTemplateEurekaHttpClient.java:91)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.executeOnNewServer(RedirectingEurekaHttpClient.java:121)
+	at com.netflix.discovery.shared.transport.decorator.RedirectingEurekaHttpClient.execute(RedirectingEurekaHttpClient.java:80)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:120)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.DiscoveryClient.unregister(DiscoveryClient.java:916)
+	at com.netflix.discovery.DiscoveryClient.shutdown(DiscoveryClient.java:892)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeDestroyMethods(InitDestroyAnnotationBeanPostProcessor.java:415)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeDestruction(InitDestroyAnnotationBeanPostProcessor.java:239)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:191)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.run(DisposableBeanAdapter.java:184)
+	at org.springframework.cloud.context.scope.GenericScope$BeanLifecycleWrapper.destroy(GenericScope.java:389)
+	at org.springframework.cloud.context.scope.GenericScope.destroy(GenericScope.java:136)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:200)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1189)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1182)
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1118)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1084)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:173)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1035)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:145)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:114)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.lambda$connectSocket$0(PlainConnectionSocketFactory.java:91)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:569)
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.connectSocket(PlainConnectionSocketFactory.java:90)
+	at org.apache.hc.client5.http.socket.ConnectionSocketFactory.connectSocket(ConnectionSocketFactory.java:123)
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:184)
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:447)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:162)
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:172)
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:142)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:96)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:152)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:115)
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51)
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:170)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:106)
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55)
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:93)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:101)
+	at org.springframework.cloud.netflix.eureka.http.RestTemplateTransportClientFactory.lambda$restTemplate$0(RestTemplateTransportClientFactory.java:143)
+	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:87)
+	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:71)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:862)
+	... 40 more
+
+2026-04-24 16:43:35.687 [SpringApplicationShutdownHook] WARN  c.n.d.s.t.d.RetryableEurekaHttpClient - Request execution failed with message: I/O error on DELETE request for "http://localhost:8761/eureka/apps/ADMIN-SERVICE/Sherry:admin-service:8082": Connect to http://localhost:8761 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: getsockopt
+2026-04-24 16:43:35.688 [SpringApplicationShutdownHook] ERROR c.netflix.discovery.DiscoveryClient - DiscoveryClient_ADMIN-SERVICE/Sherry:admin-service:8082 - de-registration failedCannot execute request on any known server
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$2.execute(EurekaHttpClientDecorator.java:74)
+	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77)
+	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.cancel(EurekaHttpClientDecorator.java:71)
+	at com.netflix.discovery.DiscoveryClient.unregister(DiscoveryClient.java:916)
+	at com.netflix.discovery.DiscoveryClient.shutdown(DiscoveryClient.java:892)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeDestroyMethods(InitDestroyAnnotationBeanPostProcessor.java:415)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeDestruction(InitDestroyAnnotationBeanPostProcessor.java:239)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:191)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.run(DisposableBeanAdapter.java:184)
+	at org.springframework.cloud.context.scope.GenericScope$BeanLifecycleWrapper.destroy(GenericScope.java:389)
+	at org.springframework.cloud.context.scope.GenericScope.destroy(GenericScope.java:136)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:200)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1189)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1182)
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1118)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1084)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:173)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1035)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:145)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:114)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-04-24 16:43:35.703 [SpringApplicationShutdownHook] INFO  c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient

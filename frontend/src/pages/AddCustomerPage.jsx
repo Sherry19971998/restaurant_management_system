@@ -40,7 +40,7 @@ export default function AddCustomerPage() {
       const customerId = res?.data?.id;
       if (customerId) {
         dispatch(setCustomerId(customerId));
-        navigate('/reservations/add');
+        // 不自动跳转，留在页面
       } else {
         setError('Customer created but no ID returned');
       }
@@ -61,6 +61,7 @@ export default function AddCustomerPage() {
       <input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
       {fieldError.email && <div style={{color:'red'}}>{fieldError.email}</div>}
       <button type="submit" disabled={loading}>Add</button>
+      <button type="button" style={{marginLeft:16}} onClick={() => navigate('/customers')}>Back</button>
       {error && <div style={{color:'red'}}>{error}</div>}
     </form>
   );

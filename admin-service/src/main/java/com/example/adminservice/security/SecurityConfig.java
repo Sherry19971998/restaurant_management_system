@@ -37,6 +37,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/customers").permitAll()
                 .requestMatchers("/api/orders/**").hasRole("USER")
                 // Only allow GET for USER and ADMIN on menu-items and tables
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/menu-items/**", "/api/tables/**").hasAnyRole("USER", "ADMIN")

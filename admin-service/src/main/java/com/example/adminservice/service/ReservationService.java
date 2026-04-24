@@ -73,6 +73,19 @@ public class ReservationService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Table already reserved for the selected time. Please choose another time or table.");
         }
 
+        // 限制：一个用户在同一时间段不能预约3个及以上桌子
+        if (customer != null) {
+            long count = reservationRepository.findAll().stream().filter(r ->
+                r.getCustomer().getId().equals(customer.getId()) &&
+                !r.getStatus().equals(com.example.adminservice.model.enums.ReservationStatus.CANCELLED) &&
+                !r.getStatus().equals(com.example.adminservice.model.enums.ReservationStatus.COMPLETED) &&
+                r.getReservationTime().isAfter(start) && r.getReservationTime().isBefore(end)
+            ).count();
+            if (count >= 2) { // 允许最多2个，不能第3个
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A user cannot reserve 3 or more tables in the same time period.");
+            }
+        }
+
         // 顾客不存在时自动创建
         Customer customer = null;
         if (request.getCustomerId() != null) {

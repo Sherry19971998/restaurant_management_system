@@ -20,10 +20,17 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '/api'),
       },
+      // User/customer auth endpoints
       '/api/auth': {
-        target: 'http://localhost:8082', // admin-service
+        target: 'http://localhost:8081', // customer-service
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '/api'),
+      },
+      // Admin auth endpoints
+      '/api/admin-auth': {
+        target: 'http://localhost:8082', // admin-service
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api\/admin-auth/, '/api/auth'),
       },
       '/api/customers': {
         target: 'http://localhost:8081', // customer-service

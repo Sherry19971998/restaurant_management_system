@@ -16,7 +16,7 @@ export default function AddRestaurantPage() {
     setError('');
     try {
       await addRestaurant(form);
-      navigate('/restaurants');
+      // Do not navigate after add; stay on page
     } catch (err) {
       setError('Add failed');
     } finally {

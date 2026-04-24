@@ -44,10 +44,11 @@ export default function AddEditMenuItemPage() {
     try {
       if (isEdit) {
         await editMenuItem(id, form);
+        navigate('/menu-items'); // Only navigate after edit
       } else {
         await addMenuItem(form);
+        // Do not navigate after add; stay on page
       }
-      navigate('/menu-items');
     } catch (err) {
       setError(err?.response?.data?.message || 'Save failed');
     } finally {

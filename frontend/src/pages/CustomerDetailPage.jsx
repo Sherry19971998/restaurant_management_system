@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getCustomer } from '../api/customer';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function CustomerDetailPage() {
   const { id } = useParams();
   const [customer, setCustomer] = useState(null);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCustomer(id)
@@ -21,6 +22,7 @@ export default function CustomerDetailPage() {
       <h2>{customer.name}</h2>
       <div>Phone: {customer.phone}</div>
       <div>Email: {customer.email}</div>
+      <button style={{marginTop:16}} onClick={() => navigate('/customers')}>Back</button>
     </div>
   );
 }

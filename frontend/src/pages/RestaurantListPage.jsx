@@ -27,15 +27,7 @@ export default function RestaurantListPage() {
         ))}
       </ul>
 
-      {/* 管理导航按钮组 */}
-      <div style={{ marginTop: 32 }}>
-        <h3>Admin Management</h3>
-        <Space>
-          <Button type="default" onClick={() => navigate('/restaurants')}>餐厅管理</Button>
-          <Button type="primary" onClick={() => navigate('/tables')}>餐桌管理</Button>
-          <Button type="primary" onClick={() => navigate('/menu-items')}>菜单管理</Button>
-        </Space>
-      </div>
+      {/* Admin navigation removed as now in App.jsx */}
     </div>
   );
 }
