@@ -1,11 +1,16 @@
+
 import React, { useEffect, useState } from 'react';
 import { getMenuItems } from '../api/menuItem';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, Space } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Button, Select, Space } from 'antd';
+
+const { Option } = Select;
 
 export default function MenuItemListPage() {
   const [items, setItems] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMenuItems()
@@ -13,21 +18,61 @@ export default function MenuItemListPage() {
       .catch(() => setError('Failed to load menu items'));
   }, []);
 
-  const navigate = useNavigate();
-  return (
-    <div>
-      <h2>Menu Item List</h2>
-      <Link to="/menu-items/add">Add Menu Item</Link>
-      {error && <div style={{color:'red'}}>{error}</div>}
-      <ul>
-        {items.map(i => (
-          <li key={i.id}>
-            <Link to={`/menu-items/${i.id}`}>{i.name} (${i.price})</Link>
-          </li>
-        ))}
-      </ul>
+  const handleEdit = () => {
+    if (selectedId) {
+      navigate(`/menu-items/edit/${selectedId}`);
+    }
+  };
 
-      {/* Admin navigation removed as now in App.jsx */}
+  return (
+    <div style={{ padding: 24 }}>
+      <h2>Menu Items</h2>
+
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+
+      {/* Edit existing item */}
+      <div style={{ marginBottom: 16 }}>
+        <h3>Edit Existing Item</h3>
+        <Space>
+          <Select
+            style={{ width: 300 }}
+            placeholder="Select a menu item to edit"
+            onChange={val => setSelectedId(val)}
+            value={selectedId}
+          >
+            {items.map(item => (
+              <Option key={item.id} value={item.id}>
+                {item.name} (${item.price})
+              </Option>
+            ))}
+          </Select>
+          <Button
+            type="primary"
+            onClick={handleEdit}
+            disabled={!selectedId}
+          >
+            Edit Selected Item
+          </Button>
+        </Space>
+      </div>
+
+      {/* Add new item */}
+      <div style={{ marginBottom: 32 }}>
+        <h3>Add New Item</h3>
+        <Button type="primary" onClick={() => navigate('/menu-items/add')}>
+          + Add New Menu Item
+        </Button>
+      </div>
+
+      {/* Admin nav */}
+      <div style={{ marginTop: 32 }}>
+        <h3>Admin Management</h3>
+        <Space>
+          <Button type="primary" onClick={() => navigate('/restaurants')}>Restaurant Management</Button>
+          <Button type="primary" onClick={() => navigate('/tables')}>Table Management</Button>
+          <Button type="default" onClick={() => navigate('/menu-items')}>Menu Management</Button>
+        </Space>
+      </div>
     </div>
   );
 }
