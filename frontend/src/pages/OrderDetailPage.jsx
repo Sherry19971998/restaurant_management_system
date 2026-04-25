@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { getOrder, updateOrderStatus, payOrder } from '../api/order';
 import { getTable } from '../api/table';
 import { getMenuItem } from '../api/menuItem';
@@ -11,52 +11,59 @@ export default function OrderDetailPage() {
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
   const [payMsg, setPayMsg] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('CASH');
   const [tableName, setTableName] = useState('');
   const [menuMap, setMenuMap] = useState({});
   const [customer, setCustomer] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getOrder(id)
-      .then(async res => {
-        setOrder(res.data);
-        setStatus(res.data.status);
-        // Fetch table name if diningTableId exists
-        if (res.data && res.data.diningTableId) {
-          getTable(res.data.diningTableId)
-            .then(tableRes => {
-              const t = tableRes.data;
-              setTableName(t.tableNumber ? `T${t.tableNumber}` : `T${t.id}`);
-            })
-            .catch(() => setTableName(`T${res.data.diningTableId}`));
-        }
-        // Fetch menu item details for all items
-        if (res.data && Array.isArray(res.data.items)) {
-          const menuIds = [...new Set(res.data.items.map(i => i.menuItemId))];
-          const menuResults = await Promise.all(menuIds.map(id => getMenuItem(id).then(r => r.data).catch(() => null)));
-          const menuMapObj = {};
-          menuResults.forEach(mi => { if (mi) menuMapObj[mi.id] = mi; });
-          setMenuMap(menuMapObj);
-        }
-        // Fetch customer info
-        if (res.data && res.data.customerId) {
-          getCustomer(res.data.customerId)
-            .then(custRes => setCustomer(custRes.data))
-            .catch(() => setCustomer(null));
-        }
-      })
-      .catch(() => setError('Failed to load order'));
+  const loadOrder = useCallback(async () => {
+    try {
+      const res = await getOrder(id);
+      setOrder(res.data);
+      setStatus(res.data.status);
+      if (res.data.diningTableId) {
+        getTable(res.data.diningTableId)
+          .then(tableRes => {
+            const t = tableRes.data;
+            setTableName(t.tableNumber ? `T${t.tableNumber}` : `T${t.id}`);
+          })
+          .catch(() => setTableName(`T${res.data.diningTableId}`));
+      }
+      if (Array.isArray(res.data.items)) {
+        const menuIds = [...new Set(res.data.items.map(i => i.menuItemId))];
+        const menuResults = await Promise.all(menuIds.map(mid => getMenuItem(mid).then(r => r.data).catch(() => null)));
+        const menuMapObj = {};
+        menuResults.forEach(mi => { if (mi) menuMapObj[mi.id] = mi; });
+        setMenuMap(menuMapObj);
+      }
+      if (res.data.customerId) {
+        getCustomer(res.data.customerId)
+          .then(custRes => setCustomer(custRes.data))
+          .catch(() => setCustomer(null));
+      }
+    } catch {
+      setError('Failed to load order');
+    }
   }, [id]);
+
+  useEffect(() => {
+    loadOrder();
+  }, [loadOrder]);
 
   const handleStatusChange = e => setStatus(e.target.value);
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (overrideStatus) => {
+    const newStatus = overrideStatus || status;
     setLoading(true);
     setError('');
+    setSuccessMsg('');
     try {
-      await updateOrderStatus(id, { status });
-      alert('Status updated!');
+      await updateOrderStatus(id, { status: newStatus });
+      setSuccessMsg(`Order status updated to ${newStatus}.`);
+      await loadOrder();
     } catch (err) {
       setError(err?.response?.data?.message || 'Update failed');
     } finally {
@@ -64,12 +71,23 @@ export default function OrderDetailPage() {
     }
   };
 
+  const calcTotal = () => {
+    if (!order || !order.items) return 0;
+    return order.items.reduce((sum, item) => {
+      const mi = menuMap[item.menuItemId];
+      const unitPrice = mi && mi.price ? parseFloat(mi.price) : (item.priceAtOrder ? parseFloat(item.priceAtOrder) / parseInt(item.quantity || 1) : 0);
+      return sum + (unitPrice * parseInt(item.quantity || 0));
+    }, 0);
+  };
+
   const handlePay = async () => {
     setLoading(true);
     setPayMsg('');
     try {
-      await payOrder(id, {});
+      const amount = parseFloat(calcTotal().toFixed(2));
+      await payOrder(id, { amount, paymentMethod });
       setPayMsg('Payment successful!');
+      await loadOrder();
     } catch (err) {
       setPayMsg(err?.response?.data?.message || 'Payment failed');
     } finally {
@@ -77,23 +95,31 @@ export default function OrderDetailPage() {
     }
   };
 
-  if (error) return <div style={{color:'red'}}>{error}</div>;
   if (!order) return <div>Loading...</div>;
 
   return (
     <div>
       <h2>Order #{order.id}</h2>
-      <div>Status: 
+
+      {successMsg && <div>{successMsg}</div>}
+      {error && <div style={{color:'red'}}>{error}</div>}
+
+      {/* Status update (all transitions) */}
+      <div style={{ marginBottom: 12 }}>
+        <label>Change Status: </label>
         <select value={status} onChange={handleStatusChange}>
+          <option value="DRAFT">DRAFT</option>
           <option value="PLACED">PLACED</option>
           <option value="IN_PROGRESS">IN_PROGRESS</option>
           <option value="READY">READY</option>
           <option value="SERVED">SERVED</option>
           <option value="REQUESTED_CHECK">REQUESTED_CHECK</option>
           <option value="PAID">PAID</option>
+          <option value="CLOSED">CLOSED</option>
         </select>
-        <button onClick={handleUpdate} disabled={loading}>Update Status</button>
+        <button onClick={() => handleUpdate()} disabled={loading} style={{ marginLeft: 8 }}>Update Status</button>
       </div>
+
       <div>Customer: {customer ? (customer.name ? `${customer.name} (ID: ${customer.id})` : `ID: ${customer.id}`) : order.customerId}</div>
       <div>Table: {tableName ? tableName : (order.diningTableId ? `T${order.diningTableId}` : '')}</div>
       <div>Items:
@@ -130,7 +156,16 @@ export default function OrderDetailPage() {
           </div>
         )}
       </div>
-      <button onClick={handlePay} disabled={loading}>Pay</button>
+      {(order.status === 'REQUESTED_CHECK' || order.status === 'SERVED') && (
+        <div>
+          <label>Payment Method: </label>
+          <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
+            <option value="CASH">Cash</option>
+            <option value="CARD">Card</option>
+          </select>
+          <button onClick={handlePay} disabled={loading} style={{ marginLeft: 8 }}>Pay</button>
+        </div>
+      )}
       {payMsg && <div>{payMsg}</div>}
       <button style={{marginTop:16}} onClick={() => navigate('/orders')}>Back</button>
     </div>

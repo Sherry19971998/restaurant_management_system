@@ -34,7 +34,13 @@ export default function OrderListPage() {
         <button style={{ margin: '0 12px' }} onClick={() => navigate('/orders')}>Order Management</button>
         <button onClick={handleLogout} style={{ marginLeft: 16, color: 'red' }}>Logout</button>
       </div>
+<<<<<<< HEAD
       <h2>Order List</h2>
+=======
+
+      <h2>Order List</h2>
+
+>>>>>>> bf70874 (Add project code)
       <Link to="/orders/place">Place Order</Link>
       {error && <div style={{color:'red'}}>{error}</div>}
       <ul>
