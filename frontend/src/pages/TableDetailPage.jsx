@@ -44,7 +44,8 @@ export default function TableDetailPage() {
           <option value="AVAILABLE">AVAILABLE</option>
           <option value="OCCUPIED">OCCUPIED</option>
           <option value="RESERVED">RESERVED</option>
-          <option value="NEEDS_CLEANING">NEEDS_CLEANING</option>
+          <option value="NEED_CLEANING">NEED_CLEANING</option>
+          <option value="OUT_OF_SERVICE">OUT_OF_SERVICE</option>
         </select>
         <button onClick={handleUpdate} disabled={loading}>Update Status</button>
       </div>
