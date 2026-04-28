@@ -9,7 +9,6 @@ public class CustomerRequest {
     @Size(max = 100)
     private String name;
 
-    @NotBlank
     @Size(max = 30)
     private String phone;
 

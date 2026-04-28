@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { addCustomer } from '../api/customer';
 import { useNavigate } from 'react-router-dom';
+import { Card, Input, Button, Space, Row, Col, Typography, Alert } from 'antd';
+
+const { Title } = Typography;
 import { useDispatch } from 'react-redux';
 import { setCustomerId } from '../slices/userSlice';
 
@@ -41,6 +44,7 @@ export default function AddCustomerPage() {
       return fe;
   };
 
+
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
@@ -56,14 +60,13 @@ export default function AddCustomerPage() {
     }
     try {
       const res = await addCustomer(form);
-      const customerId = res?.data?.id;
-
-      if (customerId) {
-        dispatch(setCustomerId(customerId));
-        setSuccess('Customer created successfully!');
-        // 不自动跳转，留在页面
+      if (res?.data?.id) {
+        setSuccess('Add successfully');
+        setError('');
+        setForm({ name: '', phone: '', email: '' });
+        dispatch(setCustomerId(res.data.id));
       } else {
-        setError('Customer created but no ID returned');
+        setError('Add failed');
       }
     } catch (err) {
       setError(err?.response?.data?.message || 'Add failed');
@@ -73,18 +76,53 @@ export default function AddCustomerPage() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Add Customer</h2>
-      {success && <div style={{ color: 'green' }}>{success}</div>}
-      <input name="name" value={form.name} onChange={handleChange} placeholder="Name" />
-      {fieldError.name && <div style={{color:'red'}}>{fieldError.name}</div>}
-      <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone" />
-      {fieldError.phone && <div style={{color:'red'}}>{fieldError.phone}</div>}
-      <input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
-      {fieldError.email && <div style={{color:'red'}}>{fieldError.email}</div>}
-      <button type="submit" disabled={loading}>Add</button>
-      <button type="button" style={{marginLeft:16}} onClick={() => navigate('/customers')}>Back</button>
-      {error && <div style={{color:'red'}}>{error}</div>}
-    </form>
+    <Row justify="center" style={{ padding: 24, background: '#f5f7fb', minHeight: '100vh' }}>
+      <Col xs={24} sm={20} md={16} lg={12} xl={10}>
+        <Card style={{ borderRadius: 12 }}>
+          <Title level={3} style={{ marginBottom: 24 }}>Add Customer</Title>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            {success && <Alert type="success" message={success} showIcon />}
+            {error && <Alert type="error" message={error} showIcon />}
+            <form onSubmit={handleSubmit}>
+              <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                <Input
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Name"
+                  size="large"
+                  status={fieldError.name ? 'error' : ''}
+                />
+                {fieldError.name && <div style={{ color: 'red' }}>{fieldError.name}</div>}
+                <Input
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="Phone"
+                  size="large"
+                  status={fieldError.phone ? 'error' : ''}
+                />
+                {fieldError.phone && <div style={{ color: 'red' }}>{fieldError.phone}</div>}
+                <Input
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Email"
+                  size="large"
+                  status={fieldError.email ? 'error' : ''}
+                />
+                {fieldError.email && <div style={{ color: 'red' }}>{fieldError.email}</div>}
+                <Button type="primary" htmlType="submit" loading={loading} block>
+                  Add
+                </Button>
+                <Button block style={{ marginTop: 8 }} onClick={() => navigate('/customers')}>
+                  Back
+                </Button>
+              </Space>
+            </form>
+          </Space>
+        </Card>
+      </Col>
+    </Row>
   );
 }

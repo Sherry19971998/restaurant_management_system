@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/menu-items/**", "/api/tables/**").hasAnyRole("USER", "ADMIN")
                 // All other methods on menu-items and tables require ADMIN
                 .requestMatchers("/api/menu-items/**", "/api/tables/**").hasRole("ADMIN")
+                // Allow USER and ADMIN to PATCH cancel reservation
+                .requestMatchers(org.springframework.http.HttpMethod.PATCH, "/api/reservations/**/cancel").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
             )
             .headers(headers -> headers.frameOptions().disable())

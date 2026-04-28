@@ -1,5 +1,5 @@
 INSERT INTO restaurants (name, address, phone)
-VALUES ('Campus Diner', '1 University Ave', '555-0100');
+VALUES ('Campus Diner', '1 University Ave', '5550100000');
 
 INSERT INTO dining_tables (table_number, capacity, status, restaurant_id)
 VALUES
@@ -15,8 +15,8 @@ VALUES
 
 INSERT INTO customers (name, phone, email)
 VALUES
-  ('Alex Chen', '555-0111', 'alex@example.com'),
-  ('Mina Park', '555-0222', 'mina@example.com');
+  ('Jordan Lee', '5551234567', 'jordan@example.com'),
+  ('Mina Park', '5550222333', 'mina@example.com');
 
 INSERT INTO reservations (reservation_time, party_size, status, dining_table_id, customer_id)
 VALUES

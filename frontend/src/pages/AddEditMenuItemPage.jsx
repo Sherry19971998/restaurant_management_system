@@ -9,6 +9,7 @@ export default function AddEditMenuItemPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [fieldError, setFieldError] = useState({});
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function AddEditMenuItemPage() {
 }
 */
 
+
 import React, { useState, useEffect } from 'react';
 import { addMenuItem, editMenuItem, getMenuItem, deleteMenuItem } from '../api/menuItem';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -89,6 +91,7 @@ export default function AddEditMenuItemPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [fieldError, setFieldError] = useState({});
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -107,7 +110,7 @@ export default function AddEditMenuItemPage() {
     if (!form.name.trim()) fe.name = 'Name is required';
     if (!form.description.trim()) fe.description = 'Description is required';
     if (!form.price || isNaN(form.price) || parseFloat(form.price) <= 0) fe.price = 'Price must be positive';
-    if (!form.restaurantId.toString().trim()) fe.restaurantId = 'Restaurant ID is required';
+    if (form.restaurantId === undefined || form.restaurantId === null || form.restaurantId.toString().trim() === '') fe.restaurantId = 'Restaurant ID is required';
     return fe;
   };
 
@@ -115,16 +118,19 @@ export default function AddEditMenuItemPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess(false);
     const fe = validate();
     setFieldError(fe);
     if (Object.keys(fe).length > 0) { setLoading(false); return; }
     try {
       if (isEdit) {
         await editMenuItem(id, form);
+        navigate('/menu-items');
       } else {
         await addMenuItem(form);
+        setSuccess(true);
+        setForm({ name: '', description: '', price: '', available: true, restaurantId: '' });
       }
-      navigate('/menu-items');
     } catch (err) {
       setError(err?.response?.data?.message || 'Save failed');
     } finally {
@@ -138,7 +144,12 @@ export default function AddEditMenuItemPage() {
       await deleteMenuItem(id);
       navigate('/menu-items');
     } catch (err) {
-      setError(err?.response?.data?.message || 'Delete failed');
+      const msg = err?.response?.data?.message || 'Delete failed';
+      if (msg.includes('referenced by existing orders')) {
+        window.alert('This menu item is referenced by existing orders and cannot be deleted.');
+      } else {
+        setError(msg);
+      }
     }
   };
 
@@ -153,28 +164,28 @@ export default function AddEditMenuItemPage() {
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 16 }}>
         <div>
           <label style={{ display: 'block', marginBottom: 4, fontSize: 14 }}>Name</label>
-          <input name="name" value={form.name} onChange={handleChange} placeholder="Name"
+          <input name="name" value={form.name || ""} onChange={handleChange} placeholder="Name"
             style={{ width: '100%', padding: '8px 10px', fontSize: 14, boxSizing: 'border-box' }} />
           {fieldError.name && <div style={{ color: 'red', fontSize: 12, marginTop: 2 }}>{fieldError.name}</div>}
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: 4, fontSize: 14 }}>Description</label>
-          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" rows={3}
+          <textarea name="description" value={form.description || ""} onChange={handleChange} placeholder="Description" rows={3}
             style={{ width: '100%', padding: '8px 10px', fontSize: 14, boxSizing: 'border-box', resize: 'vertical' }} />
           {fieldError.description && <div style={{ color: 'red', fontSize: 12, marginTop: 2 }}>{fieldError.description}</div>}
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: 4, fontSize: 14 }}>Price</label>
-          <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handleChange} placeholder="0.00"
+          <input name="price" type="number" min="0" step="0.01" value={form.price === undefined || form.price === null ? "" : form.price} onChange={handleChange} placeholder="0.00"
             style={{ width: '100%', padding: '8px 10px', fontSize: 14, boxSizing: 'border-box' }} />
           {fieldError.price && <div style={{ color: 'red', fontSize: 12, marginTop: 2 }}>{fieldError.price}</div>}
         </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: 4, fontSize: 14 }}>Restaurant ID</label>
-          <input name="restaurantId" value={form.restaurantId} onChange={handleChange} placeholder="Restaurant ID"
+          <input name="restaurantId" value={form.restaurantId === undefined || form.restaurantId === null ? "" : form.restaurantId} onChange={handleChange} placeholder="Restaurant ID"
             style={{ width: '100%', padding: '8px 10px', fontSize: 14, boxSizing: 'border-box' }} />
           {fieldError.restaurantId && <div style={{ color: 'red', fontSize: 12, marginTop: 2 }}>{fieldError.restaurantId}</div>}
         </div>
@@ -186,6 +197,7 @@ export default function AddEditMenuItemPage() {
           </label>
         </div>
 
+        {(!isEdit && success) && <div style={{ color: 'green', fontSize: 14, marginTop: 8 }}>add successfully</div>}
         {error && <div style={{ color: 'red', fontSize: 14 }}>{error}</div>}
 
         <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
@@ -193,10 +205,12 @@ export default function AddEditMenuItemPage() {
             style={{ padding: '8px 20px', fontSize: 14, cursor: 'pointer' }}>
             {loading ? 'Saving...' : isEdit ? 'Save Changes' : 'Add Item'}
           </button>
-          <button type="button" onClick={() => navigate('/menu-items')}
-            style={{ padding: '8px 20px', fontSize: 14, cursor: 'pointer' }}>
-            Cancel
-          </button>
+          {!isEdit && (
+            <button type="button" onClick={() => navigate('/menu-items')}
+              style={{ padding: '8px 20px', fontSize: 14, cursor: 'pointer' }}>
+              Back
+            </button>
+          )}
           {isEdit && (
             <button type="button" onClick={handleDelete}
               style={{ padding: '8px 20px', fontSize: 14, cursor: 'pointer', color: 'red' }}>

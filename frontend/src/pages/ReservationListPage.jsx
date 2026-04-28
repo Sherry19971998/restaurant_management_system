@@ -3,45 +3,101 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { getReservations } from '../api/reservation';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
+import { Button, Card, Col, Row, Space, Table, Typography, Empty, Tag } from 'antd';
 export default function ReservationListPage() {
   const [reservations, setReservations] = useState([]);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
+    setLoading(true);
     getReservations()
-      .then(res => setReservations(res.data))
-      .catch(() => setError('Failed to load reservations'));
+      .then(res => setReservations(res.data || []))
+      .catch(() => setError('Failed to load reservations'))
+      .finally(() => setLoading(false));
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    dispatch({ type: 'user/logout' });
-    navigate('/login');
+  const statusColor = status => {
+    switch (status) {
+      case 'CONFIRMED': return 'green';
+      case 'CANCELLED': return 'red';
+      case 'COMPLETED': return 'blue';
+      default: return 'default';
+    }
   };
 
+  const columns = [
+    {
+      title: 'Reservation #',
+      dataIndex: 'id',
+      key: 'id',
+      render: (id, record) => <Link to={`/reservations/${id}`}>#{id}</Link>,
+    },
+    {
+      title: 'Table',
+      dataIndex: 'diningTableId',
+      key: 'diningTableId',
+    },
+    {
+      title: 'Customer',
+      dataIndex: 'customerId',
+      key: 'customerId',
+    },
+    {
+      title: 'Start Time',
+      dataIndex: 'startTime',
+      key: 'startTime',
+      render: val => val ? new Date(val).toLocaleString() : '',
+    },
+    {
+      title: 'End Time',
+      dataIndex: 'endTime',
+      key: 'endTime',
+      render: val => val ? new Date(val).toLocaleString() : '',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: status => <Tag color={statusColor(status)}>{status}</Tag>,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Button type="link" onClick={() => navigate(`/reservations/${record.id}`)}>View</Button>
+      ),
+    },
+  ];
+
   return (
-    <div>
-      {/* Navigation Bar */}
-      <div style={{ background: '#f0f2f5', padding: '10px 0', textAlign: 'center', marginBottom: 20 }}>
-        <button style={{ margin: '0 12px' }} onClick={() => navigate('/customers')}>Customer Management</button>
-        <button style={{ margin: '0 12px' }} onClick={() => navigate('/reservations')}>Reservation Management</button>
-        <button style={{ margin: '0 12px' }} onClick={() => navigate('/orders')}>Order Management</button>
-        <button onClick={handleLogout} style={{ marginLeft: 16, color: 'red' }}>Logout</button>
-      </div>
-      <h2>Reservation List</h2>
-      <Link to="/reservations/add">Add Reservation</Link>
-      {error && <div style={{color:'red'}}>{error}</div>}
-      <ul>
-        {reservations.map(r => (
-          <li key={r.id}>
-            <Link to={`/reservations/${r.id}`}>Reservation #{r.id} (Table: {r.diningTableId}, Customer: {r.customerId})</Link>
-          </li>
-        ))}
-      </ul>
+    <div style={{ padding: 24, background: '#f5f7fb', minHeight: '100vh' }}>
+      <Row justify="center">
+        <Col xs={24} sm={24} md={23} lg={22} xl={20}>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <Card
+              style={{ borderRadius: 12 }}
+              title={<Typography.Title level={3} style={{ margin: 0 }}>Reservation List</Typography.Title>}
+              extra={
+                <Button type="primary" onClick={() => navigate('/reservations/add')}>
+                  + Add Reservation
+                </Button>
+              }
+            >
+              {error && <div style={{ color: 'red', marginBottom: 16 }}>{error}</div>}
+              <Table
+                rowKey="id"
+                columns={columns}
+                dataSource={reservations}
+                loading={loading}
+                pagination={{ pageSize: 8 }}
+                locale={{ emptyText: <Empty description="No reservations found" /> }}
+              />
+            </Card>
+          </Space>
+        </Col>
+      </Row>
     </div>
   );
 }

@@ -13,7 +13,7 @@
     <name>customer-service</name>
     <description>Customer Service Module</description>
     <dependencies>
-        <!-- 继承父POM依赖管理，无需重复声明Spring Cloud依赖版本 -->
+        <!-- Inherit parent POM dependency management, no need to redeclare Spring Cloud dependency versions -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

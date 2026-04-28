@@ -1,3 +1,4 @@
+export const cancelReservation = (id) => axios.patch(`${API_BASE}/${id}/cancel`);
 import axios from './axiosInstance';
 
 const API_BASE = '/api/reservations';

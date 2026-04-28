@@ -21,8 +21,12 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+
     @GetMapping
-    public List<Customer> getAll() {
+    public List<Customer> getAllOrByPhone(@org.springframework.web.bind.annotation.RequestParam(value = "phone", required = false) String phone) {
+        if (phone != null && !phone.isBlank()) {
+            return customerService.findByPhone(phone).map(List::of).orElse(List.of());
+        }
         return customerService.getAll();
     }
 

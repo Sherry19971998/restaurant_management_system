@@ -30,6 +30,34 @@ export default function MenuItemListPage() {
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
+
+      {/* Menu item table */}
+      <div style={{ marginBottom: 32 }}>
+        <h3>All Menu Items</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 16 }}>
+          <thead>
+            <tr style={{ background: '#f5f5f5' }}>
+              <th style={{ border: '1px solid #ddd', padding: 8 }}>Name</th>
+              <th style={{ border: '1px solid #ddd', padding: 8 }}>Description</th>
+              <th style={{ border: '1px solid #ddd', padding: 8 }}>Price</th>
+              <th style={{ border: '1px solid #ddd', padding: 8 }}>Available</th>
+              <th style={{ border: '1px solid #ddd', padding: 8 }}>Restaurant ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map(item => (
+              <tr key={item.id}>
+                <td style={{ border: '1px solid #ddd', padding: 8 }}>{item.name}</td>
+                <td style={{ border: '1px solid #ddd', padding: 8 }}>{item.description}</td>
+                <td style={{ border: '1px solid #ddd', padding: 8 }}>{item.price}</td>
+                <td style={{ border: '1px solid #ddd', padding: 8 }}>{item.available ? 'Yes' : 'No'}</td>
+                <td style={{ border: '1px solid #ddd', padding: 8 }}>{item.restaurant?.id}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       {/* Edit existing item */}
       <div style={{ marginBottom: 16 }}>
         <h3>Edit Existing Item</h3>
@@ -64,15 +92,7 @@ export default function MenuItemListPage() {
         </Button>
       </div>
 
-      {/* Admin nav */}
-      <div style={{ marginTop: 32 }}>
-        <h3>Admin Management</h3>
-        <Space>
-          <Button type="primary" onClick={() => navigate('/restaurants')}>Restaurant Management</Button>
-          <Button type="primary" onClick={() => navigate('/tables')}>Table Management</Button>
-          <Button type="default" onClick={() => navigate('/menu-items')}>Menu Management</Button>
-        </Space>
-      </div>
+      {/* Admin nav removed for this page */}
     </div>
   );
 }

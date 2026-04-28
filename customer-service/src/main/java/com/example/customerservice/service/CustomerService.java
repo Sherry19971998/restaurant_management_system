@@ -1,3 +1,4 @@
+// ...existing code...
 package com.example.customerservice.service;
 
 import com.example.customerservice.controller.dto.CustomerRequest;
@@ -37,10 +38,6 @@ public class CustomerService {
         String phone = request.getPhone() != null ? request.getPhone().trim() : null;
         String email = request.getEmail() != null ? request.getEmail().trim() : null;
 
-        if (phone == null || !phone.matches("^\\d{10}$")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Phone number must be exactly 10 digits");
-        }
 
         if (email != null && !email.isBlank() && customerRepository.findByEmail(email).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -52,5 +49,8 @@ public class CustomerService {
         customer.setPhone(phone);
         customer.setEmail(email);
         return customerRepository.save(customer);
+    }
+    public java.util.Optional<Customer> findByPhone(String phone) {
+        return customerRepository.findByPhone(phone);
     }
 }

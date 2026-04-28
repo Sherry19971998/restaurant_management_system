@@ -1,3 +1,4 @@
+// ...existing code...
 package com.example.adminservice.controller;
 
 import com.example.adminservice.controller.dto.ReservationRequest;
@@ -34,5 +35,12 @@ public class ReservationController {
     @PostMapping
     public Reservation create(@Valid @RequestBody ReservationRequest request) {
         return reservationService.create(request);
+    }
+    /**
+     * Cancel a reservation by id. Sets reservation status to CANCELLED and table to AVAILABLE.
+     */
+    @PostMapping("/{id}/cancel")
+    public Reservation cancelReservation(@PathVariable Long id) {
+        return reservationService.cancelReservation(id);
     }
 }

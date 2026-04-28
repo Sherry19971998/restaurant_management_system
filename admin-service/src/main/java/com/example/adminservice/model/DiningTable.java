@@ -14,17 +14,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "dining_tables")
+@Table(name = "dining_tables", uniqueConstraints = @UniqueConstraint(columnNames = {"table_number", "restaurant_id"}))
 public class DiningTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "table_number", nullable = false, length = 20)
     private String tableNumber;
 
     @Column(nullable = false)

@@ -42,9 +42,14 @@ public class MenuItemController {
         return menuItemService.update(id, request);
     }
 
-    // 标准 RESTful PUT 更新接口
+    // RESTful PUT update
     @PutMapping("/{id}")
     public MenuItem updateMenuItem(@PathVariable Long id, @Valid @RequestBody MenuItemRequest request) {
         return menuItemService.update(id, request);
+    }
+    // delete item
+    @org.springframework.web.bind.annotation.DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        menuItemService.delete(id);
     }
 }

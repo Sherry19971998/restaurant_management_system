@@ -37,7 +37,13 @@ public class DiningTableService {
     public DiningTable create(DiningTableRequest request) {
         logger.info("Creating new dining table for restaurantId: {}", request.getRestaurantId());
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found"));
+
+        // 检查是否已存在同名table
+        diningTableRepository.findByTableNumberAndRestaurantId(request.getTableNumber(), request.getRestaurantId())
+            .ifPresent(t -> {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Table with this number already exists in this restaurant");
+            });
 
         DiningTable table = new DiningTable();
         table.setTableNumber(request.getTableNumber());

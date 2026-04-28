@@ -1,3 +1,4 @@
+
 package com.example.adminservice.controller;
 
 import com.example.adminservice.security.JwtUtil;
@@ -16,6 +17,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+        @GetMapping("/profile")
+        public User getProfile(Authentication authentication) {
+            if (authentication == null || !authentication.isAuthenticated()) {
+                throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.UNAUTHORIZED, "Not authenticated");
+            }
+            String username = authentication.getName();
+            return userRepository.findByUsername(username)
+                    .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "User not found"));
+        }
     @Autowired
     private UserRepository userRepository;
     @Autowired

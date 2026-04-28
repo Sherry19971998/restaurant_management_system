@@ -14,13 +14,13 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reservations")
+@Table(name = "reservations", uniqueConstraints = @jakarta.persistence.UniqueConstraint(columnNames = {"customer_id", "dining_table_id", "reservation_time"}))
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "reservation_time", nullable = false)
     private LocalDateTime reservationTime;
 
     @Column(nullable = false)

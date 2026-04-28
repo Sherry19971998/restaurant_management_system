@@ -47,6 +47,10 @@ export default function RegisterPage() {
             Register
           </Button>
         </Form>
+        <div style={{ marginTop: 16, textAlign: 'center' }}>
+          Already have an account?{' '}
+          <a href="/login">Go to login</a>
+        </div>
       </Card>
     </div>
   );

@@ -151,7 +151,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Jordan Lee\",\n  \"phone\": \"555-3333\",\n  \"email\": \"jordan@example.com\"\n}",
+              "raw": "{\n  \"name\": \"Jordan Lee\",\n  \"phone\": \"5551234567\",\n  \"email\": \"jordan@example.com\"\n}",
               "options": {"raw": {"language": "json"}}
             },
             "url": "{{customerBaseUrl}}/api/customers"
@@ -182,7 +182,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"phone\": \"555-0000\",\n  \"email\": \"bad@example.com\"\n}",
+              "raw": "{\n  \"phone\": \"5550000111\",\n  \"email\": \"bad@example.com\"\n}",
               "options": {"raw": {"language": "json"}}
             },
             "url": "{{customerBaseUrl}}/api/customers"
@@ -217,7 +217,7 @@
                 "    pm.expect(pm.response.code).to.eql(200);",
                 "    var json = pm.response.json();",
                 "    pm.expect(json.name).to.eql('Jordan Lee');",
-                "    pm.expect(json.phone).to.eql('555-3333');",
+                "    pm.expect(json.phone).to.eql('5551234567');",
                 "    pm.expect(json.email).to.eql('jordan@example.com');",
                 "});"
               ]
