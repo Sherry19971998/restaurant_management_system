@@ -548,7 +548,7 @@ npm run dev
 
 | Scenario | Validation/Constraint | Expected Behavior |
 |----------|----------------------|-------------------|
-| Access admin page as customer | Role-based access control | show bad credantials |
+| Access admin page as customer | Role-based access control | show bad credentials |
 | Manage table status | Table must be AVAILABLE | Only AVAILABLE tables can be reserved; others are not selectable |
 | Update menu items | Menu item fields must be valid| Show validation error if invalid like no restaurant id, allow add/edit otherwise |
 | Insert invalid phone number | Phone number must be exactly 10 digits | Show validation error, prevent submission |
