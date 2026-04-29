@@ -482,7 +482,124 @@ The script will perform load testing for user registration and login endpoints o
 
 ---
 
-## 📁 Project Structure
+
+## 🎬 Presentation & Demo Script (Phase 3)
+
+In this final phase, the Restaurant Management System is fully developed and deployed with a modern User Interface. 
+
+### How to Run the Project (Step-by-Step Guide)
+
+### 1. Start Backend (Spring Boot)
+
+```bash
+# In the project root, build all modules (skip tests for speed)
+./mvnw clean
+./mvnw -DskipTests package
+
+# Start Eureka Server (service registry, port 8761)
+cd eureka-server && ../mvnw spring-boot:run
+# Start admin-service (in a new terminal)
+cd admin-service && ../mvnw spring-boot:run
+# Start customer-service (in another new terminal)
+cd customer-service && ../mvnw spring-boot:run
+```
+- admin-service: http://localhost:8082 (default)
+- customer-service: http://localhost:8081 (default)
+- Eureka Server: http://localhost:8761
+  > Visit this page to view service registration status. Start Eureka Server first, then start other services.
+
+### 2. Start Frontend (React + Vite)
+
+```bash
+# In the frontend directory
+cd frontend
+npm install # Only needed once
+# npm install react-router-dom
+# npm install react-redux @reduxjs/toolkit
+# npm install axios
+npm run dev
+```
+- The frontend will be available at: http://localhost:5173 (default Vite port)
+- Make sure both backend services are running for API calls to work.
+
+### 1. Demo Preparation
+
+| Step | Action | Purpose |
+|------|--------|---------|
+| 1 | Start all backend services (Eureka, admin-service, customer-service) | Ensure all APIs are available |
+| 2 | Run Postman collection to verify backend APIs | Confirm backend endpoints and business logic |
+| 3 | Start the frontend (`npm run dev`) | Launch the UI at http://localhost:5173 |
+| 4 | Open the application in your browser | Ready for demonstration |
+
+### 2. Core Use Cases & Business Processes
+
+| # | Use Case Number | Use Case | Actor | UI Page | Description |
+|---|----------------|----------|-------|---------|-------------|
+| 1 | UC-0 | Register & Login | Customer/Admin | Register/Login Page | User registration, login, JWT authentication |
+| 2 | UC-7 | Manage Tables | Admin | Table Management Page | Add tables, update status |
+| 3 | UC-5 | Update Menu Items | Admin | Menu Management Page | Add/edit menu items, update information|
+| 4 | UC-4 | Validate Customer Input | Customer/Staff  | Customer Page| Input validation for customer data |
+| 5 | UC-2 | Make Reservation | Customer | Reservation Page | Book a table, select date/time, party size |
+| 6 | UC-1 | Place Order | Customer | Order Page | Select items, quantity, add notes, submit order |
+| 7 | UC-3 | Update Order Status | Customer/Staff| Order Management Page | Advance order through workflow |
+| 8 | UC-6 | Process Payment | Customer/Staff | Payment Page | Complete payment, update order status |
+
+### 3. Input Validation & Business Constraints
+
+| Scenario | Validation/Constraint | Expected Behavior |
+|----------|----------------------|-------------------|
+| Access admin page as customer | Role-based access control | show bad credantials |
+| Manage table status | Table must be AVAILABLE | Only AVAILABLE tables can be reserved; others are not selectable |
+| Update menu items | Menu item fields must be valid| Show validation error if invalid like no restaurant id, allow add/edit otherwise |
+| Insert invalid phone number | Phone number must be exactly 10 digits | Show validation error, prevent submission |
+| Double booking for same table at same time | No overlapping reservations | Not allowed since there will be no available options to choose |
+| Place order with negative or above 100 quantity | 0 < Quantity < 100 | Auto-correct to 1 if below 1, or 99 if above 99 |
+| Place order with insufficient inventory | Inventory must be sufficient | Block order, show reminder message if stock is insufficient |
+| Update order status | Status can only advance, not revert | Only allow selecting the next status in the workflow, cannot move backward |
+| Pay for order | Order status must be REQUESTED_CHECK | Payment is only allowed when status is REQUESTED_CHECK |
+
+
+### 4. Demo Video Script Outline
+
+1. **Introduction**
+  The Restaurant Order Management System is a full-stack application that manages all aspects of restaurant operations with a modern user interface. It allows staff to:
+  - Create and manage customer orders
+  - Track order status in real time
+  - Manage menu items and tables
+  - Make reservations
+  - Process payments securely
+  - Store and retrieve all order and customer data in a database
+
+  The system uses:
+  - Spring Boot (backend)
+  - ORM and Repository pattern
+  - REST API architecture
+  - React + Vite (frontend)
+
+  Its goal is to provide a structured, efficient, and user-friendly way to manage restaurant workflows, combining robust backend logic with an intuitive UI.
+2. **Register & Login (UC-0)**
+  - Show registration and login flows, including validation errors.
+3. **Manage Tables (UC-7)**
+  - As admin, add tables and update table status (AVAILABLE/OCCUPIED).
+4. **Update Menu Items (UC-5)**
+  - As admin, add/edit menu items, demonstrate validation.
+5. **Validate Customer Input (UC-4)**
+  - Show input validation for registration and customer data (e.g., invalid phone number).
+6. **Make Reservation (UC-2)**
+  - Book a table, select date/time, party size; show validation (e.g., double booking, only AVAILABLE tables).
+7. **Place Order (UC-1)**
+  - Select menu items, set quantity, add notes, submit order; show inventory and quantity validation.
+8. **Update Order Status (UC-3)**
+  - Advance order status step by step as staff/kitchen, show real-time updates if available.
+9. **Process Payment (UC-6)**
+  - Complete payment for an order (only when status is REQUESTED_CHECK), show status update.
+10. **Security & Access Control**
+  - Attempt to access restricted pages with insufficient permissions.
+11. **Conclusion**
+  - Summarize the system’s strengths: validation, business logic, UI, and microservice architecture.
+
+---
+## Project Structure
 
 ```
 restaurant-management-system/

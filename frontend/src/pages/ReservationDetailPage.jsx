@@ -74,11 +74,7 @@ export default function ReservationDetailPage() {
           style={{ boxShadow: '0 2px 8px #f0f1f2', borderRadius: 12 }}
           extra={
             <Space>
-              {(reservation.status === 'CONFIRMED' || reservation.status === 'PENDING') && (
-                <Button danger loading={cancelLoading} onClick={handleCancel} disabled={cancelLoading}>
-                  Cancel Reservation
-                </Button>
-              )}
+              {/* Cancel Reservation button removed as requested */}
               <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/reservations')}>
                 Back
               </Button>
