@@ -31,6 +31,8 @@ function getStatusColor(status) {
   switch (status) {
     case 'PAID':
       return 'green';
+    case 'CLOSED':
+      return 'default';
     case 'SERVED':
     case 'REQUESTED_CHECK':
       return 'blue';
@@ -101,6 +103,10 @@ function isPayable(status) {
   return ['SERVED', 'REQUESTED_CHECK'].includes(status);
 }
 
+function isPaidOrClosed(status) {
+  return ['PAID', 'CLOSED'].includes(status);
+}
+
 export default function OrderListPage() {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
@@ -115,7 +121,9 @@ export default function OrderListPage() {
         setOrders(res.data || []);
       })
       .catch(() => {
-        setError('Failed to load orders. Please make sure you are logged in and the backend services are running.');
+        setError(
+          'Failed to load orders. Please make sure you are logged in and the backend services are running.'
+        );
       })
       .finally(() => {
         setLoading(false);
@@ -128,15 +136,18 @@ export default function OrderListPage() {
 
   const summary = useMemo(() => {
     const totalOrders = orders.length;
-    const paidOrders = orders.filter((order) => order.status === 'PAID').length;
+
+    const completedOrders = orders.filter((order) => isPaidOrClosed(order.status)).length;
+
     const payableOrders = orders.filter((order) => isPayable(order.status)).length;
+
     const unpaidTotal = orders
-      .filter((order) => order.status !== 'PAID')
+      .filter((order) => !isPaidOrClosed(order.status))
       .reduce((total, order) => total + calculateOrderTotal(order), 0);
 
     return {
       totalOrders,
-      paidOrders,
+      completedOrders,
       payableOrders,
       unpaidTotal,
     };
@@ -194,6 +205,14 @@ export default function OrderListPage() {
           );
         }
 
+        if (order.status === 'CLOSED') {
+          return (
+            <Tag color="green" icon={<CheckCircleOutlined />}>
+              Closed / Paid
+            </Tag>
+          );
+        }
+
         if (isPayable(order.status)) {
           return (
             <Tag color="blue" icon={<CreditCardOutlined />}>
@@ -214,8 +233,11 @@ export default function OrderListPage() {
       key: 'action',
       render: (_, order) => (
         <Link to={`/orders/${order.id}`}>
-          <Button type={isPayable(order.status) ? 'primary' : 'default'} icon={<EyeOutlined />}>
-            View / Pay
+          <Button
+            type={isPayable(order.status) ? 'primary' : 'default'}
+            icon={<EyeOutlined />}
+          >
+            {isPayable(order.status) ? 'View / Pay' : 'View'}
           </Button>
         </Link>
       ),
@@ -230,13 +252,24 @@ export default function OrderListPage() {
             <Card
               style={{ borderRadius: 12 }}
               title={
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
                   <span>
                     <FileTextOutlined style={{ marginRight: 8 }} />
                     Restaurant Orders
                   </span>
                   <span>
-                    <Button icon={<ReloadOutlined />} onClick={loadOrders} loading={loading} style={{ marginRight: 8 }}>
+                    <Button
+                      icon={<ReloadOutlined />}
+                      onClick={loadOrders}
+                      loading={loading}
+                      style={{ marginRight: 8 }}
+                    >
                       Refresh
                     </Button>
                     <Link to="/orders/place">
@@ -287,8 +320,8 @@ export default function OrderListPage() {
               <Col xs={24} sm={12} lg={6}>
                 <Card style={{ borderRadius: 12 }}>
                   <Statistic
-                    title="Paid Orders"
-                    value={summary.paidOrders}
+                    title="Paid / Closed Orders"
+                    value={summary.completedOrders}
                     prefix={<CheckCircleOutlined />}
                   />
                 </Card>
@@ -308,9 +341,7 @@ export default function OrderListPage() {
 
             <Card style={{ borderRadius: 12 }}>
               {orders.length === 0 && !loading ? (
-                <Empty
-                  description="No orders found. Create or refresh orders to test UC6."
-                />
+                <Empty description="No orders found. Create or refresh orders to test UC-6." />
               ) : (
                 <Table
                   rowKey="id"
