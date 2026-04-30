@@ -38,6 +38,8 @@ function getStatusColor(status) {
   switch (status) {
     case 'PAID':
       return 'green';
+    case 'CLOSED':
+      return 'default';
     case 'SERVED':
     case 'REQUESTED_CHECK':
       return 'blue';
@@ -82,9 +84,9 @@ export default function OrderDetailPage() {
 
   const canPay = order && ['SERVED', 'REQUESTED_CHECK'].includes(order.status);
   const isPaid = order?.status === 'PAID';
+  const isClosed = order?.status === 'CLOSED';
+  const isPaidOrClosed = isPaid || isClosed;
 
-
-  // 加载订单并同步状态
   const loadOrder = useCallback(async () => {
     try {
       const res = await getOrder(id);
@@ -97,7 +99,6 @@ export default function OrderDetailPage() {
 
   useEffect(() => {
     loadOrder();
-    // eslint-disable-next-line
   }, [loadOrder]);
 
   useEffect(() => {
@@ -106,23 +107,28 @@ export default function OrderDetailPage() {
     }
   }, [order, orderTotal]);
 
-  // 订单状态修改逻辑
-  const handleStatusChange = e => setStatus(e.target ? e.target.value : e);
+  const handleStatusChange = (e) => setStatus(e.target ? e.target.value : e);
+
   const handleUpdate = async (overrideStatus) => {
     const newStatus = overrideStatus || status;
     setLoading(true);
     setError('');
     setSuccessMsg('');
+
     try {
       await updateOrderStatus(id, { status: newStatus });
       setSuccessMsg(`Order status updated to ${newStatus}.`);
       await loadOrder();
     } catch (err) {
       const msg = err?.response?.data?.message || 'Update failed';
+
       if (msg.includes('Order is in status CLOSED')) {
         setError('Cannot update status: This order is already closed.');
+      } else if (msg.includes('Use the payment endpoint')) {
+        setError('To mark this order as paid, use the Process Payment section instead of the status dropdown.');
+      } else if (msg.includes('Only paid orders can be closed')) {
+        setError('Only orders with completed payment can be closed.');
       } else if (msg.startsWith('Cannot transition from')) {
-        // 提取 next status
         const match = msg.match(/Expected next status: ([A-Z_]+)/);
         const next = match ? match[1] : '';
         setError(next ? `Only allowed to move to next status: ${next}` : msg);
@@ -140,7 +146,7 @@ export default function OrderDetailPage() {
     setError('');
 
     if (!canPay) {
-      setPayMsg('Payment can only be completed after the order has been served or the check has been requested.');
+      setPayMsg('Payment can only be completed when the order status is SERVED or REQUESTED_CHECK.');
       setLoading(false);
       return;
     }
@@ -164,6 +170,7 @@ export default function OrderDetailPage() {
       });
 
       setOrder(res.data);
+      setStatus(res.data.status);
       setPayMsg('Payment successful! Order marked as PAID.');
       message.success('Payment processed successfully.');
     } catch (err) {
@@ -237,7 +244,6 @@ export default function OrderDetailPage() {
                 </Button>
               }
             >
-              {/* 订单状态修改区域 */}
               <div style={{ marginBottom: 24 }}>
                 <label>Change Status: </label>
                 <select value={status} onChange={handleStatusChange} style={{ minWidth: 160 }}>
@@ -250,12 +256,34 @@ export default function OrderDetailPage() {
                   <option value="PAID">PAID</option>
                   <option value="CLOSED">CLOSED</option>
                 </select>
-                <Button onClick={() => handleUpdate()} disabled={loading} style={{ marginLeft: 8 }}>Update Status</Button>
-                {successMsg && <span style={{ color: 'green', marginLeft: 12 }}>{successMsg}</span>}
+
+                <Button
+                  onClick={() => handleUpdate()}
+                  disabled={loading || isClosed}
+                  style={{ marginLeft: 8 }}
+                >
+                  Update Status
+                </Button>
+
+                {successMsg && (
+                  <span style={{ color: 'green', marginLeft: 12 }}>
+                    {successMsg}
+                  </span>
+                )}
+
                 {error && (
-                  <div style={{ color: 'red', marginTop: 8, fontWeight: 500 }}>{error}</div>
+                  <div style={{ color: 'red', marginTop: 8, fontWeight: 500 }}>
+                    {error}
+                  </div>
+                )}
+
+                {isClosed && (
+                  <div style={{ color: '#666', marginTop: 8 }}>
+                    This order is closed and cannot be updated further.
+                  </div>
                 )}
               </div>
+
               <Row gutter={[24, 24]}>
                 <Col xs={24} md={8}>
                   <Statistic
@@ -319,17 +347,23 @@ export default function OrderDetailPage() {
                 </Space>
               }
             >
-              {isPaid ? (
+              {isPaidOrClosed ? (
                 <Alert
-                  type="success"
+                  type={isClosed ? 'info' : 'success'}
                   showIcon
                   icon={<CheckCircleOutlined />}
-                  message="This order has already been paid."
+                  message={isClosed ? 'This order is closed.' : 'This order has already been paid.'}
                   description={
-                    <Space direction="vertical">
-                      <Text>Paid Amount: {formatMoney(order.paidAmount || orderTotal)}</Text>
-                      <Text>Payment Method: {order.paymentMethod || paymentMethod}</Text>
-                    </Space>
+                    isClosed ? (
+                      <Text>
+                        This order is complete and no additional payment actions are available.
+                      </Text>
+                    ) : (
+                      <Space direction="vertical">
+                        <Text>Paid Amount: {formatMoney(order.paidAmount || orderTotal)}</Text>
+                        <Text>Payment Method: {order.paymentMethod || paymentMethod}</Text>
+                      </Space>
+                    )
                   }
                 />
               ) : (
@@ -339,49 +373,51 @@ export default function OrderDetailPage() {
                       type="warning"
                       showIcon
                       style={{ marginBottom: 16 }}
-                      message="Payment is not available yet."
-                      description="Payment can be completed once the order has been served or the check has been requested."
+                      message="Payment is not available for this order status."
+                      description="Payment can only be completed when the order status is SERVED or REQUESTED_CHECK."
                     />
                   )}
 
-                  <Form layout="vertical">
-                    <Row gutter={[16, 16]}>
-                      <Col xs={24} md={12}>
-                        <Form.Item label="Payment Method" required>
-                          <Select
-                            value={paymentMethod}
-                            onChange={setPaymentMethod}
-                            options={paymentOptions}
-                          />
-                        </Form.Item>
-                      </Col>
+                  {canPay && (
+                    <Form layout="vertical">
+                      <Row gutter={[16, 16]}>
+                        <Col xs={24} md={12}>
+                          <Form.Item label="Payment Method" required>
+                            <Select
+                              value={paymentMethod}
+                              onChange={setPaymentMethod}
+                              options={paymentOptions}
+                            />
+                          </Form.Item>
+                        </Col>
 
-                      <Col xs={24} md={12}>
-                        <Form.Item label="Amount" required>
-                          <InputNumber
-                            value={amount}
-                            onChange={setAmount}
-                            min={0}
-                            step={0.01}
-                            precision={2}
-                            prefix="$"
-                            style={{ width: '100%' }}
-                          />
-                        </Form.Item>
-                      </Col>
-                    </Row>
+                        <Col xs={24} md={12}>
+                          <Form.Item label="Amount" required>
+                            <InputNumber
+                              value={amount}
+                              onChange={setAmount}
+                              min={0}
+                              step={0.01}
+                              precision={2}
+                              prefix="$"
+                              style={{ width: '100%' }}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
 
-                    <Button
-                      type="primary"
-                      size="large"
-                      icon={<DollarOutlined />}
-                      loading={loading}
-                      disabled={!canPay}
-                      onClick={handlePay}
-                    >
-                      Pay Order
-                    </Button>
-                  </Form>
+                      <Button
+                        type="primary"
+                        size="large"
+                        icon={<DollarOutlined />}
+                        loading={loading}
+                        disabled={!canPay}
+                        onClick={handlePay}
+                      >
+                        Pay Order
+                      </Button>
+                    </Form>
+                  )}
                 </>
               )}
 
